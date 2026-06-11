@@ -1,0 +1,61 @@
+<?php $__env->startSection('title', 'Artikel Edukasi'); ?>
+
+<?php $__env->startSection('content'); ?>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+
+    
+    <div class="text-center mb-12">
+        <h1 class="mb-3">📖 Panduan & Edukasi</h1>
+        <p class="text-earth-500 text-xl max-w-2xl mx-auto">
+            Pelajari cara membuat dan merawat Pupuk Organik Cair dari limbah sisa makanan yang benar
+        </p>
+    </div>
+
+    <?php if($articles->isEmpty()): ?>
+        
+        <div class="card card-body text-center py-16">
+            <div class="w-24 h-24 mx-auto mb-6 bg-earth-100 rounded-full flex items-center justify-center">
+                <span class="text-5xl">📖</span>
+            </div>
+            <h3 class="text-earth-600 mb-3">Belum Ada Artikel</h3>
+            <p class="text-earth-400 text-lg">Artikel edukasi akan segera tersedia. Silakan kembali lagi nanti!</p>
+        </div>
+    <?php else: ?>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <?php $__currentLoopData = $articles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $article): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <a href="<?php echo e(route('articles.show', $article)); ?>" class="card group hover:border-leaf-300 transition-all hover:-translate-y-1">
+                    <?php if($article->cover_image): ?>
+                        <div class="aspect-video bg-earth-200 rounded-t-2xl overflow-hidden">
+                            <img src="<?php echo e(asset('storage/' . $article->cover_image)); ?>" alt="<?php echo e($article->title); ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                    <?php else: ?>
+                        <div class="aspect-video bg-gradient-to-br from-leaf-100 to-sage-200 rounded-t-2xl flex items-center justify-center">
+                            <span class="text-5xl">📖</span>
+                        </div>
+                    <?php endif; ?>
+                    <div class="card-body">
+                        <p class="text-sm text-earth-400 mb-2"><?php echo e($article->published_at?->translatedFormat('d F Y') ?? $article->created_at->translatedFormat('d F Y')); ?></p>
+                        <h3 class="text-xl font-semibold text-earth-800 mb-3 group-hover:text-leaf-700 transition-colors line-clamp-2">
+                            <?php echo e($article->title); ?>
+
+                        </h3>
+                        <p class="text-earth-500 text-base line-clamp-3"><?php echo e($article->excerpt); ?></p>
+                        <div class="mt-4 text-leaf-600 font-semibold text-base group-hover:text-leaf-700">
+                            Baca selengkapnya →
+                        </div>
+                    </div>
+                </a>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </div>
+
+        
+        <div class="mt-10">
+            <?php echo e($articles->links()); ?>
+
+        </div>
+    <?php endif; ?>
+</div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/ilham/web-edu-pkm/resources/views/articles/index.blade.php ENDPATH**/ ?>
