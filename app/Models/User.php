@@ -15,6 +15,7 @@ class User extends Authenticatable
         'email',
         'password',
         'reminder_enabled',
+        'is_admin',
     ];
 
     protected $hidden = [
@@ -28,7 +29,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'reminder_enabled' => 'boolean',
+            'is_admin' => 'boolean',
         ];
+    }
+
+    /**
+     * Cek apakah user adalah admin.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
     }
 
     /**

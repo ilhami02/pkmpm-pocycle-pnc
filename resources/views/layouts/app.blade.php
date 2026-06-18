@@ -149,6 +149,9 @@
                             <div x-show="open" @click.away="open = false" x-transition
                                  class="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-earth-200 py-2 z-50">
                                 <a href="{{ route('profile.edit') }}" class="block px-5 py-3 text-earth-700 hover:bg-earth-50 text-lg">⚙️ Pengaturan</a>
+                                @if(auth()->user()->isAdmin())
+                                    <a href="{{ route('admin.dashboard') }}" class="block px-5 py-3 text-earth-700 hover:bg-earth-50 text-lg">🛠️ Admin Panel</a>
+                                @endif
                                 <hr class="my-1 border-earth-100">
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
