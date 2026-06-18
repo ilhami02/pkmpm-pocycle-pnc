@@ -18,7 +18,7 @@
 <body class="min-h-screen flex flex-col bg-earth-50">
 
     
-    <nav class="bg-white/90 backdrop-blur-md border-b border-earth-200 sticky top-0 z-50" x-data="{ open: false }">
+    <nav class="bg-white/90 backdrop-blur-md border-b border-earth-200 sticky top-0 z-50 shadow-sm" x-data="{ open: false }">
         <div class="max-w-6xl mx-auto px-4 sm:px-6">
             <div class="flex items-center justify-between h-20">
 
@@ -55,17 +55,91 @@
                 <div class="hidden md:flex items-center gap-3">
                     <?php if(auth()->guard()->check()): ?>
                         
-                        <a href="<?php echo e(route('notifications.index')); ?>" class="relative p-3 text-earth-500 hover:text-leaf-600 hover:bg-leaf-50 rounded-xl transition-all" title="Notifikasi">
-                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                            </svg>
-                            <?php if(auth()->user()->unreadNotifications->count() > 0): ?>
-                                <span class="absolute -top-1 -right-1 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse-soft">
-                                    <?php echo e(auth()->user()->unreadNotifications->count()); ?>
+                        <div x-data="{ notifOpen: false }" class="relative">
+                            <button @click="notifOpen = !notifOpen" class="relative p-3 text-earth-500 hover:text-leaf-600 hover:bg-leaf-50 rounded-xl transition-all" title="Notifikasi">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                                </svg>
+                                <?php if(auth()->user()->unreadNotifications->count() > 0): ?>
+                                    <span class="absolute -top-1 -right-1 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse-soft">
+                                        <?php echo e(auth()->user()->unreadNotifications->count()); ?>
 
-                                </span>
-                            <?php endif; ?>
-                        </a>
+                                    </span>
+                                <?php endif; ?>
+                            </button>
+
+                            
+                            <div x-show="notifOpen" @click.away="notifOpen = false"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95 -translate-y-1"
+                                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100"
+                                 x-transition:leave-end="opacity-0 scale-95"
+                                 class="absolute right-0 mt-2 w-96 bg-white rounded-2xl shadow-xl border border-earth-200 z-50 overflow-hidden"
+                                 style="display: none;">
+
+                                
+                                <div class="px-5 py-4 border-b border-earth-100 flex items-center justify-between">
+                                    <h3 class="text-lg font-semibold text-earth-800">🔔 Notifikasi</h3>
+                                    <?php if(auth()->user()->unreadNotifications->count() > 0): ?>
+                                        <span class="text-sm font-medium text-leaf-600 bg-leaf-50 px-2.5 py-1 rounded-full">
+                                            <?php echo e(auth()->user()->unreadNotifications->count()); ?> baru
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+
+                                
+                                <div class="max-h-80 overflow-y-auto">
+                                    <?php
+                                        $recentNotifications = auth()->user()->notifications()->latest()->take(5)->get();
+                                    ?>
+
+                                    <?php if($recentNotifications->isEmpty()): ?>
+                                        <div class="px-5 py-10 text-center">
+                                            <div class="w-14 h-14 mx-auto mb-3 bg-earth-100 rounded-full flex items-center justify-center">
+                                                <span class="text-2xl">🔔</span>
+                                            </div>
+                                            <p class="text-earth-400 text-base">Belum ada notifikasi</p>
+                                        </div>
+                                    <?php else: ?>
+                                        <?php $__currentLoopData = $recentNotifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notif): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <div class="px-5 py-3.5 hover:bg-earth-50 transition-colors border-b border-earth-50 last:border-b-0 <?php echo e(!$notif->read_at ? 'bg-leaf-50/40' : ''); ?>">
+                                                <div class="flex items-start gap-3">
+                                                    <div class="w-9 h-9 <?php echo e(!$notif->read_at ? 'bg-leaf-100' : 'bg-earth-100'); ?> rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                        <span class="text-base"><?php echo e(!$notif->read_at ? '🌿' : '📋'); ?></span>
+                                                    </div>
+                                                    <div class="flex-1 min-w-0">
+                                                        <p class="text-sm font-semibold text-earth-800 truncate <?php echo e(!$notif->read_at ? '' : 'text-earth-600'); ?>">
+                                                            <?php echo e($notif->data['title'] ?? 'Notifikasi'); ?>
+
+                                                        </p>
+                                                        <p class="text-sm text-earth-500 truncate mt-0.5">
+                                                            <?php echo e($notif->data['message'] ?? ''); ?>
+
+                                                        </p>
+                                                        <p class="text-xs text-earth-400 mt-1">
+                                                            <?php echo e($notif->created_at->diffForHumans()); ?>
+
+                                                        </p>
+                                                    </div>
+                                                    <?php if(!$notif->read_at): ?>
+                                                        <div class="w-2.5 h-2.5 bg-leaf-500 rounded-full flex-shrink-0 mt-2"></div>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endif; ?>
+                                </div>
+
+                                
+                                <div class="px-5 py-3 border-t border-earth-100 bg-earth-50/50">
+                                    <a href="<?php echo e(route('notifications.index')); ?>" class="block text-center text-leaf-600 hover:text-leaf-700 font-semibold text-sm transition-colors">
+                                        Lihat Semua Notifikasi →
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
 
                         
                         <div x-data="{ open: false }" class="relative">
@@ -156,7 +230,8 @@
     </main>
 
     
-    <footer class="bg-earth-800 text-earth-300 mt-16">
+    <footer class="bg-earth-800 text-earth-300 mt-16 relative">
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-leaf-400 via-leaf-500 to-leaf-600"></div>
         <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
             <div class="grid md:grid-cols-3 gap-8">
                 <div>
