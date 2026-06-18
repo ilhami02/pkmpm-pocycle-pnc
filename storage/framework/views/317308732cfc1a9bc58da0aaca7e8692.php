@@ -5,11 +5,13 @@
     
     <section class="relative overflow-hidden bg-gradient-to-br from-leaf-600 via-leaf-700 to-leaf-800 text-white">
         
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-10 left-10 text-8xl">🌿</div>
-            <div class="absolute top-20 right-20 text-6xl">🍃</div>
-            <div class="absolute bottom-10 left-1/3 text-7xl">🌱</div>
-            <div class="absolute bottom-20 right-10 text-5xl">♻️</div>
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-20 -left-20 w-72 h-72 bg-white/5 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/3 -right-16 w-96 h-96 bg-leaf-400/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-24 left-1/4 w-80 h-80 bg-leaf-300/8 rounded-full blur-3xl"></div>
+            <div class="absolute top-10 right-1/3 w-3 h-3 bg-white/20 rounded-full"></div>
+            <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-white/15 rounded-full"></div>
+            <div class="absolute bottom-1/3 right-1/4 w-4 h-4 bg-white/10 rounded-full"></div>
         </div>
 
         <div class="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 md:py-28">
@@ -32,7 +34,7 @@
                             📷 Mulai Scan Pupuk
                         </a>
                     <?php endif; ?>
-                    <a href="<?php echo e(route('articles.index')); ?>" class="btn-secondary border-white/30 text-white hover:bg-white/10 text-xl px-10 py-5">
+                    <a href="<?php echo e(route('articles.index')); ?>" class="inline-flex items-center justify-center gap-2 min-h-touch min-w-touch px-10 py-5 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-semibold text-xl rounded-btn border-2 border-white/30 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-white/30">
                         📖 Baca Panduan
                     </a>
                 </div>
@@ -41,44 +43,53 @@
     </section>
 
     
-    <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16">
-        <div class="text-center mb-12">
-            <h2 class="text-earth-900 mb-3">Cara Kerja POCYCLE</h2>
-            <p class="text-earth-500 text-xl">Tiga langkah mudah memantau pupuk Anda</p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-8">
-            
-            <div class="card card-body text-center group hover:border-leaf-300 transition-colors">
-                <div class="w-20 h-20 mx-auto mb-6 bg-leaf-100 rounded-2xl flex items-center justify-center group-hover:bg-leaf-200 transition-colors">
-                    <span class="text-4xl">📷</span>
-                </div>
-                <h3 class="mb-3">1. Foto Galon</h3>
-                <p class="text-earth-500">
-                    Ambil foto kondisi pupuk di dalam galon Le Minerale 15 liter Anda.
-                </p>
+    <section class="bg-gradient-to-b from-earth-50 to-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
+            <div class="text-center mb-14">
+                <span class="inline-block px-4 py-1.5 bg-leaf-100 text-leaf-700 text-sm font-semibold rounded-full mb-4">CARA KERJA</span>
+                <h2 class="text-earth-900 mb-3">Cara Kerja POCYCLE</h2>
+                <p class="text-earth-500 text-xl">Tiga langkah mudah memantau pupuk Anda</p>
             </div>
 
-            
-            <div class="card card-body text-center group hover:border-leaf-300 transition-colors">
-                <div class="w-20 h-20 mx-auto mb-6 bg-leaf-100 rounded-2xl flex items-center justify-center group-hover:bg-leaf-200 transition-colors">
-                    <span class="text-4xl">🌡️</span>
-                </div>
-                <h3 class="mb-3">2. Input Suhu</h3>
-                <p class="text-earth-500">
-                    Masukkan suhu saat ini dalam Celcius. Suhu ideal fermentasi antara 25-35°C.
-                </p>
-            </div>
+            <div class="grid md:grid-cols-3 gap-8 relative">
+                
+                <div class="hidden md:block absolute top-16 left-1/3 right-1/3 h-0.5 bg-gradient-to-r from-leaf-200 via-leaf-300 to-leaf-200"></div>
 
-            
-            <div class="card card-body text-center group hover:border-leaf-300 transition-colors">
-                <div class="w-20 h-20 mx-auto mb-6 bg-leaf-100 rounded-2xl flex items-center justify-center group-hover:bg-leaf-200 transition-colors">
-                    <span class="text-4xl">✅</span>
+                
+                <div class="card card-body text-center group hover:border-leaf-300 hover:-translate-y-2 transition-all duration-300 relative">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 bg-leaf-600 text-white text-sm font-bold rounded-full flex items-center justify-center shadow-md">1</div>
+                    <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-leaf-100 to-leaf-200 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                        <span class="text-4xl">📷</span>
+                    </div>
+                    <h3 class="mb-3">Foto Galon</h3>
+                    <p class="text-earth-500">
+                        Ambil foto kondisi pupuk di dalam galon Le Minerale 15 liter Anda.
+                    </p>
                 </div>
-                <h3 class="mb-3">3. Lihat Hasil</h3>
-                <p class="text-earth-500">
-                    Dapatkan status pupuk beserta rekomendasi penanganan yang mudah dipahami.
-                </p>
+
+                
+                <div class="card card-body text-center group hover:border-leaf-300 hover:-translate-y-2 transition-all duration-300 relative">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 bg-leaf-600 text-white text-sm font-bold rounded-full flex items-center justify-center shadow-md">2</div>
+                    <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-leaf-100 to-leaf-200 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                        <span class="text-4xl">🌡️</span>
+                    </div>
+                    <h3 class="mb-3">Input Suhu</h3>
+                    <p class="text-earth-500">
+                        Masukkan suhu saat ini dalam Celcius. Suhu ideal fermentasi antara 25-35°C.
+                    </p>
+                </div>
+
+                
+                <div class="card card-body text-center group hover:border-leaf-300 hover:-translate-y-2 transition-all duration-300 relative">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 bg-leaf-600 text-white text-sm font-bold rounded-full flex items-center justify-center shadow-md">3</div>
+                    <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-leaf-100 to-leaf-200 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                        <span class="text-4xl">✅</span>
+                    </div>
+                    <h3 class="mb-3">Lihat Hasil</h3>
+                    <p class="text-earth-500">
+                        Dapatkan status pupuk beserta rekomendasi penanganan yang mudah dipahami.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
@@ -128,9 +139,10 @@
     
     <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16">
         <div class="bg-gradient-to-r from-leaf-600 to-leaf-700 rounded-3xl p-10 md:p-16 text-center text-white relative overflow-hidden">
-            <div class="absolute inset-0 opacity-10">
-                <div class="absolute top-5 right-10 text-6xl">🌿</div>
-                <div class="absolute bottom-5 left-10 text-6xl">♻️</div>
+            
+            <div class="absolute inset-0 overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-56 h-56 bg-leaf-400/10 rounded-full blur-2xl"></div>
             </div>
             <div class="relative">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
