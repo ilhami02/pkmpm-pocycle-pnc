@@ -1,0 +1,113 @@
+
+<?php $__env->startSection('title', 'Hasil Scan'); ?>
+
+<?php $__env->startSection('content'); ?>
+<div class="max-w-2xl mx-auto px-4 sm:px-6 py-10">
+
+    
+    <div class="text-center mb-8">
+        <h1 class="mb-3">Hasil Analisis Pupuk</h1>
+        <p class="text-earth-500 text-lg">Scan tanggal <?php echo e($scan->created_at->translatedFormat('d F Y, H:i')); ?> WIB</p>
+    </div>
+
+    
+    <div class="card mb-8 border-2 <?php echo e($scan->status_color); ?>">
+        <div class="card-body text-center py-10">
+            <div class="text-6xl mb-4">
+                <?php switch($scan->status):
+                    case ('normal'): ?> ✅ <?php break; ?>
+                    <?php case ('needs_stirring'): ?> ⚠️ <?php break; ?>
+                    <?php case ('contaminated'): ?> 🚫 <?php break; ?>
+                    <?php default: ?> ❓
+                <?php endswitch; ?>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">
+                <?php echo e($scan->status_label); ?>
+
+            </h2>
+            <p class="text-lg">
+                <?php switch($scan->status):
+                    case ('normal'): ?>
+                        <span class="text-green-700">Pupuk Anda dalam kondisi baik!</span>
+                        <?php break; ?>
+                    <?php case ('needs_stirring'): ?>
+                        <span class="text-amber-700">Pupuk memerlukan penanganan.</span>
+                        <?php break; ?>
+                    <?php case ('contaminated'): ?>
+                        <span class="text-red-700">Pupuk terdeteksi bermasalah!</span>
+                        <?php break; ?>
+                <?php endswitch; ?>
+            </p>
+        </div>
+    </div>
+
+    
+    <div class="space-y-6">
+
+        
+        <div class="card card-body">
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-leaf-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span class="text-2xl">🎨</span>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-earth-700 mb-1">Warna Cairan</h3>
+                    <p class="text-earth-800 text-xl"><?php echo e($scan->detected_color); ?></p>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="card card-body">
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-leaf-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span class="text-2xl">🌡️</span>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-earth-700 mb-1">Suhu Saat Scan</h3>
+                    <p class="text-earth-800 text-xl"><?php echo e($scan->temperature); ?>°C
+                        <?php if($scan->temperature >= 25 && $scan->temperature <= 35): ?>
+                            <span class="text-green-600 text-base ml-2">✅ Ideal</span>
+                        <?php else: ?>
+                            <span class="text-amber-600 text-base ml-2">⚠️ Di luar rentang ideal (25-35°C)</span>
+                        <?php endif; ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="card card-body bg-leaf-50 border-leaf-200">
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-leaf-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span class="text-2xl">💡</span>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-leaf-800 mb-2">Rekomendasi Penanganan</h3>
+                    <p class="text-leaf-900 text-lg leading-relaxed"><?php echo e($scan->recommendation); ?></p>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="card card-body">
+            <h3 class="text-lg font-semibold text-earth-700 mb-3">📷 Foto yang Diunggah</h3>
+            <div class="rounded-xl overflow-hidden bg-earth-100">
+                <img src="<?php echo e(asset('storage/' . $scan->image_path)); ?>" alt="Foto pupuk scan" class="w-full max-h-80 object-contain">
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="flex flex-col sm:flex-row gap-4 mt-10">
+        <a href="<?php echo e(route('scan.create')); ?>" class="btn-primary flex-1 text-center text-xl py-5">
+            📷 Scan Ulang
+        </a>
+        <a href="<?php echo e(route('history.index')); ?>" class="btn-secondary flex-1 text-center text-xl py-5">
+            📋 Lihat Riwayat
+        </a>
+    </div>
+</div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH E:\Kuliah\pkm\web-edu-pocycle\pkmpm-pocycle-pnc\resources\views/scan/result.blade.php ENDPATH**/ ?>

@@ -1025,3 +1025,470 @@ Did you mean one of these?
   }
 }
 "} 
+[2026-07-19 11:55:06] local.INFO: POCYCLE: Mencoba analisis dengan token #1 (gemini)  
+[2026-07-19 11:55:06] local.INFO: POCYCLE: Gambar dikompres {"original_size":239472,"compressed_size":164100,"savings":"31%"} 
+[2026-07-19 11:55:08] local.WARNING: POCYCLE: Token #1 (gemini) gagal {"error":"API gemini error (HTTP 429): {
+  \"error\": {
+    \"code\": 429,
+    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\\nPlease retry in 51.46955997s.\",
+    \"status\": \"RESOURCE_EXHAUSTED\",
+    \"details\": [
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.Help\",
+        \"links\": [
+          {
+            \"description\": \"Learn more about Gemini API quotas\",
+            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"
+          }
+        ]
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",
+        \"violations\": [
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_input_token_count\",
+            \"quotaId\": \"GenerateContentInputTokensPerModelPerMinute-FreeTier\",
+            \"quotaDimensions\": {
+              \"location\": \"global\",
+              \"model\": \"gemini-2.0-flash\"
+            }
+          },
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",
+            \"quotaId\": \"GenerateRequestsPerMinutePerProjectPerModel-FreeTier\",
+            \"quotaDimensions\": {
+              \"location\": \"global\",
+              \"model\": \"gemini-2.0-flash\"
+            }
+          },
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",
+            \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",
+            \"quotaDimensions\": {
+              \"location\": \"global\",
+              \"model\": \"gemini-2.0-flash\"
+            }
+          }
+        ]
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",
+        \"retryDelay\": \"51s\"
+      }
+    ]
+  }
+}
+"} 
+[2026-07-19 11:55:08] local.WARNING: POCYCLE: Token #1 di-rate-limit, cooldown 60 menit.  
+[2026-07-19 11:55:08] local.ERROR: POCYCLE: Semua API token gagal untuk analisis pupuk. {"last_error":"API gemini error (HTTP 429): {
+  \"error\": {
+    \"code\": 429,
+    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\\nPlease retry in 51.46955997s.\",
+    \"status\": \"RESOURCE_EXHAUSTED\",
+    \"details\": [
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.Help\",
+        \"links\": [
+          {
+            \"description\": \"Learn more about Gemini API quotas\",
+            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"
+          }
+        ]
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",
+        \"violations\": [
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_input_token_count\",
+            \"quotaId\": \"GenerateContentInputTokensPerModelPerMinute-FreeTier\",
+            \"quotaDimensions\": {
+              \"location\": \"global\",
+              \"model\": \"gemini-2.0-flash\"
+            }
+          },
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",
+            \"quotaId\": \"GenerateRequestsPerMinutePerProjectPerModel-FreeTier\",
+            \"quotaDimensions\": {
+              \"location\": \"global\",
+              \"model\": \"gemini-2.0-flash\"
+            }
+          },
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",
+            \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",
+            \"quotaDimensions\": {
+              \"location\": \"global\",
+              \"model\": \"gemini-2.0-flash\"
+            }
+          }
+        ]
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",
+        \"retryDelay\": \"51s\"
+      }
+    ]
+  }
+}
+"} 
+[2026-07-19 11:55:26] local.ERROR: POCYCLE: Tidak ada API token yang tersedia untuk analisis.  
+[2026-07-19 11:55:45] local.ERROR: POCYCLE: Tidak ada API token yang tersedia untuk analisis.  
+[2026-07-19 12:02:35] local.INFO: POCYCLE: Mencoba analisis dengan token #1 (gemini)  
+[2026-07-19 12:02:35] local.INFO: POCYCLE: Gambar dikompres {"original_size":239472,"compressed_size":164100,"savings":"31%"} 
+[2026-07-19 12:02:37] local.WARNING: POCYCLE: Token #1 (gemini) gagal {"error":"API gemini error (HTTP 429): {
+  \"error\": {
+    \"code\": 429,
+    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\\nPlease retry in 22.742731961s.\",
+    \"status\": \"RESOURCE_EXHAUSTED\",
+    \"details\": [
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.Help\",
+        \"links\": [
+          {
+            \"description\": \"Learn more about Gemini API quotas\",
+            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"
+          }
+        ]
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",
+        \"violations\": [
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_input_token_count\",
+            \"quotaId\": \"GenerateContentInputTokensPerModelPerMinute-FreeTier\",
+            \"quotaDimensions\": {
+              \"location\": \"global\",
+              \"model\": \"gemini-2.0-flash\"
+            }
+          },
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",
+            \"quotaId\": \"GenerateRequestsPerMinutePerProjectPerModel-FreeTier\",
+            \"quotaDimensions\": {
+              \"location\": \"global\",
+              \"model\": \"gemini-2.0-flash\"
+            }
+          },
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",
+            \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",
+            \"quotaDimensions\": {
+              \"location\": \"global\",
+              \"model\": \"gemini-2.0-flash\"
+            }
+          }
+        ]
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",
+        \"retryDelay\": \"22s\"
+      }
+    ]
+  }
+}
+"} 
+[2026-07-19 12:02:37] local.WARNING: POCYCLE: Token #1 di-rate-limit, cooldown 60 menit.  
+[2026-07-19 12:02:37] local.INFO: POCYCLE: Mencoba analisis dengan token #2 (gemini)  
+[2026-07-19 12:02:37] local.INFO: POCYCLE: Gambar dikompres {"original_size":239472,"compressed_size":164100,"savings":"31%"} 
+[2026-07-19 12:02:38] local.WARNING: POCYCLE: Token #2 (gemini) gagal {"error":"API gemini error (HTTP 429): {
+  \"error\": {
+    \"code\": 429,
+    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\\nPlease retry in 21.099441621s.\",
+    \"status\": \"RESOURCE_EXHAUSTED\",
+    \"details\": [
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.Help\",
+        \"links\": [
+          {
+            \"description\": \"Learn more about Gemini API quotas\",
+            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"
+          }
+        ]
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",
+        \"violations\": [
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_input_token_count\",
+            \"quotaId\": \"GenerateContentInputTokensPerModelPerMinute-FreeTier\",
+            \"quotaDimensions\": {
+              \"model\": \"gemini-2.0-flash\",
+              \"location\": \"global\"
+            }
+          },
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",
+            \"quotaId\": \"GenerateRequestsPerMinutePerProjectPerModel-FreeTier\",
+            \"quotaDimensions\": {
+              \"location\": \"global\",
+              \"model\": \"gemini-2.0-flash\"
+            }
+          },
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",
+            \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",
+            \"quotaDimensions\": {
+              \"model\": \"gemini-2.0-flash\",
+              \"location\": \"global\"
+            }
+          }
+        ]
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",
+        \"retryDelay\": \"21s\"
+      }
+    ]
+  }
+}
+"} 
+[2026-07-19 12:02:38] local.WARNING: POCYCLE: Token #2 di-rate-limit, cooldown 60 menit.  
+[2026-07-19 12:02:38] local.INFO: POCYCLE: Mencoba analisis dengan token #3 (gemini)  
+[2026-07-19 12:02:38] local.INFO: POCYCLE: Gambar dikompres {"original_size":239472,"compressed_size":164100,"savings":"31%"} 
+[2026-07-19 12:02:42] local.WARNING: POCYCLE: Token #3 (gemini) gagal {"error":"API gemini error (HTTP 429): {
+  \"error\": {
+    \"code\": 429,
+    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash\\nPlease retry in 17.713791864s.\",
+    \"status\": \"RESOURCE_EXHAUSTED\",
+    \"details\": [
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.Help\",
+        \"links\": [
+          {
+            \"description\": \"Learn more about Gemini API quotas\",
+            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"
+          }
+        ]
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",
+        \"violations\": [
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",
+            \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",
+            \"quotaDimensions\": {
+              \"model\": \"gemini-2.0-flash\",
+              \"location\": \"global\"
+            }
+          },
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",
+            \"quotaId\": \"GenerateRequestsPerMinutePerProjectPerModel-FreeTier\",
+            \"quotaDimensions\": {
+              \"model\": \"gemini-2.0-flash\",
+              \"location\": \"global\"
+            }
+          },
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_input_token_count\",
+            \"quotaId\": \"GenerateContentInputTokensPerModelPerMinute-FreeTier\",
+            \"quotaDimensions\": {
+              \"model\": \"gemini-2.0-flash\",
+              \"location\": \"global\"
+            }
+          }
+        ]
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",
+        \"retryDelay\": \"17s\"
+      }
+    ]
+  }
+}
+"} 
+[2026-07-19 12:02:42] local.WARNING: POCYCLE: Token #3 di-rate-limit, cooldown 60 menit.  
+[2026-07-19 12:02:42] local.INFO: POCYCLE: Mencoba analisis dengan token #4 (gemini)  
+[2026-07-19 12:02:42] local.INFO: POCYCLE: Gambar dikompres {"original_size":239472,"compressed_size":164100,"savings":"31%"} 
+[2026-07-19 12:02:46] local.WARNING: POCYCLE: Token #4 (gemini) gagal {"error":"API gemini error (HTTP 429): {
+  \"error\": {
+    \"code\": 429,
+    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\\nPlease retry in 13.64593452s.\",
+    \"status\": \"RESOURCE_EXHAUSTED\",
+    \"details\": [
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.Help\",
+        \"links\": [
+          {
+            \"description\": \"Learn more about Gemini API quotas\",
+            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"
+          }
+        ]
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",
+        \"violations\": [
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_input_token_count\",
+            \"quotaId\": \"GenerateContentInputTokensPerModelPerMinute-FreeTier\",
+            \"quotaDimensions\": {
+              \"location\": \"global\",
+              \"model\": \"gemini-2.0-flash\"
+            }
+          },
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",
+            \"quotaId\": \"GenerateRequestsPerMinutePerProjectPerModel-FreeTier\",
+            \"quotaDimensions\": {
+              \"location\": \"global\",
+              \"model\": \"gemini-2.0-flash\"
+            }
+          },
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",
+            \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",
+            \"quotaDimensions\": {
+              \"model\": \"gemini-2.0-flash\",
+              \"location\": \"global\"
+            }
+          }
+        ]
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",
+        \"retryDelay\": \"13s\"
+      }
+    ]
+  }
+}
+"} 
+[2026-07-19 12:02:46] local.WARNING: POCYCLE: Token #4 di-rate-limit, cooldown 60 menit.  
+[2026-07-19 12:02:46] local.ERROR: POCYCLE: Semua API token gagal untuk analisis pupuk. {"last_error":"API gemini error (HTTP 429): {
+  \"error\": {
+    \"code\": 429,
+    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\\nPlease retry in 13.64593452s.\",
+    \"status\": \"RESOURCE_EXHAUSTED\",
+    \"details\": [
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.Help\",
+        \"links\": [
+          {
+            \"description\": \"Learn more about Gemini API quotas\",
+            \"url\": \"https://ai.google.dev/gemini-api/docs/rate-limits\"
+          }
+        ]
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.QuotaFailure\",
+        \"violations\": [
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_input_token_count\",
+            \"quotaId\": \"GenerateContentInputTokensPerModelPerMinute-FreeTier\",
+            \"quotaDimensions\": {
+              \"location\": \"global\",
+              \"model\": \"gemini-2.0-flash\"
+            }
+          },
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",
+            \"quotaId\": \"GenerateRequestsPerMinutePerProjectPerModel-FreeTier\",
+            \"quotaDimensions\": {
+              \"location\": \"global\",
+              \"model\": \"gemini-2.0-flash\"
+            }
+          },
+          {
+            \"quotaMetric\": \"generativelanguage.googleapis.com/generate_content_free_tier_requests\",
+            \"quotaId\": \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\",
+            \"quotaDimensions\": {
+              \"model\": \"gemini-2.0-flash\",
+              \"location\": \"global\"
+            }
+          }
+        ]
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.RetryInfo\",
+        \"retryDelay\": \"13s\"
+      }
+    ]
+  }
+}
+"} 
+[2026-07-19 12:02:46] local.ERROR: POCYCLE: Tidak ada API token yang tersedia untuk analisis.  
+[2026-07-19 14:05:59] local.INFO: POCYCLE: Mencoba analisis dengan token #1 (gemini)  
+[2026-07-19 14:05:59] local.INFO: POCYCLE: Gambar dikompres {"original_size":285734,"compressed_size":225939,"savings":"21%"} 
+[2026-07-19 14:06:12] local.WARNING: POCYCLE: Token #1 (gemini) gagal {"error":"Gagal memproses respons AI. Raw: \" - no, let's keep it simple and helpful for the user, maybe they uploaded the wrong image.
+        Let's write:json"} 
+[2026-07-19 14:06:12] local.INFO: POCYCLE: Mencoba analisis dengan token #2 (gemini)  
+[2026-07-19 14:06:12] local.INFO: POCYCLE: Gambar dikompres {"original_size":285734,"compressed_size":225939,"savings":"21%"} 
+[2026-07-19 14:06:19] local.WARNING: POCYCLE: Token #2 (gemini) gagal {"error":"Gagal memproses respons AI. Raw: {
+    \"detected_color\": \"Tidak terdeteksi (gambar yang diunggah adalah diagram ERD/skema database, bukan foto galon POC)\",
+    \"status\": \""} 
+[2026-07-19 14:06:19] local.INFO: POCYCLE: Mencoba analisis dengan token #3 (gemini)  
+[2026-07-19 14:06:19] local.INFO: POCYCLE: Gambar dikompres {"original_size":285734,"compressed_size":225939,"savings":"21%"} 
+[2026-07-19 14:06:26] local.WARNING: POCYCLE: Token #3 (gemini) gagal {"error":"Gagal memproses respons AI. Raw: {
+    \"detected_color\": \"Tidak terdeteksi (gambar yang diunggah adalah diagram ERD/skema database, bukan foto galon POC)\",
+    \"status\": \"needs"} 
+[2026-07-19 14:06:26] local.INFO: POCYCLE: Mencoba analisis dengan token #4 (gemini)  
+[2026-07-19 14:06:26] local.INFO: POCYCLE: Gambar dikompres {"original_size":285734,"compressed_size":225939,"savings":"21%"} 
+[2026-07-19 14:06:32] local.WARNING: POCYCLE: Token #4 (gemini) gagal {"error":"Gagal memproses respons AI. Raw: {
+    \"detected_color\": \"Tidak terdeteksi (gambar yang diunggah adalah diagram struktur database/ERD, bukan foto galon POC)\",
+    \"status\": \"needs_"} 
+[2026-07-19 14:06:32] local.ERROR: POCYCLE: Semua API token gagal untuk analisis pupuk. {"last_error":"Gagal memproses respons AI. Raw: {
+    \"detected_color\": \"Tidak terdeteksi (gambar yang diunggah adalah diagram struktur database/ERD, bukan foto galon POC)\",
+    \"status\": \"needs_"} 
+[2026-07-19 14:13:51] local.INFO: POCYCLE: Mencoba analisis dengan token #1 (gemini)  
+[2026-07-19 14:13:51] local.INFO: POCYCLE: Gambar dikompres {"original_size":285734,"compressed_size":225939,"savings":"21%"} 
+[2026-07-19 14:13:59] local.WARNING: POCYCLE: Token #1 (gemini) gagal {"error":"Gagal memproses respons AI. Raw: \""} 
+[2026-07-19 14:13:59] local.INFO: POCYCLE: Mencoba analisis dengan token #2 (gemini)  
+[2026-07-19 14:13:59] local.INFO: POCYCLE: Gambar dikompres {"original_size":285734,"compressed_size":225939,"savings":"21%"} 
+[2026-07-19 14:14:07] local.WARNING: POCYCLE: Token #2 (gemini) gagal {"error":"Gagal memproses respons AI. Raw: Answering in pure JSON format as requested.json
+{
+    \"detected_color\": \"Cokelat tua pekat dengan lapisan endapan di bagian dasar\","} 
+[2026-07-19 14:14:07] local.INFO: POCYCLE: Mencoba analisis dengan token #3 (gemini)  
+[2026-07-19 14:14:07] local.INFO: POCYCLE: Gambar dikompres {"original_size":285734,"compressed_size":225939,"savings":"21%"} 
+[2026-07-19 14:14:13] local.WARNING: POCYCLE: Token #3 (gemini) gagal {"error":"Gagal memproses respons AI. Raw: {
+    \"detected_color\": \"Cokelat gelap pekat dengan lapisan endapan di bagian dasar galon\",
+    \"status\": \"needs_stirring\",
+    \"recommend"} 
+[2026-07-19 14:14:13] local.INFO: POCYCLE: Mencoba analisis dengan token #4 (gemini)  
+[2026-07-19 14:14:13] local.INFO: POCYCLE: Gambar dikompres {"original_size":285734,"compressed_size":225939,"savings":"21%"} 
+[2026-07-19 14:14:20] local.WARNING: POCYCLE: Token #4 (gemini) gagal {"error":"Gagal memproses respons AI. Raw: {
+    \"detected_color\": \"Cokelat tua pekat dengan lapisan endapan tebal di dasar galon\",
+    \"status\": \"needs_stirring"} 
+[2026-07-19 14:14:20] local.ERROR: POCYCLE: Semua API token gagal untuk analisis pupuk. {"last_error":"Gagal memproses respons AI. Raw: {
+    \"detected_color\": \"Cokelat tua pekat dengan lapisan endapan tebal di dasar galon\",
+    \"status\": \"needs_stirring"} 
+[2026-07-19 14:16:32] local.INFO: POCYCLE: Mencoba analisis dengan token #1 (gemini)  
+[2026-07-19 14:16:33] local.INFO: POCYCLE: Gambar dikompres {"original_size":285734,"compressed_size":225939,"savings":"21%"} 
+[2026-07-19 14:16:40] local.WARNING: POCYCLE: Token #1 (gemini) gagal {"error":"Gagal memproses respons AI (Control character error, possibly incorrectly encoded). Raw: {
+    \"detected_color\": \"Cokelat tua pekat dengan lapisan endapan di bagian dasar galon\",
+    \"status\": \"needs_stirring\",
+    \"recommendation"} 
+[2026-07-19 14:16:40] local.INFO: POCYCLE: Mencoba analisis dengan token #2 (gemini)  
+[2026-07-19 14:16:40] local.INFO: POCYCLE: Gambar dikompres {"original_size":285734,"compressed_size":225939,"savings":"21%"} 
+[2026-07-19 14:16:47] local.WARNING: POCYCLE: Token #2 (gemini) gagal {"error":"Gagal memproses respons AI (Control character error, possibly incorrectly encoded). Raw: {
+    \"detected_color\": \"Tidak terdeteksi (gambar yang diunggah adalah diagram struktur database/ERD, bukan foto galon pupuk)\",
+    \"status\": \""} 
+[2026-07-19 14:16:47] local.INFO: POCYCLE: Mencoba analisis dengan token #3 (gemini)  
+[2026-07-19 14:16:47] local.INFO: POCYCLE: Gambar dikompres {"original_size":285734,"compressed_size":225939,"savings":"21%"} 
+[2026-07-19 14:16:56] local.WARNING: POCYCLE: Token #3 (gemini) gagal {"error":"Gagal memproses respons AI (Syntax error). Raw: {
+    \"detected_color\": \"Cokelat tua pekat dengan endapan di dasar galon\",
+    \"status\": \"needs_stirring\",
+    \"recommendation\":"} 
+[2026-07-19 14:16:56] local.INFO: POCYCLE: Mencoba analisis dengan token #4 (gemini)  
+[2026-07-19 14:16:56] local.INFO: POCYCLE: Gambar dikompres {"original_size":285734,"compressed_size":225939,"savings":"21%"} 
+[2026-07-19 14:17:02] local.WARNING: POCYCLE: Token #4 (gemini) gagal {"error":"Gagal memproses respons AI (Control character error, possibly incorrectly encoded). Raw: {
+    \"detected_color\": \"Cokelat gelap pekat dengan lapisan endapan tebal di bagian bawah galon\",
+    \"status\": \"needs_stirring"} 
+[2026-07-19 14:17:02] local.ERROR: POCYCLE: Semua API token gagal untuk analisis pupuk. {"last_error":"Gagal memproses respons AI (Control character error, possibly incorrectly encoded). Raw: {
+    \"detected_color\": \"Cokelat gelap pekat dengan lapisan endapan tebal di bagian bawah galon\",
+    \"status\": \"needs_stirring"} 
+[2026-07-19 14:19:01] local.INFO: POCYCLE: Mencoba analisis dengan token #1 (gemini)  
+[2026-07-19 14:19:01] local.INFO: POCYCLE: Gambar dikompres {"original_size":36451,"compressed_size":38197,"savings":"-5%"} 
+[2026-07-19 14:19:08] local.WARNING: POCYCLE: Token #1 (gemini) gagal {"error":"Gagal memproses respons AI (Syntax error). Raw: fokus langsung pada galon transparan Le Minerale berisi cairan pupuk Anda dari jarak dekat agar kami dapat menganalisis warna, endapan, dan kondisinya dengan akurat.\""} 
+[2026-07-19 14:19:08] local.INFO: POCYCLE: Mencoba analisis dengan token #2 (gemini)  
+[2026-07-19 14:19:08] local.INFO: POCYCLE: Gambar dikompres {"original_size":36451,"compressed_size":38197,"savings":"-5%"} 
+[2026-07-19 14:19:14] local.WARNING: POCYCLE: Token #2 (gemini) gagal {"error":"Gagal memproses respons AI (Control character error, possibly incorrectly encoded). Raw: {     \"detected_color\": \"Tidak terdeteksi (Gambar menunjukkan foto seseorang, bukan galon berisi cairan POC)\",     \"status\": \"contaminated\",     \"recommendation\": \""} 
+[2026-07-19 14:19:14] local.INFO: POCYCLE: Mencoba analisis dengan token #3 (gemini)  
+[2026-07-19 14:19:14] local.INFO: POCYCLE: Gambar dikompres {"original_size":36451,"compressed_size":38197,"savings":"-5%"} 
+[2026-07-19 14:19:22] local.WARNING: POCYCLE: Token #3 (gemini) gagal {"error":"Gagal memproses respons AI (Syntax error). Raw: seseorang)\",                     \"status\": \"contaminated\",                     \"recommendation\": \"Maaf Ibu-ibu, foto yang diunggah sepertinya keliru karena menampilkan foto seseorang, bukan galon"} 
+[2026-07-19 14:19:22] local.INFO: POCYCLE: Mencoba analisis dengan token #4 (gemini)  
+[2026-07-19 14:19:22] local.INFO: POCYCLE: Gambar dikompres {"original_size":36451,"compressed_size":38197,"savings":"-5%"} 
+[2026-07-19 14:19:28] local.WARNING: POCYCLE: Token #4 (gemini) gagal {"error":"Gagal memproses respons AI (Syntax error). Raw: gambar menunjukkan seseorang, bukan galon POC)\", \"status\": \"contaminated\", \"recommendation\": \"Mohon maaf Ibu/Bapak, foto yang diunggah tidak menunjukkan galon berisi Pupuk"} 
+[2026-07-19 14:19:28] local.ERROR: POCYCLE: Semua API token gagal untuk analisis pupuk. {"last_error":"Gagal memproses respons AI (Syntax error). Raw: gambar menunjukkan seseorang, bukan galon POC)\", \"status\": \"contaminated\", \"recommendation\": \"Mohon maaf Ibu/Bapak, foto yang diunggah tidak menunjukkan galon berisi Pupuk"} 
+[2026-07-19 14:30:24] local.INFO: POCYCLE: Mencoba analisis dengan token #1 (gemini)  
+[2026-07-19 14:30:24] local.INFO: POCYCLE: Gambar dikompres {"original_size":76439,"compressed_size":57224,"savings":"25%"} 
+[2026-07-19 14:30:31] local.INFO: POCYCLE: Analisis berhasil dengan provider gemini  

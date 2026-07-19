@@ -12,6 +12,9 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600,700,800" rel="stylesheet" />
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="<?php echo e(asset('assets/Logo PKM.webp')); ?>">
+
     <!-- Styles & Scripts -->
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
 </head>
@@ -24,12 +27,14 @@
 
                 
                 <a href="<?php echo e(route('home')); ?>" class="flex items-center gap-3 group">
-                    <div class="w-12 h-12 bg-gradient-to-br from-leaf-500 to-leaf-700 rounded-2xl flex items-center justify-center shadow-lg shadow-leaf-500/25 group-hover:scale-105 transition-transform">
-                        <span class="text-white text-2xl">🌿</span>
+                    <div class="w-12 h-12 flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <span class="text-white text-2xl">
+                            <img src="<?php echo e(asset('assets/Logo PKM.png')); ?>" alt="Logo PKM" class="w-full h-full object-contain">
+                        </span>
                     </div>
                     <div>
                         <span class="text-2xl font-bold text-leaf-800 tracking-tight">POCYCLE</span>
-                        <span class="block text-xs text-earth-500 -mt-1">Pupuk Organik Cair</span>
+                        <span class="block text-xs text-earth-500 -mt-1">Politeknik Negeri Cilacap</span>
                     </div>
                 </a>
 
@@ -198,6 +203,9 @@
                             <?php endif; ?>
                         </a>
                         <hr class="border-earth-200">
+                        <?php if(auth()->user()->isAdmin()): ?>
+                            <a href="<?php echo e(route('admin.dashboard')); ?>" class="nav-link <?php echo e(request()->routeIs('admin.*') ? 'nav-link-active' : ''); ?>">🛠️ Admin Panel</a>
+                        <?php endif; ?>
                         <a href="<?php echo e(route('profile.edit')); ?>" class="nav-link">⚙️ Pengaturan</a>
                         <form method="POST" action="<?php echo e(route('logout')); ?>">
                             <?php echo csrf_field(); ?>

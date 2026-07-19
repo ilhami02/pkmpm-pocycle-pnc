@@ -118,10 +118,11 @@ class FertilizerAnalysisService
         $timeout = config('services.fertilizer_api.timeout', 30);
 
         // === Gemini API Call ===
+        $modelName = config('services.fertilizer_api.model', 'gemini-1.5-flash');
         $response = Http::timeout($timeout)
             ->withHeaders(['Content-Type' => 'application/json'])
             ->post(
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={$token->token}",
+                "https://generativelanguage.googleapis.com/v1beta/models/{$modelName}:generateContent?key={$token->token}",
                 [
                     'contents' => [
                         [
@@ -138,7 +139,7 @@ class FertilizerAnalysisService
                     ],
                     'generationConfig' => [
                         'temperature' => 0.3,
-                        'maxOutputTokens' => 1024,
+                        'responseMimeType' => 'application/json',
                     ],
                 ]
             );
@@ -167,11 +168,12 @@ Perhatikan warna cairan, tingkat kekeruhan, ada/tidaknya lapisan terpisah, dan e
 
 Suhu saat ini: {$temperature}°C
 
-Berikan respons HANYA dalam format JSON murni (tanpa markdown, tanpa backtick, tanpa teks lain):
+Berikan respons HANYA dalam format JSON murni (tanpa markdown, tanpa backtick, tanpa teks lain).
+PASTIKAN JSON tersebut 100% valid. JANGAN ada enter (newline) asli di dalam teks, gunakan \n jika perlu baris baru.
 {
-    "detected_color": "deskripsi singkat warna cairan yang terlihat melalui galon bening",
+    "detected_color": "deskripsi singkat warna cairan",
     "status": "normal|needs_stirring|contaminated",
-    "recommendation": "langkah penanganan detail dalam bahasa Indonesia sederhana yang mudah dipahami ibu-ibu PKK"
+    "recommendation": "langkah penanganan detail dalam bahasa Indonesia"
 }
 
 Kriteria penentuan status:
@@ -191,14 +193,27 @@ PROMPT;
     {
         $text = $response['candidates'][0]['content']['parts'][0]['text'] ?? '';
 
-        // Bersihkan jika ada markdown code block wrapper
-        $text = preg_replace('/```(?:json)?\s*|\s*```/', '', $text);
-        $text = trim($text);
+        // Ekstrak string JSON antara { dan } untuk mengabaikan teks tambahan dari AI
+        if (preg_match('/\{.*\}/s', $text, $matches)) {
+            $text = $matches[0];
+        } else {
+            // Bersihkan markdown fallback jika regex gagal
+            $text = preg_replace('/```(?:json)?\s*|\s*```/', '', $text);
+            $text = trim($text);
+        }
+
+        // Bersihkan unescaped control characters (termasuk literal newline) yang membuat JSON tidak valid
+        // Hati-hati jangan menghapus escaped control chars seperti \n
+        $text = preg_replace('/[\x00-\x09\x0B-\x1F\x7F]/', '', $text);
+        
+        // Ubah literal newline (LF/CR) menjadi spasi agar kata-kata tidak menempel
+        $text = str_replace(["\r\n", "\r", "\n"], ' ', $text);
 
         $data = json_decode($text, true);
 
         if (!$data || !isset($data['status'])) {
-            throw new Exception('Gagal memproses respons AI. Raw: ' . substr($text, 0, 200));
+            $jsonError = json_last_error_msg();
+            throw new Exception("Gagal memproses respons AI ($jsonError). Raw: " . substr($text, 0, 200));
         }
 
         // Validasi dan sanitasi status
