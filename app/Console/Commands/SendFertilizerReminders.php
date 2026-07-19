@@ -5,22 +5,40 @@ namespace App\Console\Commands;
 use App\Models\User;
 use App\Notifications\FertilizerCheckReminder;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Command untuk mengirim reminder berkala ke pengguna.
- * Dijalankan via Task Scheduler setiap 3 hari.
+ * Dijalankan via Task Scheduler (lihat routes/console.php).
  *
  * Usage: php artisan pocycle:send-reminders
+ *
+ * Logika:
+ * - Cari user yang reminder_enabled = true
+ * - Cek apakah scan terakhir sudah >= X hari yang lalu
+ * - Cek apakah sudah pernah dikirim notifikasi hari ini (anti-duplikasi)
+ * - Kirim notifikasi kontekstual berdasarkan status scan terakhir
  */
 class SendFertilizerReminders extends Command
 {
-    protected $signature = 'pocycle:send-reminders';
+    protected $signature = 'pocycle:send-reminders
+                            {--interval= : Override interval hari (default dari config)}
+                            {--dry-run : Tampilkan siapa yang akan dikirimi tanpa benar-benar mengirim}';
 
-    protected $description = 'Kirim reminder berkala untuk mengecek galon POC kepada semua pengguna yang mengaktifkan reminder';
+    protected $description = 'Kirim reminder berkala untuk mengecek galon POC kepada pengguna yang mengaktifkan reminder';
 
     public function handle(): int
     {
+        $interval = $this->option('interval')
+            ?: config('services.fertilizer_api.reminder_interval_days', 3);
+        $dryRun = $this->option('dry-run');
+
         $this->info('🌿 Memulai pengiriman reminder POCYCLE...');
+        $this->info("   Interval: setiap {$interval} hari");
+
+        if ($dryRun) {
+            $this->warn('   ⚠️  Mode DRY-RUN: tidak ada notifikasi yang benar-benar dikirim.');
+        }
 
         $users = User::where('reminder_enabled', true)->get();
 
@@ -29,30 +47,62 @@ class SendFertilizerReminders extends Command
             return Command::SUCCESS;
         }
 
+        $this->info("   Ditemukan {$users->count()} pengguna dengan reminder aktif.");
+        $this->newLine();
+
         $sent = 0;
         $skipped = 0;
+        $alreadyNotified = 0;
 
         foreach ($users as $user) {
             $lastScan = $user->scanHistories()->latest()->first();
 
-            // Kirim reminder jika:
-            // 1. Belum pernah scan sama sekali, ATAU
-            // 2. Scan terakhir sudah lebih dari 3 hari yang lalu
-            $shouldRemind = !$lastScan || $lastScan->created_at->diffInDays(now()) >= 3;
+            // Cek apakah perlu diingatkan berdasarkan interval
+            $shouldRemind = !$lastScan || $lastScan->created_at->diffInDays(now()) >= $interval;
 
-            if ($shouldRemind) {
-                $message = $this->buildMessage($lastScan);
-                $user->notify(new FertilizerCheckReminder($message));
-                $sent++;
-
-                $this->line("  ✅ Reminder terkirim ke: {$user->name} ({$user->email})");
-            } else {
+            if (!$shouldRemind) {
                 $skipped++;
+                continue;
             }
+
+            // Anti-duplikasi: cek apakah sudah ada notifikasi reminder hari ini
+            $alreadySentToday = $user->notifications()
+                ->where('type', FertilizerCheckReminder::class)
+                ->whereDate('created_at', today())
+                ->exists();
+
+            if ($alreadySentToday) {
+                $alreadyNotified++;
+                $this->line("  ⏭️  Sudah dikirimi hari ini: {$user->name}");
+                continue;
+            }
+
+            if ($dryRun) {
+                $message = $this->buildMessage($lastScan, $interval);
+                $this->line("  🔍 [DRY-RUN] Akan dikirim ke: {$user->name} ({$user->email})");
+                $this->line("     Pesan: {$message}");
+                $sent++;
+                continue;
+            }
+
+            // Kirim notifikasi
+            $message = $this->buildMessage($lastScan, $interval);
+            $user->notify(new FertilizerCheckReminder($message));
+            $sent++;
+
+            $this->line("  ✅ Reminder terkirim ke: {$user->name} ({$user->email})");
         }
 
         $this->newLine();
-        $this->info("📊 Selesai! Terkirim: {$sent} | Dilewati: {$skipped}");
+        $this->info("📊 Selesai! Terkirim: {$sent} | Dilewati: {$skipped} | Sudah dikirimi: {$alreadyNotified}");
+
+        Log::info('POCYCLE: Reminder selesai dijalankan', [
+            'sent'             => $sent,
+            'skipped'          => $skipped,
+            'already_notified' => $alreadyNotified,
+            'interval_days'    => $interval,
+            'dry_run'          => $dryRun,
+        ]);
 
         return Command::SUCCESS;
     }
@@ -60,7 +110,7 @@ class SendFertilizerReminders extends Command
     /**
      * Buat pesan reminder yang kontekstual berdasarkan kondisi terakhir.
      */
-    protected function buildMessage(?object $lastScan): string
+    protected function buildMessage(?object $lastScan, int $interval): string
     {
         if (!$lastScan) {
             return 'Anda belum pernah melakukan scan pupuk. Yuk, mulai pantau galon POC Anda sekarang! 🌱';

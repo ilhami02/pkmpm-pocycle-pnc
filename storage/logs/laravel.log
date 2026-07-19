@@ -708,3 +708,320 @@ Did you mean one of these?
 #4 /home/ilham/web-edu-pkm/artisan(11): Illuminate\\Foundation\\Application->handleCommand()
 #5 {main}
 "} 
+[2026-07-19 11:29:36] local.ERROR: Unsupported cipher or incorrect key length. Supported ciphers are: aes-128-cbc, aes-256-cbc, aes-128-gcm, aes-256-gcm. {"exception":"[object] (RuntimeException(code: 0): Unsupported cipher or incorrect key length. Supported ciphers are: aes-128-cbc, aes-256-cbc, aes-128-gcm, aes-256-gcm. at E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Encryption/Encrypter.php:62)
+[stacktrace]
+#0 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Encryption/EncryptionServiceProvider.php(32): Illuminate/Encryption/Encrypter->__construct('/x81/xE9/xDE/xAD/xAB^)/xEC/x96/x8A/xD8@/xAE/xD8/xAC...', 'AES-256-CBC')
+#1 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Container.php(952): Illuminate/Encryption/EncryptionServiceProvider->Illuminate/Encryption/{closure}(Object(Illuminate/Foundation/Application), Array)
+#2 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Container.php(832): Illuminate/Container/Container->build(Object(Closure))
+#3 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1078): Illuminate/Container/Container->resolve('encrypter', Array, true)
+#4 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Container.php(763): Illuminate/Foundation/Application->resolve('encrypter', Array)
+#5 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1058): Illuminate/Container/Container->make('encrypter', Array)
+#6 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(124): Illuminate/Foundation/Application->make('encrypter', Array)
+#7 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(458): app('encrypter')
+#8 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/app/Models/ApiToken.php(40): encrypt('YOUR_GEMINI_API...')
+#9 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasAttributes.php(1143): App/Models/ApiToken->App/Models/{closure}('YOUR_GEMINI_API...', Array)
+#10 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasAttributes.php(1030): Illuminate/Database/Eloquent/Model->setAttributeMarkedMutatedAttributeValue('token', 'YOUR_GEMINI_API...')
+#11 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(539): Illuminate/Database/Eloquent/Model->setAttribute('token', 'YOUR_GEMINI_API...')
+#12 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(633): Illuminate/Database/Eloquent/Model->fill(Array)
+#13 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1655): Illuminate/Database/Eloquent/Model->newInstance(Array)
+#14 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1127): Illuminate/Database/Eloquent/Builder->newModelInstance(Array)
+#15 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php(23): Illuminate/Database/Eloquent/Builder->create(Array)
+#16 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2372): Illuminate/Database/Eloquent/Model->forwardCallTo(Object(Illuminate/Database/Eloquent/Builder), 'create', Array)
+#17 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2384): Illuminate/Database/Eloquent/Model->__call('create', Array)
+#18 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/database/seeders/ApiTokenSeeder.php(38): Illuminate/Database/Eloquent/Model::__callStatic('create', Array)
+#19 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Database/Seeders/ApiTokenSeeder->run()
+#20 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#21 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#22 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#23 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#24 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(188): Illuminate/Container/Container->call(Array, Array)
+#25 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(197): Illuminate/Database/Seeder->Illuminate/Database/{closure}()
+#26 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(61): Illuminate/Database/Seeder->__invoke(Array)
+#27 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/database/seeders/DatabaseSeeder.php(14): Illuminate/Database/Seeder->call('Database//Seeder...')
+#28 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Database/Seeders/DatabaseSeeder->run()
+#29 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#30 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#31 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#32 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#33 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(188): Illuminate/Container/Container->call(Array, Array)
+#34 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(197): Illuminate/Database/Seeder->Illuminate/Database/{closure}()
+#35 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(70): Illuminate/Database/Seeder->__invoke()
+#36 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(155): Illuminate/Database/Console/Seeds/SeedCommand->Illuminate/Database/Console/Seeds/{closure}()
+#37 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(69): Illuminate/Database/Eloquent/Model::unguarded(Object(Closure))
+#38 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate/Database/Console/Seeds/SeedCommand->handle()
+#39 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#40 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#41 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#42 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#43 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate/Container/Container->call(Array)
+#44 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/symfony/console/Command/Command.php(341): Illuminate/Console/Command->execute(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#45 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony/Component/Console/Command/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#46 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/symfony/console/Application.php(1117): Illuminate/Console/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#47 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/symfony/console/Application.php(356): Symfony/Component/Console/Application->doRunCommand(Object(Illuminate/Database/Console/Seeds/SeedCommand), Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#48 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#49 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#50 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#51 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/artisan(11): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
+#52 {main}
+"} 
+[2026-07-19 11:30:08] local.ERROR: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'apa-itu-pupuk-organik-cair' for key 'articles_slug_unique' (Connection: mysql, SQL: insert into `articles` (`title`, `slug`, `excerpt`, `body`, `is_published`, `published_at`, `updated_at`, `created_at`) values (Apa Itu Pupuk Organik Cair (POC)?, apa-itu-pupuk-organik-cair, Mengenal pupuk organik cair yang dibuat dari limbah sisa makanan bergizi dan manfaatnya untuk tanaman., <h2>Pengertian Pupuk Organik Cair</h2>
+<p>Pupuk Organik Cair (POC) adalah pupuk yang berasal dari bahan-bahan organik seperti sisa makanan, sayuran, buah-buahan, dan bahan alami lainnya yang difermentasi dalam bentuk cairan. POC mengandung unsur hara makro dan mikro yang dibutuhkan tanaman.</p>
+
+<h2>Mengapa Membuat POC dari Limbah Makanan?</h2>
+<p>Setiap hari, rumah tangga menghasilkan sisa makanan yang biasanya dibuang begitu saja. Padahal, limbah ini bisa diolah menjadi pupuk yang sangat bermanfaat untuk tanaman. Dengan membuat POC, kita:</p>
+<ul>
+<li><strong>Mengurangi sampah organik</strong> yang mencemari lingkungan</li>
+<li><strong>Menghemat biaya</strong> karena tidak perlu membeli pupuk kimia</li>
+<li><strong>Menyuburkan tanaman</strong> secara alami dan ramah lingkungan</li>
+<li><strong>Menjaga kesehatan tanah</strong> dalam jangka panjang</li>
+</ul>
+
+<h2>Manfaat POC untuk Tanaman</h2>
+<p>POC memiliki banyak manfaat, di antaranya:</p>
+<ul>
+<li>Mempercepat pertumbuhan tanaman</li>
+<li>Meningkatkan kesuburan tanah</li>
+<li>Membantu tanaman lebih tahan terhadap hama dan penyakit</li>
+<li>Ramah lingkungan karena tidak mengandung bahan kimia berbahaya</li>
+</ul>, 1, 2026-07-05 11:30:08, 2026-07-19 11:30:08, 2026-07-19 11:30:08)) {"exception":"[object] (Illuminate\\Database\\UniqueConstraintViolationException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'apa-itu-pupuk-organik-cair' for key 'articles_slug_unique' (Connection: mysql, SQL: insert into `articles` (`title`, `slug`, `excerpt`, `body`, `is_published`, `published_at`, `updated_at`, `created_at`) values (Apa Itu Pupuk Organik Cair (POC)?, apa-itu-pupuk-organik-cair, Mengenal pupuk organik cair yang dibuat dari limbah sisa makanan bergizi dan manfaatnya untuk tanaman., <h2>Pengertian Pupuk Organik Cair</h2>
+
+<p>Pupuk Organik Cair (POC) adalah pupuk yang berasal dari bahan-bahan organik seperti sisa makanan, sayuran, buah-buahan, dan bahan alami lainnya yang difermentasi dalam bentuk cairan. POC mengandung unsur hara makro dan mikro yang dibutuhkan tanaman.</p>
+
+
+
+<h2>Mengapa Membuat POC dari Limbah Makanan?</h2>
+
+<p>Setiap hari, rumah tangga menghasilkan sisa makanan yang biasanya dibuang begitu saja. Padahal, limbah ini bisa diolah menjadi pupuk yang sangat bermanfaat untuk tanaman. Dengan membuat POC, kita:</p>
+
+<ul>
+
+<li><strong>Mengurangi sampah organik</strong> yang mencemari lingkungan</li>
+
+<li><strong>Menghemat biaya</strong> karena tidak perlu membeli pupuk kimia</li>
+
+<li><strong>Menyuburkan tanaman</strong> secara alami dan ramah lingkungan</li>
+
+<li><strong>Menjaga kesehatan tanah</strong> dalam jangka panjang</li>
+
+</ul>
+
+
+
+<h2>Manfaat POC untuk Tanaman</h2>
+
+<p>POC memiliki banyak manfaat, di antaranya:</p>
+
+<ul>
+
+<li>Mempercepat pertumbuhan tanaman</li>
+
+<li>Meningkatkan kesuburan tanah</li>
+
+<li>Membantu tanaman lebih tahan terhadap hama dan penyakit</li>
+
+<li>Ramah lingkungan karena tidak mengandung bahan kimia berbahaya</li>
+
+</ul>, 1, 2026-07-05 11:30:08, 2026-07-19 11:30:08, 2026-07-19 11:30:08)) at E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Connection.php:820)
+[stacktrace]
+#0 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate/Database/Connection->runQueryCallback('insert into `ar...', Array, Object(Closure))
+#1 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/MySqlConnection.php(42): Illuminate/Database/Connection->run('insert into `ar...', Array, Object(Closure))
+#2 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Query/Processors/MySqlProcessor.php(35): Illuminate/Database/MySqlConnection->insert('insert into `ar...', Array, 'id')
+#3 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3766): Illuminate/Database/Query/Processors/MySqlProcessor->processInsertGetId(Object(Illuminate/Database/Query/Builder), 'insert into `ar...', Array, 'id')
+#4 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(2120): Illuminate/Database/Query/Builder->insertGetId(Array, 'id')
+#5 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1359): Illuminate/Database/Eloquent/Builder->__call('insertGetId', Array)
+#6 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1324): Illuminate/Database/Eloquent/Model->insertAndSetId(Object(Illuminate/Database/Eloquent/Builder), Array)
+#7 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1163): Illuminate/Database/Eloquent/Model->performInsert(Object(Illuminate/Database/Eloquent/Builder))
+#8 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1128): Illuminate/Database/Eloquent/Model->save()
+#9 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Support/helpers.php(399): Illuminate/Database/Eloquent/Builder->Illuminate/Database/Eloquent/{closure}(Object(App/Models/Article))
+#10 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1127): tap(Object(App/Models/Article), Object(Closure))
+#11 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php(23): Illuminate/Database/Eloquent/Builder->create(Array)
+#12 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2372): Illuminate/Database/Eloquent/Model->forwardCallTo(Object(Illuminate/Database/Eloquent/Builder), 'create', Array)
+#13 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2384): Illuminate/Database/Eloquent/Model->__call('create', Array)
+#14 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/database/seeders/ArticleSeeder.php(148): Illuminate/Database/Eloquent/Model::__callStatic('create', Array)
+#15 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Database/Seeders/ArticleSeeder->run()
+#16 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#17 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#18 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#19 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#20 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(188): Illuminate/Container/Container->call(Array, Array)
+#21 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(197): Illuminate/Database/Seeder->Illuminate/Database/{closure}()
+#22 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(61): Illuminate/Database/Seeder->__invoke(Array)
+#23 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/database/seeders/DatabaseSeeder.php(14): Illuminate/Database/Seeder->call('Database//Seeder...')
+#24 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Database/Seeders/DatabaseSeeder->run()
+#25 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#26 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#27 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#28 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#29 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(188): Illuminate/Container/Container->call(Array, Array)
+#30 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(197): Illuminate/Database/Seeder->Illuminate/Database/{closure}()
+#31 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(70): Illuminate/Database/Seeder->__invoke()
+#32 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(155): Illuminate/Database/Console/Seeds/SeedCommand->Illuminate/Database/Console/Seeds/{closure}()
+#33 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(69): Illuminate/Database/Eloquent/Model::unguarded(Object(Closure))
+#34 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate/Database/Console/Seeds/SeedCommand->handle()
+#35 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#36 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#37 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#38 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#39 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate/Container/Container->call(Array)
+#40 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/symfony/console/Command/Command.php(341): Illuminate/Console/Command->execute(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#41 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony/Component/Console/Command/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#42 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/symfony/console/Application.php(1117): Illuminate/Console/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#43 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/symfony/console/Application.php(356): Symfony/Component/Console/Application->doRunCommand(Object(Illuminate/Database/Console/Seeds/SeedCommand), Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#44 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#45 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#46 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#47 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/artisan(11): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
+#48 {main}
+
+[previous exception] [object] (PDOException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'apa-itu-pupuk-organik-cair' for key 'articles_slug_unique' at E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/MySqlConnection.php:53)
+[stacktrace]
+#0 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/MySqlConnection.php(53): PDOStatement->execute()
+#1 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Connection.php(812): Illuminate/Database/MySqlConnection->Illuminate/Database/{closure}('insert into `ar...', Array)
+#2 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate/Database/Connection->runQueryCallback('insert into `ar...', Array, Object(Closure))
+#3 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/MySqlConnection.php(42): Illuminate/Database/Connection->run('insert into `ar...', Array, Object(Closure))
+#4 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Query/Processors/MySqlProcessor.php(35): Illuminate/Database/MySqlConnection->insert('insert into `ar...', Array, 'id')
+#5 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3766): Illuminate/Database/Query/Processors/MySqlProcessor->processInsertGetId(Object(Illuminate/Database/Query/Builder), 'insert into `ar...', Array, 'id')
+#6 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(2120): Illuminate/Database/Query/Builder->insertGetId(Array, 'id')
+#7 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1359): Illuminate/Database/Eloquent/Builder->__call('insertGetId', Array)
+#8 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1324): Illuminate/Database/Eloquent/Model->insertAndSetId(Object(Illuminate/Database/Eloquent/Builder), Array)
+#9 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1163): Illuminate/Database/Eloquent/Model->performInsert(Object(Illuminate/Database/Eloquent/Builder))
+#10 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1128): Illuminate/Database/Eloquent/Model->save()
+#11 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Support/helpers.php(399): Illuminate/Database/Eloquent/Builder->Illuminate/Database/Eloquent/{closure}(Object(App/Models/Article))
+#12 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1127): tap(Object(App/Models/Article), Object(Closure))
+#13 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php(23): Illuminate/Database/Eloquent/Builder->create(Array)
+#14 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2372): Illuminate/Database/Eloquent/Model->forwardCallTo(Object(Illuminate/Database/Eloquent/Builder), 'create', Array)
+#15 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2384): Illuminate/Database/Eloquent/Model->__call('create', Array)
+#16 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/database/seeders/ArticleSeeder.php(148): Illuminate/Database/Eloquent/Model::__callStatic('create', Array)
+#17 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Database/Seeders/ArticleSeeder->run()
+#18 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#19 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#20 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#21 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#22 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(188): Illuminate/Container/Container->call(Array, Array)
+#23 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(197): Illuminate/Database/Seeder->Illuminate/Database/{closure}()
+#24 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(61): Illuminate/Database/Seeder->__invoke(Array)
+#25 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/database/seeders/DatabaseSeeder.php(14): Illuminate/Database/Seeder->call('Database//Seeder...')
+#26 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Database/Seeders/DatabaseSeeder->run()
+#27 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#28 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#29 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#30 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#31 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(188): Illuminate/Container/Container->call(Array, Array)
+#32 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Seeder.php(197): Illuminate/Database/Seeder->Illuminate/Database/{closure}()
+#33 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(70): Illuminate/Database/Seeder->__invoke()
+#34 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(155): Illuminate/Database/Console/Seeds/SeedCommand->Illuminate/Database/Console/Seeds/{closure}()
+#35 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(69): Illuminate/Database/Eloquent/Model::unguarded(Object(Closure))
+#36 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate/Database/Console/Seeds/SeedCommand->handle()
+#37 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#38 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#39 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#40 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#41 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate/Container/Container->call(Array)
+#42 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/symfony/console/Command/Command.php(341): Illuminate/Console/Command->execute(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#43 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony/Component/Console/Command/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#44 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/symfony/console/Application.php(1117): Illuminate/Console/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#45 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/symfony/console/Application.php(356): Symfony/Component/Console/Application->doRunCommand(Object(Illuminate/Database/Console/Seeds/SeedCommand), Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#46 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#47 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#48 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#49 E:/Kuliah/pkm/web-edu-pocycle/pkmpm-pocycle-pnc/artisan(11): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
+#50 {main}
+"} 
+[2026-07-19 11:32:31] local.INFO: POCYCLE: Mencoba analisis dengan token #1 (gemini)  
+[2026-07-19 11:32:31] local.INFO: POCYCLE: Gambar dikompres {"original_size":239472,"compressed_size":164100,"savings":"31%"} 
+[2026-07-19 11:32:33] local.WARNING: POCYCLE: Token #1 (gemini) gagal {"error":"API gemini error (HTTP 400): {
+  \"error\": {
+    \"code\": 400,
+    \"message\": \"API key not valid. Please pass a valid API key.\",
+    \"status\": \"INVALID_ARGUMENT\",
+    \"details\": [
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.ErrorInfo\",
+        \"reason\": \"API_KEY_INVALID\",
+        \"domain\": \"googleapis.com\",
+        \"metadata\": {
+          \"service\": \"generativelanguage.googleapis.com\"
+        }
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.LocalizedMessage\",
+        \"locale\": \"en-US\",
+        \"message\": \"API key not valid. Please pass a valid API key.\"
+      }
+    ]
+  }
+}
+"} 
+[2026-07-19 11:32:33] local.INFO: POCYCLE: Mencoba analisis dengan token #2 (gemini)  
+[2026-07-19 11:32:33] local.INFO: POCYCLE: Gambar dikompres {"original_size":239472,"compressed_size":164100,"savings":"31%"} 
+[2026-07-19 11:32:34] local.WARNING: POCYCLE: Token #2 (gemini) gagal {"error":"API gemini error (HTTP 400): {
+  \"error\": {
+    \"code\": 400,
+    \"message\": \"API key not valid. Please pass a valid API key.\",
+    \"status\": \"INVALID_ARGUMENT\",
+    \"details\": [
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.ErrorInfo\",
+        \"reason\": \"API_KEY_INVALID\",
+        \"domain\": \"googleapis.com\",
+        \"metadata\": {
+          \"service\": \"generativelanguage.googleapis.com\"
+        }
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.LocalizedMessage\",
+        \"locale\": \"en-US\",
+        \"message\": \"API key not valid. Please pass a valid API key.\"
+      }
+    ]
+  }
+}
+"} 
+[2026-07-19 11:32:34] local.INFO: POCYCLE: Mencoba analisis dengan token #3 (gemini)  
+[2026-07-19 11:32:34] local.INFO: POCYCLE: Gambar dikompres {"original_size":239472,"compressed_size":164100,"savings":"31%"} 
+[2026-07-19 11:32:36] local.WARNING: POCYCLE: Token #3 (gemini) gagal {"error":"API gemini error (HTTP 400): {
+  \"error\": {
+    \"code\": 400,
+    \"message\": \"API key not valid. Please pass a valid API key.\",
+    \"status\": \"INVALID_ARGUMENT\",
+    \"details\": [
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.ErrorInfo\",
+        \"reason\": \"API_KEY_INVALID\",
+        \"domain\": \"googleapis.com\",
+        \"metadata\": {
+          \"service\": \"generativelanguage.googleapis.com\"
+        }
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.LocalizedMessage\",
+        \"locale\": \"en-US\",
+        \"message\": \"API key not valid. Please pass a valid API key.\"
+      }
+    ]
+  }
+}
+"} 
+[2026-07-19 11:32:36] local.ERROR: POCYCLE: Semua API token gagal untuk analisis pupuk. {"last_error":"API gemini error (HTTP 400): {
+  \"error\": {
+    \"code\": 400,
+    \"message\": \"API key not valid. Please pass a valid API key.\",
+    \"status\": \"INVALID_ARGUMENT\",
+    \"details\": [
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.ErrorInfo\",
+        \"reason\": \"API_KEY_INVALID\",
+        \"domain\": \"googleapis.com\",
+        \"metadata\": {
+          \"service\": \"generativelanguage.googleapis.com\"
+        }
+      },
+      {
+        \"@type\": \"type.googleapis.com/google.rpc.LocalizedMessage\",
+        \"locale\": \"en-US\",
+        \"message\": \"API key not valid. Please pass a valid API key.\"
+      }
+    ]
+  }
+}
+"} 

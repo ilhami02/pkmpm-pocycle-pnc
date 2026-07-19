@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\ApiToken;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Exception;
 
 /**
@@ -102,8 +103,17 @@ class FertilizerAnalysisService
             throw new Exception("File gambar tidak ditemukan: {$imagePath}");
         }
 
-        $imageData = base64_encode(file_get_contents($fullPath));
-        $mimeType = mime_content_type($fullPath) ?: 'image/jpeg';
+        // Kompresi gambar sebelum dikirim ke API untuk menghemat token
+        $compressedData = $this->compressImage($fullPath);
+        $imageData = base64_encode($compressedData['data']);
+        $mimeType = $compressedData['mime_type'];
+
+        Log::info('POCYCLE: Gambar dikompres', [
+            'original_size'   => filesize($fullPath),
+            'compressed_size' => strlen($compressedData['data']),
+            'savings'         => round((1 - strlen($compressedData['data']) / filesize($fullPath)) * 100) . '%',
+        ]);
+
         $prompt = $this->buildPrompt($temperature);
         $timeout = config('services.fertilizer_api.timeout', 30);
 
@@ -150,22 +160,27 @@ class FertilizerAnalysisService
     {
         return <<<PROMPT
 Kamu adalah ahli analisis Pupuk Organik Cair (POC) dari limbah sisa makanan bergizi.
-Analisis foto pupuk di dalam galon 15 liter ini berdasarkan warna cairan yang terlihat.
+
+Konteks wadah: Foto ini diambil dari LUAR galon Le Minerale 15 liter yang bening/transparan.
+Kamu mengamati warna dan kondisi cairan pupuk yang terlihat MELALUI dinding plastik bening galon tersebut.
+Perhatikan warna cairan, tingkat kekeruhan, ada/tidaknya lapisan terpisah, dan endapan di dasar galon.
+
 Suhu saat ini: {$temperature}°C
 
 Berikan respons HANYA dalam format JSON murni (tanpa markdown, tanpa backtick, tanpa teks lain):
 {
-    "detected_color": "deskripsi singkat warna cairan yang terlihat",
+    "detected_color": "deskripsi singkat warna cairan yang terlihat melalui galon bening",
     "status": "normal|needs_stirring|contaminated",
-    "recommendation": "langkah penanganan detail dalam bahasa Indonesia sederhana yang mudah dipahami ibu-ibu"
+    "recommendation": "langkah penanganan detail dalam bahasa Indonesia sederhana yang mudah dipahami ibu-ibu PKK"
 }
 
 Kriteria penentuan status:
-- "normal": Warna coklat kehijauan/kecoklatan jernih, cairan tidak terlalu pekat, suhu antara 25-35°C. Proses fermentasi berjalan baik.
-- "needs_stirring": Warna terlalu pekat/gelap, ada lapisan endapan tebal di dasar, suhu di bawah 25°C atau di atas 35°C, atau cairan terlihat terpisah (ada lapisan atas-bawah).
-- "contaminated": Warna kehitaman/keabu-abuan/keruh tidak wajar, ada jamur/bercak putih/biru/hijau mengambang, atau cairan terlihat sangat tidak normal.
+- "normal": Warna coklat kehijauan/kecoklatan jernih saat dilihat melalui galon bening, cairan relatif homogen dan tidak terlalu pekat, suhu antara 25-35°C. Proses fermentasi berjalan baik.
+- "needs_stirring": Warna terlalu pekat/gelap saat dilihat melalui galon, ada lapisan endapan tebal di dasar galon, suhu di bawah 25°C atau di atas 35°C, atau cairan terlihat terpisah menjadi lapisan atas-bawah di dalam galon.
+- "contaminated": Warna kehitaman/keabu-abuan/keruh tidak wajar yang terlihat melalui galon, ada jamur/bercak putih/biru/hijau mengambang di permukaan atau menempel di dinding galon, atau cairan terlihat sangat tidak normal.
 
-Berikan rekomendasi yang spesifik, praktis, dan menggunakan bahasa sederhana.
+Penting: Abaikan label/tulisan pada galon Le Minerale. Fokus hanya pada warna dan kondisi cairan di dalamnya.
+Berikan rekomendasi yang spesifik, praktis, dan menggunakan bahasa sederhana yang mudah dipahami ibu-ibu.
 PROMPT;
     }
 
@@ -212,5 +227,78 @@ PROMPT;
             || str_contains($message, 'quota')
             || str_contains($message, 'resource exhausted')
             || str_contains($message, 'too many requests');
+    }
+
+    /**
+     * Kompresi gambar menggunakan PHP GD untuk menghemat token API.
+     *
+     * Strategi: resize ke max 1024px (sisi terpanjang) dan kompres
+     * kualitas 80%. Ini mengurangi ukuran base64 secara signifikan
+     * tanpa mengorbankan akurasi deteksi warna/kondisi pupuk.
+     *
+     * @param  string $fullPath Path absolut file gambar
+     * @return array{data: string, mime_type: string}
+     */
+    protected function compressImage(string $fullPath): array
+    {
+        $maxDimension = config('services.fertilizer_api.max_image_dimension', 1024);
+        $quality = config('services.fertilizer_api.image_quality', 80);
+
+        $mimeType = mime_content_type($fullPath) ?: 'image/jpeg';
+
+        // Buat resource GD dari file asli
+        $source = match ($mimeType) {
+            'image/jpeg', 'image/jpg' => imagecreatefromjpeg($fullPath),
+            'image/png'               => imagecreatefrompng($fullPath),
+            'image/webp'              => imagecreatefromwebp($fullPath),
+            default                   => imagecreatefromjpeg($fullPath),
+        };
+
+        if (!$source) {
+            // Fallback: kirim file asli tanpa kompresi
+            Log::warning('POCYCLE: GD gagal membaca gambar, mengirim tanpa kompresi.');
+            return [
+                'data'      => file_get_contents($fullPath),
+                'mime_type' => $mimeType,
+            ];
+        }
+
+        $origWidth = imagesx($source);
+        $origHeight = imagesy($source);
+
+        // Hitung dimensi baru (pertahankan rasio aspek)
+        if ($origWidth > $maxDimension || $origHeight > $maxDimension) {
+            if ($origWidth >= $origHeight) {
+                $newWidth = $maxDimension;
+                $newHeight = (int) round($origHeight * ($maxDimension / $origWidth));
+            } else {
+                $newHeight = $maxDimension;
+                $newWidth = (int) round($origWidth * ($maxDimension / $origHeight));
+            }
+
+            // Resize
+            $resized = imagecreatetruecolor($newWidth, $newHeight);
+
+            // Pertahankan transparansi untuk PNG
+            if ($mimeType === 'image/png') {
+                imagealphablending($resized, false);
+                imagesavealpha($resized, true);
+            }
+
+            imagecopyresampled($resized, $source, 0, 0, 0, 0, $newWidth, $newHeight, $origWidth, $origHeight);
+            imagedestroy($source);
+            $source = $resized;
+        }
+
+        // Simpan ke buffer (selalu output sebagai JPEG untuk kompresi optimal)
+        ob_start();
+        imagejpeg($source, null, $quality);
+        $compressedData = ob_get_clean();
+        imagedestroy($source);
+
+        return [
+            'data'      => $compressedData,
+            'mime_type' => 'image/jpeg',
+        ];
     }
 }

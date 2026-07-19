@@ -1,11 +1,11 @@
-@extends('layouts.app')
-@section('title', 'Beranda')
 
-@section('content')
+<?php $__env->startSection('title', 'Beranda'); ?>
 
-    {{-- === HERO SECTION === --}}
+<?php $__env->startSection('content'); ?>
+
+    
     <section class="relative overflow-hidden bg-gradient-to-br from-leaf-600 via-leaf-700 to-leaf-800 text-white">
-        {{-- Background pattern — elegant CSS orbs --}}
+        
         <div class="absolute inset-0 overflow-hidden">
             <div class="absolute -top-20 -left-20 w-72 h-72 bg-white/5 rounded-full blur-3xl"></div>
             <div class="absolute top-1/3 -right-16 w-96 h-96 bg-leaf-400/10 rounded-full blur-3xl"></div>
@@ -26,24 +26,24 @@
                     Cukup foto galon, dan kami analisis kondisinya!
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 animate-fade-in-up stagger-2">
-                    <a href="{{ route('tutorial.index') }}" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-10 py-5">
+                    <a href="<?php echo e(route('tutorial.index')); ?>" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-10 py-5">
                         🧪 Mulai Buat Pupuk
                     </a>
-                    @auth
-                        <a href="{{ route('scan.create') }}" class="inline-flex items-center justify-center gap-2 min-h-touch min-w-touch px-10 py-5 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-semibold text-xl rounded-btn border-2 border-white/30 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-white/30">
+                    <?php if(auth()->guard()->check()): ?>
+                        <a href="<?php echo e(route('scan.create')); ?>" class="inline-flex items-center justify-center gap-2 min-h-touch min-w-touch px-10 py-5 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-semibold text-xl rounded-btn border-2 border-white/30 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-white/30">
                             📷 Scan Pupuk
                         </a>
-                    @else
-                        <a href="{{ route('articles.index') }}" class="inline-flex items-center justify-center gap-2 min-h-touch min-w-touch px-10 py-5 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-semibold text-xl rounded-btn border-2 border-white/30 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-white/30">
+                    <?php else: ?>
+                        <a href="<?php echo e(route('articles.index')); ?>" class="inline-flex items-center justify-center gap-2 min-h-touch min-w-touch px-10 py-5 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-semibold text-xl rounded-btn border-2 border-white/30 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-white/30">
                             📖 Baca Panduan
                         </a>
-                    @endauth
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- === CARA KERJA === --}}
+    
     <section class="bg-gradient-to-b from-earth-50 to-white">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
             <div class="text-center mb-14">
@@ -53,10 +53,10 @@
             </div>
 
             <div class="grid md:grid-cols-3 gap-8 relative">
-                {{-- Connector lines (desktop only) --}}
+                
                 <div class="hidden md:block absolute top-16 left-1/3 right-1/3 h-0.5 bg-gradient-to-r from-leaf-200 via-leaf-300 to-leaf-200"></div>
 
-                {{-- Step 1 --}}
+                
                 <div class="card card-body text-center group hover:border-leaf-300 hover:-translate-y-2 transition-all duration-300 relative">
                     <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 bg-leaf-600 text-white text-sm font-bold rounded-full flex items-center justify-center shadow-md">1</div>
                     <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-leaf-100 to-leaf-200 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
@@ -68,7 +68,7 @@
                     </p>
                 </div>
 
-                {{-- Step 2 --}}
+                
                 <div class="card card-body text-center group hover:border-leaf-300 hover:-translate-y-2 transition-all duration-300 relative">
                     <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 bg-leaf-600 text-white text-sm font-bold rounded-full flex items-center justify-center shadow-md">2</div>
                     <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-leaf-100 to-leaf-200 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
@@ -80,7 +80,7 @@
                     </p>
                 </div>
 
-                {{-- Step 3 --}}
+                
                 <div class="card card-body text-center group hover:border-leaf-300 hover:-translate-y-2 transition-all duration-300 relative">
                     <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 bg-leaf-600 text-white text-sm font-bold rounded-full flex items-center justify-center shadow-md">3</div>
                     <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-leaf-100 to-leaf-200 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
@@ -95,8 +95,8 @@
         </div>
     </section>
 
-    {{-- === ARTIKEL EDUKASI TERBARU === --}}
-    @if($articles->count() > 0)
+    
+    <?php if($articles->count() > 0): ?>
     <section class="bg-sage-50 py-16">
         <div class="max-w-6xl mx-auto px-4 sm:px-6">
             <div class="flex items-center justify-between mb-10">
@@ -104,43 +104,43 @@
                     <h2 class="text-earth-900 mb-2">📖 Panduan & Edukasi</h2>
                     <p class="text-earth-500 text-xl">Pelajari cara membuat pupuk organik yang benar</p>
                 </div>
-                <a href="{{ route('articles.index') }}" class="btn-outline-leaf btn-sm hidden sm:inline-flex">
+                <a href="<?php echo e(route('articles.index')); ?>" class="btn-outline-leaf btn-sm hidden sm:inline-flex">
                     Lihat Semua →
                 </a>
             </div>
 
             <div class="grid md:grid-cols-3 gap-6">
-                @foreach($articles as $article)
-                    <a href="{{ route('articles.show', $article) }}" class="card group hover:border-leaf-300 transition-all hover:-translate-y-1">
-                        @if($article->cover_image)
+                <?php $__currentLoopData = $articles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $article): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <a href="<?php echo e(route('articles.show', $article)); ?>" class="card group hover:border-leaf-300 transition-all hover:-translate-y-1">
+                        <?php if($article->cover_image): ?>
                             <div class="aspect-video bg-earth-200 rounded-t-2xl overflow-hidden">
-                                <img src="{{ asset('storage/' . $article->cover_image) }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                <img src="<?php echo e(asset('storage/' . $article->cover_image)); ?>" alt="<?php echo e($article->title); ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             </div>
-                        @else
+                        <?php else: ?>
                             <div class="aspect-video bg-gradient-to-br from-leaf-100 to-sage-200 rounded-t-2xl flex items-center justify-center">
                                 <span class="text-5xl">📖</span>
                             </div>
-                        @endif
+                        <?php endif; ?>
                         <div class="card-body">
-                            <p class="text-sm text-earth-400 mb-2">{{ $article->published_at?->translatedFormat('d M Y') ?? $article->created_at->translatedFormat('d M Y') }}</p>
-                            <h3 class="text-xl font-semibold text-earth-800 mb-2 group-hover:text-leaf-700 transition-colors line-clamp-2">{{ $article->title }}</h3>
-                            <p class="text-earth-500 text-base line-clamp-2">{{ $article->excerpt }}</p>
+                            <p class="text-sm text-earth-400 mb-2"><?php echo e($article->published_at?->translatedFormat('d M Y') ?? $article->created_at->translatedFormat('d M Y')); ?></p>
+                            <h3 class="text-xl font-semibold text-earth-800 mb-2 group-hover:text-leaf-700 transition-colors line-clamp-2"><?php echo e($article->title); ?></h3>
+                            <p class="text-earth-500 text-base line-clamp-2"><?php echo e($article->excerpt); ?></p>
                         </div>
                     </a>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
 
             <div class="text-center mt-8 sm:hidden">
-                <a href="{{ route('articles.index') }}" class="btn-outline-leaf">Lihat Semua Artikel →</a>
+                <a href="<?php echo e(route('articles.index')); ?>" class="btn-outline-leaf">Lihat Semua Artikel →</a>
             </div>
         </div>
     </section>
-    @endif
+    <?php endif; ?>
 
-    {{-- === CTA SECTION === --}}
+    
     <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16">
         <div class="bg-gradient-to-r from-leaf-600 to-leaf-700 rounded-3xl p-10 md:p-16 text-center text-white relative overflow-hidden">
-            {{-- Elegant background orbs --}}
+            
             <div class="absolute inset-0 overflow-hidden">
                 <div class="absolute -top-10 -right-10 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
                 <div class="absolute -bottom-10 -left-10 w-56 h-56 bg-leaf-400/10 rounded-full blur-2xl"></div>
@@ -153,21 +153,23 @@
                     Bergabung dengan ibu-ibu PKK Tritih Wetan dalam gerakan mengolah limbah makanan menjadi pupuk organik cair yang bermanfaat.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ route('tutorial.index') }}" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-12 py-5">
+                    <a href="<?php echo e(route('tutorial.index')); ?>" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-12 py-5">
                         🧪 Mulai Buat Pupuk
                     </a>
-                    @guest
-                        <a href="{{ route('register') }}" class="inline-flex items-center justify-center gap-2 min-h-touch min-w-touch px-10 py-5 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-semibold text-xl rounded-btn border-2 border-white/30 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-white/30">
+                    <?php if(auth()->guard()->guest()): ?>
+                        <a href="<?php echo e(route('register')); ?>" class="inline-flex items-center justify-center gap-2 min-h-touch min-w-touch px-10 py-5 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-semibold text-xl rounded-btn border-2 border-white/30 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-white/30">
                             Daftar Gratis ✨
                         </a>
-                    @else
-                        <a href="{{ route('scan.create') }}" class="inline-flex items-center justify-center gap-2 min-h-touch min-w-touch px-10 py-5 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-semibold text-xl rounded-btn border-2 border-white/30 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-white/30">
+                    <?php else: ?>
+                        <a href="<?php echo e(route('scan.create')); ?>" class="inline-flex items-center justify-center gap-2 min-h-touch min-w-touch px-10 py-5 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-semibold text-xl rounded-btn border-2 border-white/30 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-white/30">
                             Scan Pupuk 📷
                         </a>
-                    @endguest
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </section>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH E:\Kuliah\pkm\web-edu-pocycle\pkmpm-pocycle-pnc\resources\views/welcome.blade.php ENDPATH**/ ?>

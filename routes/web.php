@@ -6,6 +6,7 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScanController;
+use App\Http\Controllers\TutorialController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminArticleController;
 use App\Http\Controllers\Admin\UserController;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 // === Public Routes ===
 Route::get('/', [LandingController::class, 'index'])->name('home');
+Route::get('/tutorial', [TutorialController::class, 'index'])->name('tutorial.index');
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
 
