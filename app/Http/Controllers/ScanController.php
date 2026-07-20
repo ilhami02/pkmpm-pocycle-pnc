@@ -79,7 +79,7 @@ class ScanController extends Controller
                 ->route('scan.show', $scan)
                 ->with('success', 'Analisis pupuk berhasil! Lihat hasilnya di bawah.');
 
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return redirect()->route('scan.create')
                 ->withInput()
                 ->with('error', $e->getMessage());
