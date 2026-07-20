@@ -24,6 +24,7 @@ class PushSubscriptionController extends Controller
         $key = $request->keys['auth'];
 
         $request->user()->updatePushSubscription($endpoint, $key, $token);
+        $request->user()->update(['reminder_enabled' => true]);
 
         return response()->json(['success' => true]);
     }
@@ -36,6 +37,7 @@ class PushSubscriptionController extends Controller
         $this->validate($request, ['endpoint' => 'required']);
 
         $request->user()->deletePushSubscription($request->endpoint);
+        $request->user()->update(['reminder_enabled' => false]);
 
         return response()->json(['success' => true]);
     }

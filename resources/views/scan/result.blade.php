@@ -83,7 +83,17 @@
                 </div>
                 <div>
                     <h3 class="text-lg font-semibold text-leaf-800 mb-2">Rekomendasi Penanganan</h3>
-                    <p class="text-leaf-900 text-lg leading-relaxed">{{ $scan->recommendation }}</p>
+                    @php
+                        // 1. Sanitasi teks dari XSS
+                        $formattedText = e($scan->recommendation);
+                        // 2. Ubah newline bawaan AI menjadi <br>
+                        $formattedText = nl2br($formattedText);
+                        // 3. Deteksi pola "1. ", "2. ", dst., lalu berikan jarak paragraf (<br><br>) dan tebalkan angkanya
+                        $formattedText = preg_replace('/(?:\s|<br\s*\/?>)*(?<!\d)(\d+\.\s)/i', "<br><br><strong class='text-leaf-900'>$1</strong>", $formattedText);
+                        // 4. Bersihkan jika kelebihan <br> di awal teks
+                        $formattedText = preg_replace('/^(?:<br\s*\/?>\s*)+/', '', $formattedText);
+                    @endphp
+                    <p class="text-leaf-900 text-lg leading-relaxed">{!! $formattedText !!}</p>
                 </div>
             </div>
         </div>
