@@ -59,6 +59,9 @@ class FertilizerAnalysisService
 
                 return array_merge($result, ['provider' => $token->provider]);
 
+            } catch (\InvalidArgumentException $e) {
+                // Ini adalah error validasi gambar (bukan galon), langsung lempar ke pengguna!
+                throw $e;
             } catch (Exception $e) {
                 $lastException = $e;
 
@@ -236,7 +239,7 @@ PROMPT;
         }
 
         if ($data['status'] === 'invalid_image') {
-            throw new Exception($data['recommendation'] ?? 'Sistem mendeteksi bahwa ini bukan foto galon POC. Harap unggah foto galon pupuk yang benar.');
+            throw new \InvalidArgumentException($data['recommendation'] ?? 'Sistem mendeteksi bahwa ini bukan foto galon POC. Harap unggah foto galon pupuk yang benar.');
         }
 
         return [
