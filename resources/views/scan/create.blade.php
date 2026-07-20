@@ -79,7 +79,7 @@
         {{-- Input Suhu --}}
         <div>
             <label for="temperature" class="input-label">🌡️ Suhu Saat Ini (°C)</label>
-            <p class="text-earth-400 text-base mb-3">Suhu ideal fermentasi antara 25°C - 35°C</p>
+            <p class="text-earth-400 text-base mb-3">Suhu ideal fermentasi antara 25°C - 40°C</p>
             <div class="relative">
                 <input id="temperature" type="number" name="temperature" value="{{ old('temperature') }}"
                        step="0.1" min="0" max="100" required

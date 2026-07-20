@@ -97,6 +97,24 @@
                 </div>
             </div>
 
+            {{-- Buah-buahan --}}
+            <div class="card card-body group hover:border-orange-300 transition-all">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl flex items-center justify-center flex-shrink-0">
+                        <span class="text-3xl">🍌</span>
+                    </div>
+                    <div class="flex-1">
+                        <label for="buah" class="input-label mb-0">Limbah Buah-buahan</label>
+                        <p class="text-earth-400 text-base mb-3">Kulit pisang, kulit jeruk, sisa buah, dll.</p>
+                        <div class="relative">
+                            <input id="buah" type="number" x-model.number="buah" min="0" step="0.1"
+                                   class="input-field pr-20" placeholder="0">
+                            <span class="absolute right-5 top-1/2 -translate-y-1/2 text-earth-400 text-base font-medium">kg/liter</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {{-- Gorengan --}}
             <div class="card card-body group hover:border-amber-300 transition-all">
                 <div class="flex items-start gap-4">
@@ -142,24 +160,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Buah-buahan --}}
-            <div class="card card-body group hover:border-orange-300 transition-all">
-                <div class="flex items-start gap-4">
-                    <div class="w-14 h-14 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl flex items-center justify-center flex-shrink-0">
-                        <span class="text-3xl">🍌</span>
-                    </div>
-                    <div class="flex-1">
-                        <label for="buah" class="input-label mb-0">Limbah Buah-buahan</label>
-                        <p class="text-earth-400 text-base mb-3">Kulit pisang, kulit jeruk, sisa buah, dll.</p>
-                        <div class="relative">
-                            <input id="buah" type="number" x-model.number="buah" min="0" step="0.1"
-                                   class="input-field pr-20" placeholder="0">
-                            <span class="absolute right-5 top-1/2 -translate-y-1/2 text-earth-400 text-base font-medium">kg/liter</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         {{-- Ringkasan real-time --}}
@@ -174,12 +174,12 @@
                     <p class="text-xl font-bold text-earth-800" x-text="formatNumber(sayuran) + ' kg'"></p>
                 </div>
                 <div class="bg-white/60 rounded-xl p-3">
-                    <p class="text-sm text-earth-500 mb-1">Gorengan</p>
-                    <p class="text-xl font-bold" :class="isGorenganOverLimit ? 'text-red-600' : 'text-earth-800'" x-text="formatNumber(gorengan) + ' kg'"></p>
-                </div>
-                <div class="bg-white/60 rounded-xl p-3">
                     <p class="text-sm text-earth-500 mb-1">Buah</p>
                     <p class="text-xl font-bold text-earth-800" x-text="formatNumber(buah) + ' kg'"></p>
+                </div>
+                <div class="bg-white/60 rounded-xl p-3">
+                    <p class="text-sm text-earth-500 mb-1">Gorengan</p>
+                    <p class="text-xl font-bold" :class="isGorenganOverLimit ? 'text-red-600' : 'text-earth-800'" x-text="formatNumber(gorengan) + ' kg'"></p>
                 </div>
             </div>
             <div class="mt-4 pt-4 border-t border-leaf-200 text-center">
@@ -429,11 +429,11 @@ function tutorialWizard() {
     return {
         step: 1,
         sayuran: 0,
-        gorengan: 0,
         buah: 0,
+        gorengan: 0,
 
         get totalLimbah() {
-            return (parseFloat(this.sayuran) || 0) + (parseFloat(this.gorengan) || 0) + (parseFloat(this.buah) || 0);
+            return (parseFloat(this.sayuran) || 0) + (parseFloat(this.buah) || 0) + (parseFloat(this.gorengan) || 0);
         },
 
         get gorenganPercentage() {
