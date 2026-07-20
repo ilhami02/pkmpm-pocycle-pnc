@@ -23,3 +23,6 @@ yarn-error.log
 /implement.md
 /key.bak
 /modify.md
+
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore

@@ -84,4 +84,98 @@
         </form>
     </div>
 </div>
+
+{{-- Script for Web Push Notifications --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const reminderToggle = document.querySelector('input[name="reminder_enabled"][type="checkbox"]');
+        const vapidPublicKey = "{{ config('webpush.vapid.public_key') }}";
+
+        if (!reminderToggle) return;
+
+        reminderToggle.addEventListener('change', async function () {
+            if (this.checked) {
+                // Request Permission & Subscribe
+                if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+                    alert('Browser Anda tidak mendukung push notifications.');
+                    this.checked = false;
+                    return;
+                }
+
+                try {
+                    const permission = await Notification.requestPermission();
+                    if (permission !== 'granted') {
+                        alert('Izin notifikasi ditolak oleh browser.');
+                        this.checked = false;
+                        return;
+                    }
+
+                    // Register Service Worker
+                    const registration = await navigator.serviceWorker.register('/sw.js');
+                    
+                    // Wait for service worker to be ready
+                    const readyRegistration = await navigator.serviceWorker.ready;
+
+                    // Subscribe to PushManager
+                    const subscription = await readyRegistration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+                    });
+
+                    // Send to backend
+                    await fetch('/push-subscriptions', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify(subscription)
+                    });
+
+                } catch (error) {
+                    console.error('Error during push subscription:', error);
+                    alert('Gagal mengaktifkan push notification.');
+                    this.checked = false;
+                }
+            } else {
+                // Unsubscribe
+                try {
+                    const registration = await navigator.serviceWorker.ready;
+                    const subscription = await registration.pushManager.getSubscription();
+                    if (subscription) {
+                        await subscription.unsubscribe();
+                        
+                        // Delete from backend
+                        await fetch('/push-subscriptions', {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({ endpoint: subscription.endpoint })
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error unsubscribing:', error);
+                }
+            }
+        });
+
+        // Helper function
+        function urlBase64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding)
+                .replace(/\-/g, '+')
+                .replace(/_/g, '/');
+
+            const rawData = window.atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray;
+        }
+    });
+</script>
 @endsection

@@ -5,18 +5,14 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\WebPush\WebPushMessage;
+use NotificationChannels\WebPush\WebPushChannel;
 
 /**
  * FertilizerCheckReminder
  *
  * Notifikasi reminder untuk mengecek galon POC.
- * Struktur modular — saat ini menggunakan channel 'database',
- * siap ditambahkan WhatsApp channel di masa depan tanpa merombak logic.
- *
- * Cara menambahkan WhatsApp channel:
- * 1. Buat App\Channels\WhatsAppChannel
- * 2. Uncomment WhatsApp channel di method via()
- * 3. Implement method toWhatsApp()
+ * Struktur modular — saat ini menggunakan channel 'database' dan 'webpush'.
  */
 class FertilizerCheckReminder extends Notification implements ShouldQueue
 {
@@ -29,26 +25,10 @@ class FertilizerCheckReminder extends Notification implements ShouldQueue
 
     /**
      * Channel pengiriman — MODULAR via() method.
-     *
-     * Tinggal tambahkan channel baru di array ini:
-     * - 'database' → notifikasi di dalam web app
-     * - WhatsAppChannel::class → kirim ke WhatsApp (future)
-     * - 'mail' → kirim email (future)
      */
     public function via(object $notifiable): array
     {
-        $channels = ['database'];
-
-        // =========================================
-        // FUTURE: WhatsApp Channel
-        // =========================================
-        // Uncomment baris di bawah setelah membuat
-        // App\Channels\WhatsAppChannel
-        //
-        // if ($notifiable->whatsapp_number) {
-        //     $channels[] = \App\Channels\WhatsAppChannel::class;
-        // }
-        // =========================================
+        $channels = ['database', WebPushChannel::class];
 
         return $channels;
     }
@@ -68,14 +48,15 @@ class FertilizerCheckReminder extends Notification implements ShouldQueue
     }
 
     /**
-     * FUTURE: Data untuk WhatsApp channel.
-     * Uncomment dan implementasikan saat sudah siap.
+     * Data untuk notifikasi Web Push (Browser).
      */
-    // public function toWhatsApp(object $notifiable): array
-    // {
-    //     return [
-    //         'phone'   => $notifiable->whatsapp_number,
-    //         'message' => "🌿 *POCYCLE Reminder*\n\n{$this->message}\n\nKlik link berikut untuk scan: " . url('/scan'),
-    //     ];
-    // }
+    public function toWebPush($notifiable, $notification)
+    {
+        return (new WebPushMessage)
+            ->title('🌿 Waktunya Cek Pupuk!')
+            ->icon(asset('assets/Logo PKM.png'))
+            ->body($this->message)
+            ->action('Scan Sekarang', 'scan_action')
+            ->data(['url' => url('/scan')]);
+    }
 }
