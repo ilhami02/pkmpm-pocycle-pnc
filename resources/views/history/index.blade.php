@@ -5,15 +5,49 @@
 <div class="max-w-4xl mx-auto px-4 sm:px-6 py-10">
 
     {{-- Header --}}
-    <div class="flex items-center justify-between mb-8">
+    <div class="flex items-center justify-between mb-6">
         <div>
-            <h1 class="mb-2">📋 Riwayat Scan POC</h1>
+            <h1 class="mb-2">📊 Dashboard POC</h1>
             <p class="text-earth-500 text-xl">Pantau perkembangan pupuk organik Anda</p>
         </div>
-        <a href="{{ route('scan.create') }}" class="btn-primary">
-            📷 Scan Baru
-        </a>
+        @if($fermentationDay > 0)
+            <a href="{{ route('scan.create') }}" class="btn-primary">
+                📷 Scan Baru
+            </a>
+        @endif
     </div>
+
+    {{-- Dashboard Card --}}
+    <div class="card card-body bg-gradient-to-br from-leaf-50 to-sage-50 mb-8 border-leaf-200">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+                <h3 class="text-leaf-800 text-lg font-bold mb-1">Status Fermentasi</h3>
+                @if($fermentationDay === 0)
+                    <p class="text-earth-600 text-base">Anda belum memulai siklus pembuatan POC.</p>
+                @else
+                    <p class="text-earth-600 text-base">Siklus POC Anda saat ini berada di <strong>Hari ke-{{ $fermentationDay }}</strong>.</p>
+                @endif
+            </div>
+
+            <div>
+                @if($fermentationDay === 0)
+                    <a href="{{ route('tutorial.index') }}" class="btn-primary shadow-lg w-full md:w-auto">
+                        🌱 Mulai Buat Pupuk Baru
+                    </a>
+                @elseif($fermentationDay >= 21)
+                    <a href="{{ route('harvest.verify') }}" class="btn-primary bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 shadow-lg shadow-amber-500/30 border-none w-full md:w-auto text-lg py-3 animate-bounce">
+                        🌾 Panen POC Sekarang!
+                    </a>
+                @else
+                    <div class="w-full md:w-64 bg-earth-200 rounded-full h-4 overflow-hidden mb-2">
+                        <div class="bg-leaf-500 h-4 rounded-full transition-all duration-500" style="width: {{ min(($fermentationDay / 21) * 100, 100) }}%"></div>
+                    </div>
+                    <p class="text-xs text-earth-500 text-right font-medium">{{ 21 - min($fermentationDay, 21) }} hari lagi menuju panen</p>
+                @endif
+            </div>
+        </div>
+    </div>
+
 
     @if($histories->isEmpty())
         {{-- Empty State --}}

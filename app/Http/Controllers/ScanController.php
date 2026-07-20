@@ -17,8 +17,14 @@ class ScanController extends Controller
     /**
      * Form upload foto & input suhu.
      */
-    public function create()
+    public function create(Request $request)
     {
+        // Jika sedang idle (hari ke-0) dan tidak datang dari halaman tutorial, arahkan ke tutorial
+        if (Auth::user()->getFermentationDay() === 0 && !$request->has('from_tutorial')) {
+            return redirect()->route('tutorial.index')
+                ->with('info', 'Silakan pelajari takaran bahan dan instruksi pembuatan POC terlebih dahulu sebelum mulai memantau galon baru Anda.');
+        }
+
         return view('scan.create');
     }
 
@@ -45,8 +51,15 @@ class ScanController extends Controller
         $imagePath = $request->file('image')->store('scans', 'public');
 
         try {
+            $user = Auth::user();
+
+            // Jika user belum punya batch aktif, ini adalah scan pertama untuk batch baru
+            if (!$user->current_batch_started_at) {
+                $user->update(['current_batch_started_at' => now()]);
+            }
+
             // Hitung umur fermentasi (hari ke-)
-            $fermentationDay = Auth::user()->getFermentationDay();
+            $fermentationDay = $user->getFermentationDay();
 
             // Analisis dengan API (multi-token fallback)
             $result = $this->analysisService->analyze($imagePath, (float) $validated['temperature'], $fermentationDay);
@@ -67,7 +80,7 @@ class ScanController extends Controller
                 ->with('success', 'Analisis pupuk berhasil! Lihat hasilnya di bawah.');
 
         } catch (Exception $e) {
-            return back()
+            return redirect()->route('scan.create')
                 ->withInput()
                 ->with('error', $e->getMessage());
         }

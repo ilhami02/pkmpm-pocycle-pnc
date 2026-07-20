@@ -14,12 +14,14 @@
         
         <div class="text-center mb-8">
             <a href="<?php echo e(route('home')); ?>" class="inline-flex items-center gap-3 group">
-                <div class="w-16 h-16 bg-gradient-to-br from-leaf-500 to-leaf-700 rounded-2xl flex items-center justify-center shadow-xl shadow-leaf-500/30 group-hover:scale-105 transition-transform">
-                    <span class="text-white text-3xl">🌿</span>
+                <div class="w-16 h-16 flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <span class="text-white text-3xl">
+                        <img src="<?php echo e(asset('assets/Logo PKM.png')); ?>" alt="Logo PKM" class="w-full h-full object-contain">
+                    </span>
                 </div>
                 <div class="text-left">
                     <span class="text-3xl font-bold text-leaf-800 tracking-tight">POCYCLE</span>
-                    <span class="block text-sm text-earth-500">Pupuk Organik Cair</span>
+                    <span class="block text-sm text-earth-500 -mt-1">Politeknik Negeri Cilacap</span>
                 </div>
             </a>
         </div>

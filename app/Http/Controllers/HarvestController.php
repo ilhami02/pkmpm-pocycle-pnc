@@ -32,12 +32,12 @@ class HarvestController extends Controller
         ]);
 
         if ($request->q_smell === 'yes' && $request->q_color === 'yes' && $request->q_residue === 'yes') {
-            // Berhasil panen! Reset siklus POC
+            // Berhasil panen! Reset siklus POC menjadi idle
             Auth::user()->update([
-                'current_batch_started_at' => now(),
+                'current_batch_started_at' => null,
             ]);
 
-            return redirect()->route('history.index')->with('success', 'Selamat! Pupuk POC Anda berhasil dipanen. Siklus fermentasi baru telah dimulai dari hari ke-1.');
+            return redirect()->route('tutorial.index')->with('success', 'Selamat! Pupuk POC Anda berhasil dipanen. Silakan ikuti tutorial ini untuk membuat batch pupuk yang baru.');
         }
 
         // Jika ada jawaban 'no'

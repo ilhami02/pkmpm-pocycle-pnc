@@ -29,6 +29,9 @@ Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('art
 Route::middleware(['auth'])->group(function () {
 
     // Scan Pupuk
+    Route::get('/scan', function () {
+        return redirect()->route('scan.create');
+    });
     Route::get('/scan/create', [ScanController::class, 'create'])->name('scan.create');
     Route::post('/scan', [ScanController::class, 'store'])->name('scan.store');
     Route::get('/scan/{scanHistory}', [ScanController::class, 'show'])->name('scan.show');

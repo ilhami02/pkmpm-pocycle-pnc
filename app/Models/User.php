@@ -60,21 +60,10 @@ class User extends Authenticatable
         return $this->hasOne(ScanHistory::class)->latestOfMany();
     }
 
-    /**
-     * Hitung umur fermentasi (hari ke-berapa).
-     * Dihitung berdasarkan current_batch_started_at. Jika null, berarti belum mulai batch (Hari ke-1).
-     */
     public function getFermentationDay(): int
     {
         if (!$this->current_batch_started_at) {
-            // Coba lihat apakah ada scan pertama, sebagai fallback awal
-            $firstScan = $this->scanHistories()->oldest()->first();
-            if ($firstScan) {
-                // Update ke database agar ke depannya tercatat
-                $this->update(['current_batch_started_at' => $firstScan->created_at]);
-                return $firstScan->created_at->diffInDays(now()) + 1;
-            }
-            return 1;
+            return 0; // Artinya sedang tidak ada batch aktif (idle)
         }
 
         return $this->current_batch_started_at->diffInDays(now()) + 1;

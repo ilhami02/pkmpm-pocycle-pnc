@@ -403,7 +403,7 @@
                     Setelah mencampurkan semua bahan, lakukan scan galon pertama Anda untuk mulai memantau proses fermentasi.
                 </p>
                 @auth
-                    <a href="{{ route('scan.create') }}" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-10 py-5">
+                    <a href="{{ route('scan.create', ['from_tutorial' => 1]) }}" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-10 py-5">
                         📷 Scan Galon Pertama Anda
                     </a>
                 @else

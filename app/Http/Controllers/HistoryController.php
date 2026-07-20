@@ -12,11 +12,14 @@ class HistoryController extends Controller
      */
     public function index(Request $request)
     {
-        $histories = Auth::user()
+        $user = Auth::user();
+        $histories = $user
             ->scanHistories()
             ->latest()
             ->paginate(10);
 
-        return view('history.index', compact('histories'));
+        $fermentationDay = $user->getFermentationDay();
+
+        return view('history.index', compact('histories', 'fermentationDay'));
     }
 }

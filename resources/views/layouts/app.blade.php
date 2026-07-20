@@ -56,9 +56,7 @@
                         <a href="{{ route('history.index') }}" class="nav-link {{ request()->routeIs('history.*') ? 'nav-link-active' : '' }}">
                             📋 Riwayat
                         </a>
-                        <a href="{{ route('harvest.verify') }}" class="nav-link {{ request()->routeIs('harvest.*') ? 'nav-link-active text-leaf-700 bg-leaf-50' : 'text-earth-600 hover:text-leaf-600 hover:bg-leaf-50' }}">
-                            🌾 Panen POC
-                        </a>
+
                     @endauth
                 </div>
 
@@ -194,7 +192,7 @@
                     @auth
                         <a href="{{ route('scan.create') }}" class="nav-link {{ request()->routeIs('scan.*') ? 'nav-link-active' : '' }}">📷 Scan Pupuk</a>
                         <a href="{{ route('history.index') }}" class="nav-link {{ request()->routeIs('history.*') ? 'nav-link-active' : '' }}">📋 Riwayat</a>
-                        <a href="{{ route('harvest.verify') }}" class="nav-link {{ request()->routeIs('harvest.*') ? 'nav-link-active text-leaf-700 bg-leaf-50' : 'text-earth-600' }}">🌾 Panen POC</a>
+
                         <a href="{{ route('notifications.index') }}" class="nav-link {{ request()->routeIs('notifications.*') ? 'nav-link-active' : '' }}">
                             🔔 Notifikasi
                             @if(auth()->user()->unreadNotifications->count() > 0)

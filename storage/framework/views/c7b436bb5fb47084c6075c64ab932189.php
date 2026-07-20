@@ -56,9 +56,7 @@
                         <a href="<?php echo e(route('history.index')); ?>" class="nav-link <?php echo e(request()->routeIs('history.*') ? 'nav-link-active' : ''); ?>">
                             📋 Riwayat
                         </a>
-                        <a href="<?php echo e(route('harvest.verify')); ?>" class="nav-link <?php echo e(request()->routeIs('harvest.*') ? 'nav-link-active text-leaf-700 bg-leaf-50' : 'text-earth-600 hover:text-leaf-600 hover:bg-leaf-50'); ?>">
-                            🌾 Panen POC
-                        </a>
+
                     <?php endif; ?>
                 </div>
 
@@ -199,7 +197,7 @@
                     <?php if(auth()->guard()->check()): ?>
                         <a href="<?php echo e(route('scan.create')); ?>" class="nav-link <?php echo e(request()->routeIs('scan.*') ? 'nav-link-active' : ''); ?>">📷 Scan Pupuk</a>
                         <a href="<?php echo e(route('history.index')); ?>" class="nav-link <?php echo e(request()->routeIs('history.*') ? 'nav-link-active' : ''); ?>">📋 Riwayat</a>
-                        <a href="<?php echo e(route('harvest.verify')); ?>" class="nav-link <?php echo e(request()->routeIs('harvest.*') ? 'nav-link-active text-leaf-700 bg-leaf-50' : 'text-earth-600'); ?>">🌾 Panen POC</a>
+
                         <a href="<?php echo e(route('notifications.index')); ?>" class="nav-link <?php echo e(request()->routeIs('notifications.*') ? 'nav-link-active' : ''); ?>">
                             🔔 Notifikasi
                             <?php if(auth()->user()->unreadNotifications->count() > 0): ?>
@@ -255,10 +253,13 @@
             <div class="grid md:grid-cols-3 gap-8">
                 <div>
                     <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 bg-gradient-to-br from-leaf-500 to-leaf-700 rounded-xl flex items-center justify-center">
-                            <span class="text-white text-xl">🌿</span>
+                        <div class="w-12 h-12 flex items-center justify-center">
+                            <img src="<?php echo e(asset('assets/Logo PKM.png')); ?>" alt="Logo PKM" class="w-full h-full object-contain">
                         </div>
-                        <span class="text-xl font-bold text-white">POCYCLE</span>
+                        <div>
+                            <span class="text-xl font-bold text-white block">POCYCLE</span>
+                            <span class="block text-xs text-earth-300 -mt-1">Politeknik Negeri Cilacap</span>
+                        </div>
                     </div>
                     <p class="text-earth-400 text-base leading-relaxed">
                         Platform edukasi & monitoring Pupuk Organik Cair dari limbah sisa makanan bergizi.

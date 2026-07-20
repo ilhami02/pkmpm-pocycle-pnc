@@ -128,7 +128,7 @@ class FertilizerAnalysisService
                     'contents' => [
                         [
                             'parts' => [
-                                ['text' => $prompt],
+                                ['text' => $promptText],
                                 [
                                     'inline_data' => [
                                         'mime_type' => $mimeType,
@@ -163,6 +163,9 @@ class FertilizerAnalysisService
         return <<<PROMPT
 Kamu adalah ahli analisis Pupuk Organik Cair (POC) dari limbah sisa makanan bergizi.
 
+Langkah PERTAMA: Validasi gambar. Apakah gambar ini menunjukkan wadah/galon/botol yang berisi cairan, limbah organik, atau sesuatu yang berkaitan dengan pembuatan pupuk/kompos? Jika gambar tersebut JELAS BUKAN pupuk atau wadahnya (misalnya foto wajah orang, bangunan, mobil, hewan, pakaian, dll), maka KEMBALIKAN status "invalid_image" dan berikan recommendation "Sistem mendeteksi bahwa ini bukan foto galon POC. Harap unggah foto galon pupuk yang benar."
+
+Jika gambar valid, lanjutkan:
 Konteks wadah: Foto ini diambil dari LUAR galon Le Minerale 15 liter yang bening/transparan.
 Kamu mengamati warna dan kondisi cairan pupuk yang terlihat MELALUI dinding plastik bening galon tersebut.
 Perhatikan warna cairan, tingkat kekeruhan, ada/tidaknya lapisan terpisah, dan endapan di dasar galon.
@@ -174,11 +177,12 @@ Berikan respons HANYA dalam format JSON murni (tanpa markdown, tanpa backtick, t
 PASTIKAN JSON tersebut 100% valid. JANGAN ada enter (newline) asli di dalam teks, gunakan \n jika perlu baris baru.
 {
     "detected_color": "deskripsi singkat warna cairan",
-    "status": "normal|needs_stirring|contaminated",
+    "status": "normal|needs_stirring|contaminated|invalid_image",
     "recommendation": "langkah penanganan detail dalam bahasa Indonesia"
 }
 
 Kriteria penentuan status:
+- "invalid_image": Jika gambar sama sekali tidak berhubungan dengan galon cairan atau pupuk.
 - "normal": Warna coklat kehijauan/kecoklatan jernih, wajar untuk usianya. Suhu diukur berdasarkan fase:
    - Jika Umur Fermentasi antara 1-4 hari (Fase Awal): Suhu 35-40°C adalah NORMAL (bakteri sangat aktif memecah karbohidrat).
    - Jika Umur Fermentasi >= 5 hari (Fase Stabil): Suhu 25-32°C adalah NORMAL.
@@ -187,7 +191,7 @@ Kriteria penentuan status:
    - Atau suhu tidak sesuai dengan fase usianya (misal hari ke-10 tapi suhu 38°C, atau hari ke-2 suhu 28°C).
 - "contaminated": Warna kehitaman/keruh tidak wajar, ada jamur/bercak putih/biru/hijau mengambang di permukaan.
 
-Jika Umur Fermentasi sudah >= 21 hari (memasuki minggu ke-3 atau ke-4): 
+Jika Umur Fermentasi sudah >= 21 hari (memasuki minggu ke-3 atau ke-4) dan status BUKAN invalid_image: 
 Berikan saran/rekomendasi agar pengguna segera mengecek apakah pupuk sudah siap panen (mengingatkan untuk memverifikasi wangi seperti tape, warna seperti teh pekat, dan ampas mengendap).
 
 Penting: Abaikan label/tulisan pada galon Le Minerale. Fokus hanya pada warna dan kondisi cairan di dalamnya.
@@ -226,9 +230,13 @@ PROMPT;
         }
 
         // Validasi dan sanitasi status
-        $validStatuses = ['normal', 'needs_stirring', 'contaminated'];
+        $validStatuses = ['normal', 'needs_stirring', 'contaminated', 'invalid_image'];
         if (!in_array($data['status'], $validStatuses)) {
             $data['status'] = 'normal';
+        }
+
+        if ($data['status'] === 'invalid_image') {
+            throw new Exception($data['recommendation'] ?? 'Sistem mendeteksi bahwa ini bukan foto galon POC. Harap unggah foto galon pupuk yang benar.');
         }
 
         return [
