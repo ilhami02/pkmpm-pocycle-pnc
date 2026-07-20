@@ -1,4 +1,7 @@
-<x-app-layout>
+@extends('layouts.app')
+@section('title', 'Verifikasi Panen POC')
+
+@section('content')
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-2xl border border-earth-200">
@@ -114,4 +117,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection
