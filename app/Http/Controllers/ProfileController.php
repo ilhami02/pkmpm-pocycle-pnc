@@ -21,15 +21,12 @@ class ProfileController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $request->user()->id],
+            'username' => ['required', 'string', 'max:255', 'alpha_dash', 'unique:users,username,' . $request->user()->id],
+            'phone' => ['required', 'string', 'regex:/^08[0-9]{8,13}$/', 'unique:users,phone,' . $request->user()->id],
             'reminder_enabled' => ['boolean'],
         ]);
 
         $request->user()->fill($validated);
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
 
         $request->user()->reminder_enabled = $request->boolean('reminder_enabled');
         $request->user()->save();

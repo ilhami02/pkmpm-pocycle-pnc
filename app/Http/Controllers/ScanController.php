@@ -45,8 +45,11 @@ class ScanController extends Controller
         $imagePath = $request->file('image')->store('scans', 'public');
 
         try {
+            // Hitung umur fermentasi (hari ke-)
+            $fermentationDay = Auth::user()->getFermentationDay();
+
             // Analisis dengan API (multi-token fallback)
-            $result = $this->analysisService->analyze($imagePath, (float) $validated['temperature']);
+            $result = $this->analysisService->analyze($imagePath, (float) $validated['temperature'], $fermentationDay);
 
             // Simpan ke riwayat
             $scan = Auth::user()->scanHistories()->create([

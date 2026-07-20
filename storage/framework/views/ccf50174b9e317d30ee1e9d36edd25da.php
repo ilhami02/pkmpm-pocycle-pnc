@@ -26,10 +26,27 @@ unset($__errorArgs, $__bag); ?>
 
         
         <div>
-            <label for="email" class="input-label">📧 Email</label>
-            <input id="email" type="email" name="email" value="<?php echo e(old('email')); ?>" required autocomplete="email"
-                   class="input-field" placeholder="contoh@email.com">
-            <?php $__errorArgs = ['email'];
+            <label for="username" class="input-label">🏷️ Username</label>
+            <input id="username" type="text" name="username" value="<?php echo e(old('username')); ?>" required autocomplete="username"
+                   class="input-field" placeholder="contoh_username">
+            <?php $__errorArgs = ['username'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                <p class="input-error"><?php echo e($message); ?></p>
+            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+        </div>
+
+        
+        <div>
+            <label for="phone" class="input-label">📱 Nomor HP</label>
+            <input id="phone" type="tel" name="phone" value="<?php echo e(old('phone')); ?>" required autocomplete="tel"
+                   class="input-field" placeholder="08xxxxxxxxxx">
+            <?php $__errorArgs = ['phone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }

@@ -28,11 +28,11 @@ class FertilizerAnalysisService
      *
      * @param  string $imagePath   Path file gambar relatif ke storage/app/public
      * @param  float  $temperature Suhu saat ini (°C)
-     * @return array{status: string, color: string, recommendation: string, raw: array, provider: string}
-     *
-     * @throws Exception Jika semua API token gagal
+     * @param  int    $fermentationDay Umur fermentasi (hari ke-berapa)
+     * @return array  Data analisis terstruktur
+     * @throws Exception
      */
-    public function analyze(string $imagePath, float $temperature): array
+    public function analyze(string $imagePath, float $temperature, int $fermentationDay): array
     {
         $tokens = ApiToken::available()->get();
 
@@ -47,7 +47,7 @@ class FertilizerAnalysisService
             try {
                 Log::info("POCYCLE: Mencoba analisis dengan token #{$token->id} ({$token->provider})");
 
-                $result = $this->callApi($token, $imagePath, $temperature);
+                $result = $this->callApi($token, $imagePath, $temperature, $fermentationDay);
 
                 // Berhasil! Update statistik penggunaan
                 $token->update([
@@ -95,7 +95,7 @@ class FertilizerAnalysisService
      * Saat ini menggunakan Gemini API sebagai default.
      * Bisa dikembangkan untuk mendukung OpenAI Vision, Claude, dll.
      */
-    protected function callApi(ApiToken $token, string $imagePath, float $temperature): array
+    protected function callApi(ApiToken $token, string $imagePath, float $temperature, int $fermentationDay): array
     {
         $fullPath = storage_path("app/public/{$imagePath}");
 
@@ -114,7 +114,8 @@ class FertilizerAnalysisService
             'savings'         => round((1 - strlen($compressedData['data']) / filesize($fullPath)) * 100) . '%',
         ]);
 
-        $prompt = $this->buildPrompt($temperature);
+        // Bangun prompt dengan suhu dan hari
+        $promptText = $this->buildPrompt($temperature, $fermentationDay);
         $timeout = config('services.fertilizer_api.timeout', 30);
 
         // === Gemini API Call ===
@@ -157,7 +158,7 @@ class FertilizerAnalysisService
      * Bangun prompt analisis pupuk organik cair.
      * Prompt dirancang untuk mendapatkan respons JSON terstruktur.
      */
-    protected function buildPrompt(float $temperature): string
+    protected function buildPrompt(float $temperature, int $fermentationDay): string
     {
         return <<<PROMPT
 Kamu adalah ahli analisis Pupuk Organik Cair (POC) dari limbah sisa makanan bergizi.
@@ -167,6 +168,7 @@ Kamu mengamati warna dan kondisi cairan pupuk yang terlihat MELALUI dinding plas
 Perhatikan warna cairan, tingkat kekeruhan, ada/tidaknya lapisan terpisah, dan endapan di dasar galon.
 
 Suhu saat ini: {$temperature}°C
+Umur fermentasi: {$fermentationDay} hari
 
 Berikan respons HANYA dalam format JSON murni (tanpa markdown, tanpa backtick, tanpa teks lain).
 PASTIKAN JSON tersebut 100% valid. JANGAN ada enter (newline) asli di dalam teks, gunakan \n jika perlu baris baru.
@@ -177,9 +179,16 @@ PASTIKAN JSON tersebut 100% valid. JANGAN ada enter (newline) asli di dalam teks
 }
 
 Kriteria penentuan status:
-- "normal": Warna coklat kehijauan/kecoklatan jernih saat dilihat melalui galon bening, cairan relatif homogen dan tidak terlalu pekat, suhu antara 25-35°C. Proses fermentasi berjalan baik.
-- "needs_stirring": Warna terlalu pekat/gelap saat dilihat melalui galon, ada lapisan endapan tebal di dasar galon, suhu di bawah 25°C atau di atas 35°C, atau cairan terlihat terpisah menjadi lapisan atas-bawah di dalam galon.
-- "contaminated": Warna kehitaman/keabu-abuan/keruh tidak wajar yang terlihat melalui galon, ada jamur/bercak putih/biru/hijau mengambang di permukaan atau menempel di dinding galon, atau cairan terlihat sangat tidak normal.
+- "normal": Warna coklat kehijauan/kecoklatan jernih, wajar untuk usianya. Suhu diukur berdasarkan fase:
+   - Jika Umur Fermentasi antara 1-4 hari (Fase Awal): Suhu 35-40°C adalah NORMAL (bakteri sangat aktif memecah karbohidrat).
+   - Jika Umur Fermentasi >= 5 hari (Fase Stabil): Suhu 25-32°C adalah NORMAL.
+- "needs_stirring": 
+   - Warna terlalu pekat/gelap, ada endapan tebal di dasar, atau cairan terpisah.
+   - Atau suhu tidak sesuai dengan fase usianya (misal hari ke-10 tapi suhu 38°C, atau hari ke-2 suhu 28°C).
+- "contaminated": Warna kehitaman/keruh tidak wajar, ada jamur/bercak putih/biru/hijau mengambang di permukaan.
+
+Jika Umur Fermentasi sudah >= 21 hari (memasuki minggu ke-3 atau ke-4): 
+Berikan saran/rekomendasi agar pengguna segera mengecek apakah pupuk sudah siap panen (mengingatkan untuk memverifikasi wangi seperti tape, warna seperti teh pekat, dan ampas mengendap).
 
 Penting: Abaikan label/tulisan pada galon Le Minerale. Fokus hanya pada warna dan kondisi cairan di dalamnya.
 Berikan rekomendasi yang spesifik, praktis, dan menggunakan bahasa sederhana yang mudah dipahami ibu-ibu.

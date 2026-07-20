@@ -9,10 +9,10 @@
 
         
         <div>
-            <label for="email" class="input-label">📧 Email</label>
-            <input id="email" type="email" name="email" value="<?php echo e(old('email')); ?>" required autofocus autocomplete="email"
-                   class="input-field" placeholder="contoh@email.com">
-            <?php $__errorArgs = ['email'];
+            <label for="login" class="input-label">👤 Username atau 📱 Nomor HP</label>
+            <input id="login" type="text" name="login" value="<?php echo e(old('login')); ?>" required autofocus autocomplete="username"
+                   class="input-field" placeholder="Masukkan Username atau Nomor HP">
+            <?php $__errorArgs = ['login'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }

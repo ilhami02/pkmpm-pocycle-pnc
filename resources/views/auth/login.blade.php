@@ -7,12 +7,12 @@
     <form method="POST" action="{{ route('login') }}" class="space-y-5">
         @csrf
 
-        {{-- Email --}}
+        {{-- Username / Nomor HP --}}
         <div>
-            <label for="email" class="input-label">📧 Email</label>
-            <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="email"
-                   class="input-field" placeholder="contoh@email.com">
-            @error('email')
+            <label for="login" class="input-label">👤 Username atau 📱 Nomor HP</label>
+            <input id="login" type="text" name="login" value="{{ old('login') }}" required autofocus autocomplete="username"
+                   class="input-field" placeholder="Masukkan Username atau Nomor HP">
+            @error('login')
                 <p class="input-error">{{ $message }}</p>
             @enderror
         </div>

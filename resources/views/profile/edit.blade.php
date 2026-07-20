@@ -23,9 +23,17 @@
             </div>
 
             <div>
-                <label for="email" class="input-label">📧 Email</label>
-                <input id="email" type="email" name="email" value="{{ old('email', $user->email) }}" required class="input-field">
-                @error('email')
+                <label for="username" class="input-label">🏷️ Username</label>
+                <input id="username" type="text" name="username" value="{{ old('username', $user->username) }}" required class="input-field">
+                @error('username')
+                    <p class="input-error">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
+                <label for="phone" class="input-label">📱 Nomor HP</label>
+                <input id="phone" type="tel" name="phone" value="{{ old('phone', $user->phone) }}" required class="input-field">
+                @error('phone')
                     <p class="input-error">{{ $message }}</p>
                 @enderror
             </div>

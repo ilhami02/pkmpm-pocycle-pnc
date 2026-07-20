@@ -12,11 +12,11 @@ class AdminSeeder extends Seeder
     {
         // Buat admin user
         $admin = User::firstOrCreate(
-            ['email' => 'admin@pocycle.com'],
+            ['phone' => '081234567890'],
             [
                 'name' => 'Admin POCYCLE',
+                'username' => 'admin',
                 'password' => Hash::make('password'), // Password default: password
-                'email_verified_at' => now(),
             ]
         );
 
@@ -25,11 +25,11 @@ class AdminSeeder extends Seeder
 
         // Buat user biasa untuk testing
         User::firstOrCreate(
-            ['email' => 'test@test.com'],
+            ['phone' => '089876543210'],
             [
                 'name' => 'Test User',
+                'username' => 'testuser',
                 'password' => Hash::make('password'),
-                'email_verified_at' => now(),
                 'is_admin' => false,
             ]
         );

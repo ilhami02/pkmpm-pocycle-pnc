@@ -17,12 +17,22 @@
             @enderror
         </div>
 
-        {{-- Email --}}
+        {{-- Username --}}
         <div>
-            <label for="email" class="input-label">📧 Email</label>
-            <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email"
-                   class="input-field" placeholder="contoh@email.com">
-            @error('email')
+            <label for="username" class="input-label">🏷️ Username</label>
+            <input id="username" type="text" name="username" value="{{ old('username') }}" required autocomplete="username"
+                   class="input-field" placeholder="contoh_username">
+            @error('username')
+                <p class="input-error">{{ $message }}</p>
+            @enderror
+        </div>
+
+        {{-- Nomor HP --}}
+        <div>
+            <label for="phone" class="input-label">📱 Nomor HP</label>
+            <input id="phone" type="tel" name="phone" value="{{ old('phone') }}" required autocomplete="tel"
+                   class="input-field" placeholder="08xxxxxxxxxx">
+            @error('phone')
                 <p class="input-error">{{ $message }}</p>
             @enderror
         </div>

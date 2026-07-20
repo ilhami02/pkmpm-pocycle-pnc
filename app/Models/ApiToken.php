@@ -43,6 +43,8 @@ class ApiToken extends Model
 
     /**
      * Scope: hanya token yang aktif dan tidak sedang rate-limited.
+     * Urutan: Round Robin — token yang paling lama tidak digunakan diprioritaskan.
+     * Token baru (last_used_at = NULL) akan digunakan lebih dulu.
      */
     public function scopeAvailable($query)
     {
@@ -51,6 +53,6 @@ class ApiToken extends Model
                 $q->whereNull('rate_limited_until')
                   ->orWhere('rate_limited_until', '<', now());
             })
-            ->orderBy('priority');
+            ->orderByRaw('CASE WHEN last_used_at IS NULL THEN 0 ELSE 1 END ASC, last_used_at ASC');
     }
 }

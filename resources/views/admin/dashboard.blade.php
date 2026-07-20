@@ -100,7 +100,7 @@
                         </div>
                         <div>
                             <h3 class="text-sm font-semibold text-earth-900">{{ $user->name }}</h3>
-                            <p class="text-xs text-earth-500 mt-1">{{ $user->email }}</p>
+                            <p class="text-xs text-earth-500 mt-1">{{ $user->phone }}</p>
                         </div>
                     </div>
                     <div class="text-xs text-earth-400">

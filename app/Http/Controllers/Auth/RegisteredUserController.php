@@ -23,26 +23,31 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Proses registrasi — hanya nama, email, password.
+     * Proses registrasi — hanya nama, nomor HP, password.
      */
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name'     => ['required', 'string', 'max:255'],
-            'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'username' => ['required', 'string', 'max:255', 'alpha_dash', 'unique:'.User::class],
+            'phone'    => ['required', 'string', 'regex:/^08[0-9]{8,13}$/', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ], [
             'name.required'      => 'Nama wajib diisi.',
-            'email.required'     => 'Email wajib diisi.',
-            'email.email'        => 'Format email tidak valid.',
-            'email.unique'       => 'Email sudah terdaftar.',
+            'username.required'  => 'Username wajib diisi.',
+            'username.alpha_dash'=> 'Username hanya boleh berisi huruf, angka, strip (-), atau garis bawah (_).',
+            'username.unique'    => 'Username sudah terdaftar.',
+            'phone.required'     => 'Nomor HP wajib diisi.',
+            'phone.regex'        => 'Format nomor HP tidak valid. Gunakan format 08xxxxxxxxxx.',
+            'phone.unique'       => 'Nomor HP sudah terdaftar.',
             'password.required'  => 'Password wajib diisi.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
         $user = User::create([
             'name'     => $request->name,
-            'email'    => $request->email,
+            'username' => $request->username,
+            'phone'    => $request->phone,
             'password' => Hash::make($request->password),
         ]);
 

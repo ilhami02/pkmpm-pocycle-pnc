@@ -78,19 +78,19 @@ class SendFertilizerReminders extends Command
             }
 
             if ($dryRun) {
-                $message = $this->buildMessage($lastScan, $interval);
-                $this->line("  🔍 [DRY-RUN] Akan dikirim ke: {$user->name} ({$user->email})");
+                $message = $this->buildMessage($user, $lastScan, $interval);
+                $this->line("  🔍 [DRY-RUN] Akan dikirim ke: {$user->name} ({$user->phone})");
                 $this->line("     Pesan: {$message}");
                 $sent++;
                 continue;
             }
 
             // Kirim notifikasi
-            $message = $this->buildMessage($lastScan, $interval);
+            $message = $this->buildMessage($user, $lastScan, $interval);
             $user->notify(new FertilizerCheckReminder($message));
             $sent++;
 
-            $this->line("  ✅ Reminder terkirim ke: {$user->name} ({$user->email})");
+            $this->line("  ✅ Reminder terkirim ke: {$user->name} ({$user->phone})");
         }
 
         $this->newLine();
@@ -108,20 +108,26 @@ class SendFertilizerReminders extends Command
     }
 
     /**
-     * Buat pesan reminder yang kontekstual berdasarkan kondisi terakhir.
+     * Buat pesan reminder yang kontekstual berdasarkan kondisi terakhir dan umur fermentasi.
      */
-    protected function buildMessage(?object $lastScan, int $interval): string
+    protected function buildMessage(User $user, ?object $lastScan, int $interval): string
     {
         if (!$lastScan) {
             return 'Anda belum pernah melakukan scan pupuk. Yuk, mulai pantau galon POC Anda sekarang! 🌱';
         }
 
-        $days = $lastScan->created_at->diffInDays(now());
+        $fermentationDay = $user->getFermentationDay();
+
+        if ($fermentationDay >= 21) {
+            return "Pupuk POC Anda sudah berusia {$fermentationDay} hari (Minggu ke-3/4)! Yuk cek apakah sudah siap dipanen dan lakukan verifikasi. 🌾";
+        }
+
+        $daysSinceLastScan = $lastScan->created_at->diffInDays(now());
 
         return match ($lastScan->status) {
-            'needs_stirring' => "Sudah {$days} hari sejak scan terakhir. Pupuk Anda sebelumnya perlu diaduk — yuk cek apakah kondisinya sudah membaik! 🔄",
-            'contaminated'   => "Sudah {$days} hari sejak scan terakhir. Pupuk Anda sebelumnya terdeteksi terkontaminasi — segera cek kondisinya! ⚠️",
-            default          => "Sudah {$days} hari sejak scan terakhir. Saatnya mengecek galon POC Anda untuk memastikan fermentasi tetap berjalan baik! 🌿",
+            'needs_stirring' => "Sudah {$daysSinceLastScan} hari sejak scan terakhir. Pupuk Anda sebelumnya perlu diaduk — yuk cek apakah kondisinya sudah membaik! 🔄",
+            'contaminated'   => "Sudah {$daysSinceLastScan} hari sejak scan terakhir. Pupuk Anda sebelumnya terdeteksi terkontaminasi — segera cek kondisinya! ⚠️",
+            default          => "Sudah {$daysSinceLastScan} hari sejak scan terakhir. Saatnya mengecek galon POC Anda untuk memastikan fermentasi tetap berjalan baik! 🌿",
         };
     }
 }

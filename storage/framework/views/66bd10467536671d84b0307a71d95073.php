@@ -49,6 +49,12 @@
                     <span class="text-xl flex-shrink-0">📖</span>
                     <span x-show="sidebarOpen" x-transition>Artikel</span>
                 </a>
+                <a href="<?php echo e(route('admin.scans.index')); ?>"
+                   class="flex items-center gap-3 px-3 py-3 rounded-xl transition-all text-base font-medium
+                          <?php echo e(request()->routeIs('admin.scans.*') ? 'bg-leaf-600/20 text-leaf-400' : 'text-earth-400 hover:bg-earth-700 hover:text-white'); ?>">
+                    <span class="text-xl flex-shrink-0">🧪</span>
+                    <span x-show="sidebarOpen" x-transition>Data Pupuk</span>
+                </a>
                 <a href="<?php echo e(route('admin.users.index')); ?>"
                    class="flex items-center gap-3 px-3 py-3 rounded-xl transition-all text-base font-medium
                           <?php echo e(request()->routeIs('admin.users.*') ? 'bg-leaf-600/20 text-leaf-400' : 'text-earth-400 hover:bg-earth-700 hover:text-white'); ?>">

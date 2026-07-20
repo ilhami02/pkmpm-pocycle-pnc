@@ -12,10 +12,12 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
-        'email',
+        'username',
+        'phone',
         'password',
         'reminder_enabled',
         'is_admin',
+        'current_batch_started_at',
     ];
 
     protected $hidden = [
@@ -26,10 +28,10 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'reminder_enabled' => 'boolean',
             'is_admin' => 'boolean',
+            'current_batch_started_at' => 'datetime',
         ];
     }
 
@@ -55,5 +57,25 @@ class User extends Authenticatable
     public function latestScan()
     {
         return $this->hasOne(ScanHistory::class)->latestOfMany();
+    }
+
+    /**
+     * Hitung umur fermentasi (hari ke-berapa).
+     * Dihitung berdasarkan current_batch_started_at. Jika null, berarti belum mulai batch (Hari ke-1).
+     */
+    public function getFermentationDay(): int
+    {
+        if (!$this->current_batch_started_at) {
+            // Coba lihat apakah ada scan pertama, sebagai fallback awal
+            $firstScan = $this->scanHistories()->oldest()->first();
+            if ($firstScan) {
+                // Update ke database agar ke depannya tercatat
+                $this->update(['current_batch_started_at' => $firstScan->created_at]);
+                return $firstScan->created_at->diffInDays(now()) + 1;
+            }
+            return 1;
+        }
+
+        return $this->current_batch_started_at->diffInDays(now()) + 1;
     }
 }

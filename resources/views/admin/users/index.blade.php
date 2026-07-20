@@ -6,7 +6,7 @@
 <div class="bg-white rounded-2xl border border-earth-200 shadow-sm overflow-hidden">
     <div class="p-6 border-b border-earth-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <form method="GET" action="{{ route('admin.users.index') }}" class="w-full sm:w-96 relative">
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama atau email..." 
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama, username, atau nomor HP..." 
                    class="w-full pl-10 pr-4 py-2 border border-earth-300 rounded-xl focus:ring-leaf-500 focus:border-leaf-500 text-sm">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <span class="text-earth-400">🔍</span>
@@ -18,7 +18,7 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-earth-50 text-earth-600 text-sm border-b border-earth-200">
-                    <th class="px-6 py-3 font-medium">Nama & Email</th>
+                    <th class="px-6 py-3 font-medium">Nama & No. HP</th>
                     <th class="px-6 py-3 font-medium">Role</th>
                     <th class="px-6 py-3 font-medium">Total Scan</th>
                     <th class="px-6 py-3 font-medium">Bergabung</th>
@@ -35,7 +35,7 @@
                                 </div>
                                 <div>
                                     <div class="font-semibold text-earth-900">{{ $user->name }}</div>
-                                    <div class="text-xs text-earth-500">{{ $user->email }}</div>
+                                    <div class="text-xs text-earth-500">{{ $user->phone }}</div>
                                 </div>
                             </div>
                         </td>

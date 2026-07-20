@@ -9,6 +9,7 @@ use App\Http\Controllers\ScanController;
 use App\Http\Controllers\TutorialController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminArticleController;
+use App\Http\Controllers\Admin\AdminScanController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,9 +29,13 @@ Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('art
 Route::middleware(['auth'])->group(function () {
 
     // Scan Pupuk
-    Route::get('/scan', [ScanController::class, 'create'])->name('scan.create');
+    Route::get('/scan/create', [ScanController::class, 'create'])->name('scan.create');
     Route::post('/scan', [ScanController::class, 'store'])->name('scan.store');
     Route::get('/scan/{scanHistory}', [ScanController::class, 'show'])->name('scan.show');
+
+    // Panen POC
+    Route::get('/harvest/verify', [App\Http\Controllers\HarvestController::class, 'create'])->name('harvest.verify');
+    Route::post('/harvest/verify', [App\Http\Controllers\HarvestController::class, 'store'])->name('harvest.store');
 
     // Riwayat POC
     Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
@@ -59,6 +64,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/articles/{article}/edit', [AdminArticleController::class, 'edit'])->name('articles.edit');
     Route::put('/articles/{article}', [AdminArticleController::class, 'update'])->name('articles.update');
     Route::delete('/articles/{article}', [AdminArticleController::class, 'destroy'])->name('articles.destroy');
+
+    // Data Pupuk (Scan Monitoring)
+    Route::get('/scans', [AdminScanController::class, 'index'])->name('scans.index');
+    Route::get('/scans/{scanHistory}', [AdminScanController::class, 'show'])->name('scans.show');
 
     // User Management
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
