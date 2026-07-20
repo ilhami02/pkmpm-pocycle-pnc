@@ -56,6 +56,9 @@
                         <a href="<?php echo e(route('history.index')); ?>" class="nav-link <?php echo e(request()->routeIs('history.*') ? 'nav-link-active' : ''); ?>">
                             📋 Riwayat
                         </a>
+                        <a href="<?php echo e(route('harvest.verify')); ?>" class="nav-link <?php echo e(request()->routeIs('harvest.*') ? 'nav-link-active text-leaf-700 bg-leaf-50' : 'text-earth-600 hover:text-leaf-600 hover:bg-leaf-50'); ?>">
+                            🌾 Panen POC
+                        </a>
                     <?php endif; ?>
                 </div>
 
@@ -196,6 +199,7 @@
                     <?php if(auth()->guard()->check()): ?>
                         <a href="<?php echo e(route('scan.create')); ?>" class="nav-link <?php echo e(request()->routeIs('scan.*') ? 'nav-link-active' : ''); ?>">📷 Scan Pupuk</a>
                         <a href="<?php echo e(route('history.index')); ?>" class="nav-link <?php echo e(request()->routeIs('history.*') ? 'nav-link-active' : ''); ?>">📋 Riwayat</a>
+                        <a href="<?php echo e(route('harvest.verify')); ?>" class="nav-link <?php echo e(request()->routeIs('harvest.*') ? 'nav-link-active text-leaf-700 bg-leaf-50' : 'text-earth-600'); ?>">🌾 Panen POC</a>
                         <a href="<?php echo e(route('notifications.index')); ?>" class="nav-link <?php echo e(request()->routeIs('notifications.*') ? 'nav-link-active' : ''); ?>">
                             🔔 Notifikasi
                             <?php if(auth()->user()->unreadNotifications->count() > 0): ?>

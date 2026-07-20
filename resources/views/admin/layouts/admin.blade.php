@@ -25,12 +25,12 @@
             {{-- Logo --}}
             <div class="px-5 py-6 border-b border-earth-700">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-leaf-500 to-leaf-700 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
-                        <span class="text-white text-lg">🌿</span>
+                    <div class="w-10 h-10 flex items-center justify-center flex-shrink-0">
+                        <img src="{{ asset('assets/Logo PKM.png') }}" alt="Logo PKM" class="w-full h-full object-contain">
                     </div>
                     <div x-show="sidebarOpen" x-transition>
                         <span class="text-lg font-bold text-white tracking-tight">POCYCLE</span>
-                        <span class="block text-xs text-leaf-400 -mt-0.5">Admin Panel</span>
+                        <span class="block text-xs text-leaf-400 -mt-0.5">Politeknik Negeri Cilacap</span>
                     </div>
                 </a>
             </div>
