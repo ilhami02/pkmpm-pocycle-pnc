@@ -3,8 +3,11 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\SimplePasswordResetController;
 
 Route::middleware('guest')->group(function () {
+    Route::get('forgot-password', [SimplePasswordResetController::class, 'create'])->name('password.request');
+    Route::post('forgot-password', [SimplePasswordResetController::class, 'store']);
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('register', [RegisteredUserController::class, 'store']);
 

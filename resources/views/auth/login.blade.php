@@ -33,10 +33,17 @@
             @enderror
         </div>
 
-        {{-- Remember Me --}}
-        <div class="flex items-center">
-            <input id="remember" type="checkbox" name="remember" class="w-5 h-5 text-leaf-600 border-earth-300 rounded focus:ring-leaf-500">
-            <label for="remember" class="ml-3 text-earth-600 text-lg">Ingat saya</label>
+        <div class="flex items-center justify-between mt-4 mb-2">
+            {{-- Remember Me --}}
+            <div class="flex items-center">
+                <input id="remember" type="checkbox" name="remember" class="w-5 h-5 text-leaf-600 border-earth-300 rounded focus:ring-leaf-500">
+                <label for="remember" class="ml-3 text-earth-600 text-lg">Ingat saya</label>
+            </div>
+
+            {{-- Forgot Password --}}
+            <div>
+                <a href="{{ route('password.request') }}" class="text-leaf-600 hover:text-leaf-700 font-semibold text-lg">Lupa password?</a>
+            </div>
         </div>
 
         {{-- Submit --}}
