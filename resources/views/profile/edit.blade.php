@@ -93,6 +93,13 @@
 
         if (!reminderToggle) return;
 
+        // Force uncheck if notifications are denied by browser or unsupported
+        if (!('serviceWorker' in navigator) || !('PushManager' in window) || Notification.permission === 'denied') {
+            reminderToggle.checked = false;
+            reminderToggle.disabled = true; // Disable toggle so they know it's blocked by browser
+            reminderToggle.parentElement.title = "Notifikasi diblokir oleh browser. Izinkan di pengaturan browser Anda.";
+        }
+
         reminderToggle.addEventListener('change', async function () {
             if (this.checked) {
                 // Request Permission & Subscribe

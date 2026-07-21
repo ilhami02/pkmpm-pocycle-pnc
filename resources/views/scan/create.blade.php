@@ -52,24 +52,42 @@
             <label class="input-label">📸 Foto Kondisi Pupuk di Galon</label>
             <p class="text-earth-400 text-base mb-3">Ambil foto galon Le Minerale dari samping agar warna cairan terlihat melalui dinding galon yang bening</p>
 
-            <label for="image-input" class="block cursor-pointer">
-                <div class="border-3 border-dashed border-earth-300 hover:border-leaf-500 rounded-2xl p-8 text-center transition-colors bg-white">
-                    {{-- Placeholder --}}
-                    <div id="upload-placeholder">
-                        <div class="w-16 h-16 mx-auto mb-4 bg-earth-100 rounded-2xl flex items-center justify-center">
-                            <svg class="w-8 h-8 text-earth-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
-                        <p class="text-earth-600 text-lg font-medium mb-1">Ketuk untuk pilih foto galon</p>
-                        <p class="text-earth-400 text-base">Format: JPG, PNG, WebP (maks. 5 MB)</p>
+            {{-- Pilihan Metode Upload --}}
+            <div id="upload-method-chooser" class="grid grid-cols-2 gap-4 mb-4">
+                <button type="button" id="btn-choose-file" class="border-2 border-earth-200 hover:border-leaf-500 hover:bg-leaf-50 rounded-2xl p-6 text-center transition-all bg-white group">
+                    <div class="w-14 h-14 mx-auto mb-3 bg-blue-100 group-hover:bg-blue-200 rounded-2xl flex items-center justify-center transition-colors">
+                        <svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
                     </div>
+                    <p class="text-earth-700 font-semibold text-base mb-1">Pilih dari File</p>
+                    <p class="text-earth-400 text-sm">Galeri / penyimpanan</p>
+                </button>
+                <button type="button" id="btn-take-camera" class="border-2 border-earth-200 hover:border-leaf-500 hover:bg-leaf-50 rounded-2xl p-6 text-center transition-all bg-white group">
+                    <div class="w-14 h-14 mx-auto mb-3 bg-amber-100 group-hover:bg-amber-200 rounded-2xl flex items-center justify-center transition-colors">
+                        <svg class="w-7 h-7 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <p class="text-earth-700 font-semibold text-base mb-1">Ambil Foto</p>
+                    <p class="text-earth-400 text-sm">Buka kamera</p>
+                </button>
+            </div>
+            <p id="upload-format-hint" class="text-earth-400 text-sm text-center mb-4">Format: JPG, PNG, WebP (maks. 7 MB)</p>
 
-                    {{-- Preview --}}
-                    <img id="preview-img" class="hidden max-h-64 mx-auto rounded-xl" alt="Preview foto">
-                </div>
-                <input id="image-input" type="file" name="image" accept="image/*" capture="environment" class="hidden" required>
-            </label>
+            {{-- Preview Area (muncul setelah foto dipilih) --}}
+            <div id="preview-area" class="hidden border-3 border-dashed border-leaf-400 rounded-2xl p-6 text-center bg-leaf-50/30">
+                <img id="preview-img" class="max-h-64 mx-auto rounded-xl mb-3" alt="Preview foto">
+                <p id="preview-filename" class="text-earth-600 text-sm font-medium mb-2"></p>
+                <button type="button" id="btn-change-photo" class="text-leaf-600 hover:text-leaf-800 text-sm font-semibold underline transition-colors">
+                    🔄 Ganti Foto
+                </button>
+            </div>
+
+            {{-- Hidden file inputs (tanpa capture = dari file, dengan capture = dari kamera) --}}
+            <input id="image-input-file" type="file" name="image" accept="image/*" class="hidden">
+            <input id="image-input-camera" type="file" name="image" accept="image/*" capture="environment" class="hidden">
 
             @error('image')
                 <p class="input-error">{{ $message }}</p>
@@ -114,3 +132,79 @@
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const btnFile = document.getElementById('btn-choose-file');
+    const btnCamera = document.getElementById('btn-take-camera');
+    const inputFile = document.getElementById('image-input-file');
+    const inputCamera = document.getElementById('image-input-camera');
+    const chooser = document.getElementById('upload-method-chooser');
+    const formatHint = document.getElementById('upload-format-hint');
+    const previewArea = document.getElementById('preview-area');
+    const previewImg = document.getElementById('preview-img');
+    const previewFilename = document.getElementById('preview-filename');
+    const btnChange = document.getElementById('btn-change-photo');
+
+    let activeInput = null;
+
+    // Klik tombol "Pilih dari File" → buka file picker tanpa kamera
+    btnFile.addEventListener('click', function () {
+        inputFile.setAttribute('name', 'image');
+        inputCamera.removeAttribute('name');
+        inputFile.click();
+        activeInput = inputFile;
+    });
+
+    // Klik tombol "Ambil Foto" → buka kamera
+    btnCamera.addEventListener('click', function () {
+        inputCamera.setAttribute('name', 'image');
+        inputFile.removeAttribute('name');
+        inputCamera.click();
+        activeInput = inputCamera;
+    });
+
+    // Handle file selection dari kedua input
+    [inputFile, inputCamera].forEach(function (input) {
+        input.addEventListener('change', function () {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+
+                // Validasi ukuran (7MB = 7 * 1024 * 1024)
+                if (file.size > 7 * 1024 * 1024) {
+                    alert('Ukuran file terlalu besar! Maksimal 7 MB.');
+                    this.value = '';
+                    return;
+                }
+
+                // Tampilkan preview
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImg.src = e.target.result;
+                    previewFilename.textContent = file.name;
+                    chooser.classList.add('hidden');
+                    formatHint.classList.add('hidden');
+                    previewArea.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    // Tombol "Ganti Foto" → tampilkan kembali pilihan
+    btnChange.addEventListener('click', function () {
+        // Reset kedua input
+        inputFile.value = '';
+        inputCamera.value = '';
+        previewImg.src = '';
+        previewFilename.textContent = '';
+
+        // Tampilkan kembali chooser
+        previewArea.classList.add('hidden');
+        chooser.classList.remove('hidden');
+        formatHint.classList.remove('hidden');
+    });
+});
+</script>
+@endpush

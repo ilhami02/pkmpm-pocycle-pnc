@@ -34,13 +34,13 @@ class ScanController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'image'       => ['required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:5120'], // Max 5MB
+            'image'       => ['required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:7168'], // Max 7MB
             'temperature' => ['required', 'numeric', 'min:0', 'max:100'],
         ], [
             'image.required'    => 'Foto pupuk wajib diunggah.',
             'image.image'       => 'File harus berupa gambar.',
             'image.mimes'       => 'Format gambar harus JPEG, PNG, JPG, atau WebP.',
-            'image.max'         => 'Ukuran gambar maksimal 5 MB.',
+            'image.max'         => 'Ukuran gambar maksimal 7 MB.',
             'temperature.required' => 'Suhu wajib diisi.',
             'temperature.numeric'  => 'Suhu harus berupa angka.',
             'temperature.min'      => 'Suhu tidak boleh di bawah 0°C.',

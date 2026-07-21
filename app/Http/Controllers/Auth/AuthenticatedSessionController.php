@@ -13,8 +13,13 @@ class AuthenticatedSessionController extends Controller
     /**
      * Form login sederhana.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
+        // Simpan URL tujuan redirect setelah login (misal dari tutorial step 3)
+        if ($request->has('redirect_to')) {
+            session()->put('url.intended', $request->redirect_to);
+        }
+
         return view('auth.login');
     }
 

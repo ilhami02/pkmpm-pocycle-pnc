@@ -150,8 +150,9 @@
                                 <div>
                                     <p class="text-red-800 font-bold text-base mb-1">Gorengan Terlalu Banyak!</p>
                                     <p class="text-red-700 text-sm leading-relaxed">
-                                        Limbah gorengan saat ini <strong x-text="gorenganPercentage + '%'"></strong> dari total limbah.
-                                        Batas maksimal adalah <strong>20%</strong>. Minyak berlebih akan menyebabkan proses fermentasi gagal.
+                                        Volume limbah berminyak tidak boleh melebihi <strong>30% dari total limbah sayuran dan buah-buahan</strong>. 
+                                        Batas maksimal Anda saat ini adalah <strong x-text="formatNumber(totalSayuranBuah * 0.3) + ' kg'"></strong>.
+                                        Minyak berlebih akan menyebabkan proses fermentasi gagal.
                                         Kurangi volume gorengan atau tambahkan lebih banyak limbah sayuran/buah.
                                     </p>
                                 </div>
@@ -219,7 +220,7 @@
         </div>
 
         {{-- Cards: Hasil Hitung --}}
-        <div class="grid sm:grid-cols-2 gap-5 mb-8">
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-5 mb-8">
 
             {{-- Total Limbah --}}
             <div class="card card-body text-center border-leaf-200 bg-gradient-to-br from-leaf-50 to-white">
@@ -238,6 +239,16 @@
                 </div>
                 <p class="text-sm text-earth-500 mb-1">Air</p>
                 <p class="text-3xl font-extrabold text-blue-700" x-text="formatNumber(air)"></p>
+                <p class="text-base text-earth-400">liter</p>
+            </div>
+
+            {{-- Air Cucian Beras --}}
+            <div class="card card-body text-center border-slate-200 bg-gradient-to-br from-slate-50 to-white">
+                <div class="w-14 h-14 mx-auto mb-3 bg-slate-100 rounded-2xl flex items-center justify-center">
+                    <span class="text-3xl">🍚</span>
+                </div>
+                <p class="text-sm text-earth-500 mb-1">Air Cucian Beras</p>
+                <p class="text-3xl font-extrabold text-slate-700" x-text="formatNumber(airCucianBeras)"></p>
                 <p class="text-base text-earth-400">liter</p>
             </div>
 
@@ -270,7 +281,8 @@
                     <p class="font-semibold text-earth-800 text-base mb-2">Cara Menghitung:</p>
                     <ul class="text-earth-600 text-sm space-y-1">
                         <li>• <strong>Air</strong> = 2 × Total Limbah = 2 × <span x-text="formatNumber(totalLimbah)"></span> = <strong x-text="formatNumber(air)"></strong> liter</li>
-                        <li>• <strong>Total Campuran</strong> = Limbah + Air = <span x-text="formatNumber(totalLimbah)"></span> + <span x-text="formatNumber(air)"></span> = <strong x-text="formatNumber(totalCampuran)"></strong> kg</li>
+                        <li>• <strong>Air Cucian Beras</strong> = <strong x-text="formatNumber(airCucianBeras)"></strong> liter <span class="text-earth-500" x-text="(parseFloat(gorengan) || 0) > 0 ? '(ditambah menjadi 2L karena ada bahan berminyak)' : '(1L karena tanpa bahan berminyak)'"></span></li>
+                        <li>• <strong>Total Campuran</strong> = Limbah + Air + Air Cucian Beras = <span x-text="formatNumber(totalLimbah)"></span> + <span x-text="formatNumber(air)"></span> + <span x-text="formatNumber(airCucianBeras)"></span> = <strong x-text="formatNumber(totalCampuran)"></strong> kg/liter</li>
                         <li>• <strong>EM4</strong> = 30 ml × <span x-text="formatNumber(totalCampuran)"></span> = <strong x-text="formatNumber(em4)"></strong> ml</li>
                         <li>• <strong>Molase</strong> = 30 ml × <span x-text="formatNumber(totalCampuran)"></span> = <strong x-text="formatNumber(molase)"></strong> ml</li>
                     </ul>
@@ -346,8 +358,19 @@
             </div>
 
             {{-- Instruksi 5 --}}
+            <div class="card card-body flex items-start gap-4 hover:border-slate-300 transition-all">
+                <div class="w-10 h-10 bg-slate-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">5</div>
+                <div>
+                    <h3 class="text-lg font-bold text-earth-800 mb-1">Tambahkan Air Cucian Beras</h3>
+                    <p class="text-earth-500 text-base">
+                        Tuang <strong x-text="formatNumber(airCucianBeras) + ' liter'"></strong> air cucian beras ke dalam galon. Air cucian beras kaya akan karbohidrat yang membantu proses fermentasi.
+                    </p>
+                </div>
+            </div>
+
+            {{-- Instruksi 6 --}}
             <div class="card card-body flex items-start gap-4 hover:border-amber-300 transition-all">
-                <div class="w-10 h-10 bg-amber-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">5</div>
+                <div class="w-10 h-10 bg-amber-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">6</div>
                 <div>
                     <h3 class="text-lg font-bold text-earth-800 mb-1">Tambahkan EM4</h3>
                     <p class="text-earth-500 text-base">
@@ -356,9 +379,9 @@
                 </div>
             </div>
 
-            {{-- Instruksi 6 --}}
+            {{-- Instruksi 7 --}}
             <div class="card card-body flex items-start gap-4 hover:border-yellow-300 transition-all">
-                <div class="w-10 h-10 bg-yellow-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">6</div>
+                <div class="w-10 h-10 bg-yellow-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">7</div>
                 <div>
                     <h3 class="text-lg font-bold text-earth-800 mb-1">Tambahkan Molase / Tetes Tebu</h3>
                     <p class="text-earth-500 text-base">
@@ -367,16 +390,16 @@
                 </div>
             </div>
 
-            {{-- Instruksi 7 --}}
+            {{-- Instruksi 8 --}}
             <div class="card card-body flex items-start gap-4 hover:border-leaf-300 transition-all">
-                <div class="w-10 h-10 bg-leaf-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">7</div>
+                <div class="w-10 h-10 bg-leaf-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">8</div>
                 <div>
                     <h3 class="text-lg font-bold text-earth-800 mb-1">Aduk Rata & Tutup Galon</h3>
                     <p class="text-earth-500 text-base">Aduk seluruh campuran hingga merata. Tutup galon rapat (jangan sampai kedap udara, berikan sedikit celah) lalu simpan di tempat teduh.</p>
                 </div>
             </div>
 
-            {{-- Instruksi 8 --}}
+            {{-- Instruksi 9 --}}
             <div class="card card-body flex items-start gap-4 hover:border-leaf-300 transition-all bg-gradient-to-br from-leaf-50 to-white border-leaf-200">
                 <div class="w-10 h-10 bg-gradient-to-br from-leaf-500 to-leaf-700 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">✓</div>
                 <div>
@@ -407,9 +430,13 @@
                         📷 Scan Galon Pertama Anda
                     </a>
                 @else
-                    <a href="{{ route('register') }}" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-10 py-5">
+                    <a href="{{ route('register', ['redirect_to' => route('tutorial.index')]) }}" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-10 py-5">
                         📝 Daftar untuk Mulai Scan
                     </a>
+                    <p class="text-leaf-100 mt-4 text-base">
+                        Sudah punya akun?
+                        <a href="{{ route('login', ['redirect_to' => route('tutorial.index')]) }}" class="text-white font-semibold underline hover:text-leaf-200 transition-colors">Masuk di sini</a>
+                    </p>
                 @endauth
             </div>
         </div>
@@ -432,8 +459,12 @@ function tutorialWizard() {
         buah: 0,
         gorengan: 0,
 
+        get totalSayuranBuah() {
+            return (parseFloat(this.sayuran) || 0) + (parseFloat(this.buah) || 0);
+        },
+
         get totalLimbah() {
-            return (parseFloat(this.sayuran) || 0) + (parseFloat(this.buah) || 0) + (parseFloat(this.gorengan) || 0);
+            return this.totalSayuranBuah + (parseFloat(this.gorengan) || 0);
         },
 
         get gorenganPercentage() {
@@ -442,15 +473,19 @@ function tutorialWizard() {
         },
 
         get isGorenganOverLimit() {
-            return this.totalLimbah > 0 && this.gorenganPercentage > 20;
+            return (parseFloat(this.gorengan) || 0) > (this.totalSayuranBuah * 0.3);
         },
 
         get air() {
             return this.totalLimbah * 2;
         },
 
+        get airCucianBeras() {
+            return (parseFloat(this.gorengan) || 0) > 0 ? 2 : 1;
+        },
+
         get totalCampuran() {
-            return this.totalLimbah + this.air;
+            return this.totalLimbah + this.air + this.airCucianBeras;
         },
 
         get em4() {
