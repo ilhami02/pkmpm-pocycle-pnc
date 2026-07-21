@@ -430,12 +430,12 @@
                         📷 Scan Galon Pertama Anda
                     </a>
                 @else
-                    <a href="{{ route('register', ['redirect_to' => route('tutorial.index')]) }}" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-10 py-5">
+                    <a href="{{ route('register', ['redirect_to' => route('tutorial.index', ['step' => 3])]) }}" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-10 py-5">
                         📝 Daftar untuk Mulai Scan
                     </a>
                     <p class="text-leaf-100 mt-4 text-base">
                         Sudah punya akun?
-                        <a href="{{ route('login', ['redirect_to' => route('tutorial.index')]) }}" class="text-white font-semibold underline hover:text-leaf-200 transition-colors">Masuk di sini</a>
+                        <a href="{{ route('login', ['redirect_to' => route('tutorial.index', ['step' => 3])]) }}" class="text-white font-semibold underline hover:text-leaf-200 transition-colors">Masuk di sini</a>
                     </p>
                 @endauth
             </div>
@@ -453,8 +453,11 @@
 {{-- Alpine.js Component --}}
 <script>
 function tutorialWizard() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialStep = parseInt(urlParams.get('step')) || 1;
+
     return {
-        step: 1,
+        step: initialStep,
         sayuran: 0,
         buah: 0,
         gorengan: 0,
