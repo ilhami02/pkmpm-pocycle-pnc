@@ -38,20 +38,32 @@
         </div>
 
         {{-- Password --}}
-        <div>
+        <div x-data="{ show: false }">
             <label for="password" class="input-label">🔒 Password</label>
-            <input id="password" type="password" name="password" required autocomplete="new-password"
-                   class="input-field" placeholder="Minimal 8 karakter">
+            <div class="relative">
+                <input id="password" :type="show ? 'text' : 'password'" name="password" required autocomplete="new-password"
+                       class="input-field pr-12" placeholder="Minimal 8 karakter">
+                <button type="button" @click="show = !show" class="absolute right-4 top-1/2 -translate-y-1/2 text-xl focus:outline-none text-earth-500 hover:text-earth-700">
+                    <span x-show="!show">👁️</span>
+                    <span x-show="show" style="display: none;">🙈</span>
+                </button>
+            </div>
             @error('password')
                 <p class="input-error">{{ $message }}</p>
             @enderror
         </div>
 
         {{-- Confirm Password --}}
-        <div>
+        <div x-data="{ show: false }">
             <label for="password_confirmation" class="input-label">🔒 Ulangi Password</label>
-            <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password"
-                   class="input-field" placeholder="Masukkan ulang password">
+            <div class="relative">
+                <input id="password_confirmation" :type="show ? 'text' : 'password'" name="password_confirmation" required autocomplete="new-password"
+                       class="input-field pr-12" placeholder="Masukkan ulang password">
+                <button type="button" @click="show = !show" class="absolute right-4 top-1/2 -translate-y-1/2 text-xl focus:outline-none text-earth-500 hover:text-earth-700">
+                    <span x-show="!show">👁️</span>
+                    <span x-show="show" style="display: none;">🙈</span>
+                </button>
+            </div>
             @error('password_confirmation')
                 <p class="input-error">{{ $message }}</p>
             @enderror

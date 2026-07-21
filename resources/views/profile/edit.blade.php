@@ -61,6 +61,65 @@
         </form>
     </div>
 
+    {{-- Update Password --}}
+    <div class="card card-body mb-8">
+        <h2 class="text-xl font-semibold text-earth-800 mb-6">Ubah Password</h2>
+
+        <form method="POST" action="{{ route('profile.password.update') }}" class="space-y-5">
+            @csrf
+            @method('PUT')
+
+            <div x-data="{ show: false }">
+                <label for="current_password" class="input-label">🔓 Password Saat Ini</label>
+                <div class="relative">
+                    <input id="current_password" :type="show ? 'text' : 'password'" name="current_password" required autocomplete="current-password"
+                           class="input-field pr-12" placeholder="Masukkan password saat ini">
+                    <button type="button" @click="show = !show" class="absolute right-4 top-1/2 -translate-y-1/2 text-xl focus:outline-none text-earth-500 hover:text-earth-700">
+                        <span x-show="!show">👁️</span>
+                        <span x-show="show" style="display: none;">🙈</span>
+                    </button>
+                </div>
+                @error('current_password')
+                    <p class="input-error">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div x-data="{ show: false }">
+                <label for="new_password" class="input-label">🔒 Password Baru</label>
+                <div class="relative">
+                    <input id="new_password" :type="show ? 'text' : 'password'" name="password" required autocomplete="new-password"
+                           class="input-field pr-12" placeholder="Minimal 8 karakter">
+                    <button type="button" @click="show = !show" class="absolute right-4 top-1/2 -translate-y-1/2 text-xl focus:outline-none text-earth-500 hover:text-earth-700">
+                        <span x-show="!show">👁️</span>
+                        <span x-show="show" style="display: none;">🙈</span>
+                    </button>
+                </div>
+                @error('password')
+                    <p class="input-error">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div x-data="{ show: false }">
+                <label for="new_password_confirmation" class="input-label">🔒 Ulangi Password Baru</label>
+                <div class="relative">
+                    <input id="new_password_confirmation" :type="show ? 'text' : 'password'" name="password_confirmation" required autocomplete="new-password"
+                           class="input-field pr-12" placeholder="Masukkan ulang password baru">
+                    <button type="button" @click="show = !show" class="absolute right-4 top-1/2 -translate-y-1/2 text-xl focus:outline-none text-earth-500 hover:text-earth-700">
+                        <span x-show="!show">👁️</span>
+                        <span x-show="show" style="display: none;">🙈</span>
+                    </button>
+                </div>
+                @error('password_confirmation')
+                    <p class="input-error">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <button type="submit" class="btn-primary">
+                💾 Simpan Password
+            </button>
+        </form>
+    </div>
+
     {{-- Delete Account --}}
     <div class="card card-body border-red-200">
         <h2 class="text-xl font-semibold text-red-700 mb-3">🗑️ Hapus Akun</h2>
@@ -70,9 +129,15 @@
             @csrf
             @method('DELETE')
 
-            <div class="mb-4">
+            <div class="mb-4" x-data="{ show: false }">
                 <label for="delete-password" class="input-label">🔒 Konfirmasi Password</label>
-                <input id="delete-password" type="password" name="password" required class="input-field" placeholder="Masukkan password untuk konfirmasi">
+                <div class="relative">
+                    <input id="delete-password" :type="show ? 'text' : 'password'" name="password" required class="input-field pr-12" placeholder="Masukkan password untuk konfirmasi">
+                    <button type="button" @click="show = !show" class="absolute right-4 top-1/2 -translate-y-1/2 text-xl focus:outline-none text-earth-500 hover:text-earth-700">
+                        <span x-show="!show">👁️</span>
+                        <span x-show="show" style="display: none;">🙈</span>
+                    </button>
+                </div>
                 @error('password', 'userDeletion')
                     <p class="input-error">{{ $message }}</p>
                 @enderror

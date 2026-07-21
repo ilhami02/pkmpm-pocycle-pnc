@@ -34,6 +34,25 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('success', 'Profil berhasil diperbarui.');
     }
 
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', \Illuminate\Validation\Rules\Password::defaults(), 'confirmed'],
+        ], [
+            'current_password.required' => 'Password saat ini wajib diisi.',
+            'current_password.current_password' => 'Password saat ini salah.',
+            'password.required' => 'Password baru wajib diisi.',
+            'password.confirmed' => 'Konfirmasi password baru tidak cocok.',
+        ]);
+
+        $request->user()->update([
+            'password' => \Illuminate\Support\Facades\Hash::make($validated['password']),
+        ]);
+
+        return Redirect::route('profile.edit')->with('success', 'Password berhasil diubah.');
+    }
+
     public function destroy(Request $request): RedirectResponse
     {
         $request->validate([
