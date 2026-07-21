@@ -458,9 +458,15 @@ function tutorialWizard() {
 
     return {
         step: initialStep,
-        sayuran: 0,
-        buah: 0,
-        gorengan: 0,
+        sayuran: parseFloat(localStorage.getItem('pocycle_sayuran')) || 0,
+        buah: parseFloat(localStorage.getItem('pocycle_buah')) || 0,
+        gorengan: parseFloat(localStorage.getItem('pocycle_gorengan')) || 0,
+
+        init() {
+            this.$watch('sayuran', value => localStorage.setItem('pocycle_sayuran', value));
+            this.$watch('buah', value => localStorage.setItem('pocycle_buah', value));
+            this.$watch('gorengan', value => localStorage.setItem('pocycle_gorengan', value));
+        },
 
         get totalSayuranBuah() {
             return (parseFloat(this.sayuran) || 0) + (parseFloat(this.buah) || 0);
