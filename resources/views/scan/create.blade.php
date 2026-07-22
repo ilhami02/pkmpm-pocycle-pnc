@@ -131,6 +131,23 @@
         </button>
     </form>
 </div>
+
+{{-- Loading Overlay Popup --}}
+<div id="loading-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300">
+    <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-md w-full mx-4 text-center transform scale-95 transition-transform duration-300" id="loading-modal">
+        <div class="w-20 h-20 mx-auto bg-leaf-100 rounded-full flex items-center justify-center mb-6 animate-bounce">
+            <span class="text-4xl">🌱</span>
+        </div>
+        <h3 class="text-2xl font-bold text-earth-800 mb-2">Memproses Data...</h3>
+        <p class="text-earth-500 mb-6 text-sm">Mohon tunggu sebentar, sedang mengecek kondisi pupuk Anda.</p>
+        
+        {{-- Progress Bar --}}
+        <div class="w-full bg-earth-100 rounded-full h-4 mb-2 overflow-hidden shadow-inner">
+            <div id="progress-bar" class="bg-gradient-to-r from-leaf-400 to-leaf-600 h-4 rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
+        </div>
+        <p id="progress-text" class="text-sm font-bold text-leaf-600">0%</p>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -146,6 +163,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const previewImg = document.getElementById('preview-img');
     const previewFilename = document.getElementById('preview-filename');
     const btnChange = document.getElementById('btn-change-photo');
+    const form = document.querySelector('form');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const loadingModal = document.getElementById('loading-modal');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
 
     let activeInput = null;
 
@@ -204,6 +226,53 @@ document.addEventListener('DOMContentLoaded', function () {
         previewArea.classList.add('hidden');
         chooser.classList.remove('hidden');
         formatHint.classList.remove('hidden');
+    });
+
+    // Event submit form untuk menampilkan popup loading
+    form.addEventListener('submit', function (e) {
+        // Validasi native HTML5 (misal input suhu harus diisi)
+        if (!form.checkValidity()) {
+            return; // biarkan browser menampilkan error native
+        }
+
+        // Pastikan salah satu file input memiliki file
+        if (!inputFile.files.length && !inputCamera.files.length) {
+            alert('Silakan pilih atau ambil foto terlebih dahulu.');
+            e.preventDefault();
+            return;
+        }
+
+        // Tampilkan overlay
+        loadingOverlay.classList.remove('hidden');
+        loadingOverlay.classList.add('flex');
+        
+        // Trigger reflow & transisi
+        setTimeout(() => {
+            loadingOverlay.classList.remove('opacity-0');
+            loadingModal.classList.remove('scale-95');
+            loadingModal.classList.add('scale-100');
+        }, 10);
+
+        // Simulasi progress bar
+        let progress = 0;
+        const interval = setInterval(() => {
+            if (progress < 40) {
+                progress += Math.random() * 8 + 4; // Cepat di awal
+            } else if (progress < 75) {
+                progress += Math.random() * 4 + 2; // Sedang
+            } else if (progress < 90) {
+                progress += Math.random() * 2 + 0.5; // Lambat
+            } else if (progress < 98) {
+                progress += Math.random() * 0.5 + 0.1; // Sangat lambat mendekati akhir
+            }
+            
+            if (progress >= 99) {
+                progress = 99; // Mentok di 99% sampai halaman refresh
+            }
+            
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${Math.floor(progress)}%`;
+        }, 400);
     });
 });
 </script>
