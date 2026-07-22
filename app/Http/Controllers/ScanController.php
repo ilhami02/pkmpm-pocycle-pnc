@@ -60,9 +60,12 @@ class ScanController extends Controller
 
             // Hitung umur fermentasi (hari ke-)
             $fermentationDay = $user->getFermentationDay();
+            
+            // Format tanggal mulai (misal: "Jumat, 12 Juni 2026")
+            $startDate = $user->current_batch_started_at ? $user->current_batch_started_at->translatedFormat('l, d F Y') : null;
 
             // Analisis dengan API (multi-token fallback)
-            $result = $this->analysisService->analyze($imagePath, (float) $validated['temperature'], $fermentationDay);
+            $result = $this->analysisService->analyze($imagePath, (float) $validated['temperature'], $fermentationDay, $startDate);
 
             // Simpan ke riwayat
             $scan = Auth::user()->scanHistories()->create([

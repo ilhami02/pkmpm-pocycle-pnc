@@ -29,10 +29,11 @@ class FertilizerAnalysisService
      * @param  string $imagePath   Path file gambar relatif ke storage/app/public
      * @param  float  $temperature Suhu saat ini (°C)
      * @param  int    $fermentationDay Umur fermentasi (hari ke-berapa)
+     * @param  string|null $startDate Tanggal mulai pembuatan
      * @return array  Data analisis terstruktur
      * @throws Exception
      */
-    public function analyze(string $imagePath, float $temperature, int $fermentationDay): array
+    public function analyze(string $imagePath, float $temperature, int $fermentationDay, ?string $startDate = null): array
     {
         $tokens = ApiToken::available()->get();
 
@@ -47,7 +48,7 @@ class FertilizerAnalysisService
             try {
                 Log::info("POCYCLE: Mencoba analisis dengan token #{$token->id} ({$token->provider})");
 
-                $result = $this->callApi($token, $imagePath, $temperature, $fermentationDay);
+                $result = $this->callApi($token, $imagePath, $temperature, $fermentationDay, $startDate);
 
                 // Berhasil! Update statistik penggunaan
                 $token->update([
@@ -98,7 +99,7 @@ class FertilizerAnalysisService
      * Saat ini menggunakan Gemini API sebagai default.
      * Bisa dikembangkan untuk mendukung OpenAI Vision, Claude, dll.
      */
-    protected function callApi(ApiToken $token, string $imagePath, float $temperature, int $fermentationDay): array
+    protected function callApi(ApiToken $token, string $imagePath, float $temperature, int $fermentationDay, ?string $startDate = null): array
     {
         $fullPath = storage_path("app/public/{$imagePath}");
 
@@ -118,7 +119,7 @@ class FertilizerAnalysisService
         ]);
 
         // Bangun prompt dengan suhu dan hari
-        $promptText = $this->buildPrompt($temperature, $fermentationDay);
+        $promptText = $this->buildPrompt($temperature, $fermentationDay, $startDate);
         $timeout = config('services.fertilizer_api.timeout', 30);
 
         // === Gemini API Call ===
@@ -161,8 +162,10 @@ class FertilizerAnalysisService
      * Bangun prompt analisis pupuk organik cair.
      * Prompt dirancang untuk mendapatkan respons JSON terstruktur.
      */
-    protected function buildPrompt(float $temperature, int $fermentationDay): string
+    protected function buildPrompt(float $temperature, int $fermentationDay, ?string $startDate = null): string
     {
+        $startDateText = $startDate ? "\nTanggal mulai pembuatan: {$startDate} (Gunakan sebagai referensi usia jika ada tulisan tanggal pada galon)" : "";
+
         return <<<PROMPT
 Kamu adalah ahli analisis Pupuk Organik Cair (POC) dari limbah sisa makanan bergizi.
 
@@ -174,7 +177,7 @@ Kamu mengamati warna dan kondisi cairan pupuk yang terlihat MELALUI dinding plas
 Perhatikan warna cairan, tingkat kekeruhan, ada/tidaknya lapisan terpisah, dan endapan di dasar galon.
 
 Suhu saat ini: {$temperature}°C
-Umur fermentasi: {$fermentationDay} hari
+Umur fermentasi: {$fermentationDay} hari{$startDateText}
 
 Berikan respons HANYA dalam format JSON murni (tanpa markdown, tanpa backtick, tanpa teks lain).
 PASTIKAN JSON tersebut 100% valid. JANGAN ada enter (newline) asli di dalam teks, gunakan \n jika perlu baris baru.

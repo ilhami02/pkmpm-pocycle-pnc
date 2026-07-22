@@ -44,7 +44,7 @@
     </div>
 
     {{-- Form --}}
-    <form method="POST" action="{{ route('scan.store') }}" enctype="multipart/form-data" class="space-y-8">
+    <form id="scan-form" method="POST" action="{{ route('scan.store') }}" enctype="multipart/form-data" class="space-y-8">
         @csrf
 
         {{-- Upload Foto --}}
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const previewImg = document.getElementById('preview-img');
     const previewFilename = document.getElementById('preview-filename');
     const btnChange = document.getElementById('btn-change-photo');
-    const form = document.querySelector('form');
+    const form = document.getElementById('scan-form');
     const loadingOverlay = document.getElementById('loading-overlay');
     const loadingModal = document.getElementById('loading-modal');
     const progressBar = document.getElementById('progress-bar');
@@ -230,6 +230,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Event submit form untuk menampilkan popup loading
     form.addEventListener('submit', function (e) {
+        // Cegah multiple submit jika tombol diklik berkali-kali
+        if (form.dataset.submitting === 'true') {
+            e.preventDefault();
+            return;
+        }
+
         // Validasi native HTML5 (misal input suhu harus diisi)
         if (!form.checkValidity()) {
             return; // biarkan browser menampilkan error native
@@ -240,6 +246,17 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Silakan pilih atau ambil foto terlebih dahulu.');
             e.preventDefault();
             return;
+        }
+
+        // Tandai form sedang disubmit
+        form.dataset.submitting = 'true';
+        
+        // Ubah tampilan tombol submit
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+            submitBtn.innerHTML = '⏳ Memproses...';
         }
 
         // Tampilkan overlay
