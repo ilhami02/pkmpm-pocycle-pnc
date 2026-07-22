@@ -197,8 +197,11 @@ Kriteria penentuan status:
    - PENTING: Jika cairan memisah dan ada lapisan tebal (lemak/minyak/busa kotor) di bagian atas, itu BUKAN needs_stirring, melainkan contaminated.
 - "contaminated": Warna kehitaman/keruh pekat tidak wajar, ada jamur/bercak putih/biru/hijau mengambang di permukaan. ATAU terdapat lapisan tebal berlemak/berminyak/busa/sludge yang mengambang dan memisah dengan jelas di bagian ATAS cairan (indikasi pembuatan gagal akibat limbah minyak/hewani berlebih).
 
-Jika Umur Fermentasi sudah >= 21 hari (memasuki minggu ke-3 atau ke-4) dan status BUKAN invalid_image: 
+Jika Umur Fermentasi sudah >= 21 hari (memasuki minggu ke-3 atau ke-4) dan status BUKAN invalid_image atau contaminated: 
 Berikan saran/rekomendasi agar pengguna segera mengecek apakah pupuk sudah siap panen (mengingatkan untuk memverifikasi wangi seperti tape, warna seperti teh pekat, dan ampas mengendap).
+
+Jika status "contaminated":
+Pastikan recommendation dengan tegas menyuruh pengguna untuk MENGHENTIKAN proses, membuang cairan tersebut dengan aman, mencuci bersih galon, dan memulai dari awal dengan takaran limbah berminyak yang lebih sedikit.
 
 Penting: Abaikan label/tulisan pada galon Le Minerale. Fokus hanya pada warna dan kondisi cairan di dalamnya.
 Berikan rekomendasi yang spesifik, praktis, dan menggunakan bahasa sederhana yang mudah dipahami ibu-ibu.

@@ -80,7 +80,7 @@ class ScanController extends Controller
 
             return redirect()
                 ->route('scan.show', $scan)
-                ->with('success', 'Analisis pupuk berhasil! Lihat hasilnya di bawah.');
+                ->with('success', 'Analisis pupuk selesai. Perhatikan status dan rekomendasi di bawah ini.');
 
         } catch (\Throwable $e) {
             return redirect()->route('scan.create')
@@ -100,5 +100,16 @@ class ScanController extends Controller
         }
 
         return view('scan.result', ['scan' => $scanHistory]);
+    }
+
+    /**
+     * Ulangi proses pembuatan pupuk (reset batch) dan arahkan ke tutorial.
+     */
+    public function restart()
+    {
+        Auth::user()->update(['current_batch_started_at' => null]);
+        
+        return redirect()->route('tutorial.index')
+            ->with('info', 'Siklus pembuatan pupuk Anda sebelumnya telah dihentikan. Silakan pelajari takaran dan mulai dari awal.');
     }
 }

@@ -109,9 +109,18 @@
 
     {{-- Action Buttons --}}
     <div class="flex flex-col sm:flex-row gap-4 mt-10">
-        <a href="{{ route('scan.create') }}" class="btn-primary flex-1 text-center text-xl py-5">
-            📷 Scan Ulang
-        </a>
+        @if($scan->status === 'contaminated')
+            <form action="{{ route('scan.restart') }}" method="POST" class="flex-1 flex">
+                @csrf
+                <button type="submit" class="btn-primary flex-1 text-center text-xl py-5 bg-red-600 hover:bg-red-700 border-red-600 hover:border-red-700">
+                    🔄 Buat Ulang Pupuk
+                </button>
+            </form>
+        @else
+            <a href="{{ route('scan.create') }}" class="btn-primary flex-1 text-center text-xl py-5">
+                📷 Scan Ulang
+            </a>
+        @endif
         <a href="{{ route('history.index') }}" class="btn-secondary flex-1 text-center text-xl py-5">
             📋 Lihat Riwayat
         </a>

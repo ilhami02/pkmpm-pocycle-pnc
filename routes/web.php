@@ -34,6 +34,7 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::get('/scan/create', [ScanController::class, 'create'])->name('scan.create');
     Route::post('/scan', [ScanController::class, 'store'])->name('scan.store');
+    Route::post('/scan/restart', [ScanController::class, 'restart'])->name('scan.restart');
     Route::get('/scan/{scanHistory}', [ScanController::class, 'show'])->name('scan.show');
 
     // Panen POC
