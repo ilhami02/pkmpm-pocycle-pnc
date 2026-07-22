@@ -193,9 +193,9 @@ Kriteria penentuan status:
    - Jika Umur Fermentasi antara 1-4 hari (Fase Awal): Suhu 35-40°C adalah NORMAL (bakteri sangat aktif memecah karbohidrat).
    - Jika Umur Fermentasi >= 5 hari (Fase Stabil): Suhu 25-32°C adalah NORMAL.
 - "needs_stirring": 
-   - Warna terlalu pekat/gelap, ada endapan tebal di dasar, atau cairan terpisah (tanpa lapisan minyak tebal).
-   - Atau suhu tidak sesuai dengan fase usianya (misal hari ke-10 tapi suhu 38°C, atau hari ke-2 suhu 28°C).
-- "contaminated": Warna kehitaman/keruh pekat tidak wajar, ada jamur/bercak putih/biru/hijau mengambang di permukaan. TERDAPAT lapisan tebal berlemak/berminyak/busa kotor di bagian atas cairan yang memisah dengan sangat jelas (indikasi limbah berminyak berlebih), yang berarti pupuk GAGAL.
+   - Ada endapan normal di dasar galon, atau suhu tidak sesuai dengan fase usianya.
+   - PENTING: Jika cairan memisah dan ada lapisan tebal (lemak/minyak/busa kotor) di bagian atas, itu BUKAN needs_stirring, melainkan contaminated.
+- "contaminated": Warna kehitaman/keruh pekat tidak wajar, ada jamur/bercak putih/biru/hijau mengambang di permukaan. ATAU terdapat lapisan tebal berlemak/berminyak/busa/sludge yang mengambang dan memisah dengan jelas di bagian ATAS cairan (indikasi pembuatan gagal akibat limbah minyak/hewani berlebih).
 
 Jika Umur Fermentasi sudah >= 21 hari (memasuki minggu ke-3 atau ke-4) dan status BUKAN invalid_image: 
 Berikan saran/rekomendasi agar pengguna segera mengecek apakah pupuk sudah siap panen (mengingatkan untuk memverifikasi wangi seperti tape, warna seperti teh pekat, dan ampas mengendap).
