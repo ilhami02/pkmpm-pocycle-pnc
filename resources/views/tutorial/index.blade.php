@@ -467,8 +467,6 @@
                 @endauth
             </div>
         </div>
-
-        </div>
     </section>
 
     {{-- Modal Cara Membersihkan Gorengan --}}
