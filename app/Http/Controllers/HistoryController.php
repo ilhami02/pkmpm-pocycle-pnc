@@ -13,13 +13,21 @@ class HistoryController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $histories = $user
-            ->scanHistories()
-            ->latest()
-            ->paginate(10);
+        
+        $activeBatches = $user->fermentationBatches()->active()->get();
+        $allBatches = $user->fermentationBatches()->latest()->get();
+        
+        $historiesQuery = $user->scanHistories()->with('batch')->latest();
 
-        $fermentationDay = $user->getFermentationDay();
+        if ($request->filled('batch_id')) {
+            $historiesQuery->where('fermentation_batch_id', $request->batch_id);
+        }
 
-        return view('history.index', compact('histories', 'fermentationDay'));
+        $histories = $historiesQuery->paginate(10);
+
+        // Keep query string for pagination links
+        $histories->appends($request->all());
+
+        return view('history.index', compact('histories', 'activeBatches', 'allBatches'));
     }
 }

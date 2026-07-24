@@ -11,8 +11,8 @@
                     <div class="w-20 h-20 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-4 backdrop-blur-sm border border-white/30">
                         <span class="text-4xl">🌾</span>
                     </div>
-                    <h2 class="text-3xl font-bold font-heading mb-2">Verifikasi Panen POC</h2>
-                    <p class="text-leaf-50">Umur fermentasi saat ini: <strong class="text-white">{{ $fermentationDay }} Hari</strong></p>
+                    <h2 class="text-3xl font-bold font-heading mb-2">Verifikasi Panen - {{ $batch->name }}</h2>
+                    <p class="text-leaf-50">Umur fermentasi saat ini: <strong class="text-white">{{ $batch->getFermentationDay() }} Hari</strong></p>
                 </div>
 
                 {{-- Content --}}
@@ -35,6 +35,7 @@
 
                     <form method="POST" action="{{ route('harvest.store') }}" class="space-y-8">
                         @csrf
+                        <input type="hidden" name="batch_id" value="{{ $batch->id }}">
 
                         {{-- Question 1 --}}
                         <div class="p-5 border border-earth-200 rounded-xl {{ $errors->has('q_smell') ? 'border-red-300 bg-red-50/50' : 'hover:border-leaf-300 transition-colors bg-white' }}">

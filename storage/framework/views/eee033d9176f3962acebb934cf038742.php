@@ -97,6 +97,24 @@
             </div>
 
             
+            <div class="card card-body group hover:border-orange-300 transition-all">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl flex items-center justify-center flex-shrink-0">
+                        <span class="text-3xl">🍌</span>
+                    </div>
+                    <div class="flex-1">
+                        <label for="buah" class="input-label mb-0">Limbah Buah-buahan</label>
+                        <p class="text-earth-400 text-base mb-3">Kulit pisang, kulit jeruk, sisa buah, dll.</p>
+                        <div class="relative">
+                            <input id="buah" type="number" x-model.number="buah" min="0" step="0.1"
+                                   class="input-field pr-20" placeholder="0">
+                            <span class="absolute right-5 top-1/2 -translate-y-1/2 text-earth-400 text-base font-medium">kg/liter</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
             <div class="card card-body group hover:border-amber-300 transition-all">
                 <div class="flex items-start gap-4">
                     <div class="w-14 h-14 bg-gradient-to-br from-amber-100 to-amber-200 rounded-2xl flex items-center justify-center flex-shrink-0">
@@ -131,30 +149,13 @@
                                 <div>
                                     <p class="text-red-800 font-bold text-base mb-1">Gorengan Terlalu Banyak!</p>
                                     <p class="text-red-700 text-sm leading-relaxed">
-                                        Limbah gorengan saat ini <strong x-text="gorenganPercentage + '%'"></strong> dari total limbah.
-                                        Batas maksimal adalah <strong>20%</strong>. Minyak berlebih akan menyebabkan proses fermentasi gagal.
+                                        Volume limbah berminyak tidak boleh melebihi <strong>30% dari total limbah sayuran dan buah-buahan</strong>. 
+                                        Batas maksimal Anda saat ini adalah <strong x-text="formatNumber(totalSayuranBuah * 0.3) + ' kg'"></strong>.
+                                        Minyak berlebih akan menyebabkan proses fermentasi gagal.
                                         Kurangi volume gorengan atau tambahkan lebih banyak limbah sayuran/buah.
                                     </p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            
-            <div class="card card-body group hover:border-orange-300 transition-all">
-                <div class="flex items-start gap-4">
-                    <div class="w-14 h-14 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl flex items-center justify-center flex-shrink-0">
-                        <span class="text-3xl">🍌</span>
-                    </div>
-                    <div class="flex-1">
-                        <label for="buah" class="input-label mb-0">Limbah Buah-buahan</label>
-                        <p class="text-earth-400 text-base mb-3">Kulit pisang, kulit jeruk, sisa buah, dll.</p>
-                        <div class="relative">
-                            <input id="buah" type="number" x-model.number="buah" min="0" step="0.1"
-                                   class="input-field pr-20" placeholder="0">
-                            <span class="absolute right-5 top-1/2 -translate-y-1/2 text-earth-400 text-base font-medium">kg/liter</span>
                         </div>
                     </div>
                 </div>
@@ -173,12 +174,12 @@
                     <p class="text-xl font-bold text-earth-800" x-text="formatNumber(sayuran) + ' kg'"></p>
                 </div>
                 <div class="bg-white/60 rounded-xl p-3">
-                    <p class="text-sm text-earth-500 mb-1">Gorengan</p>
-                    <p class="text-xl font-bold" :class="isGorenganOverLimit ? 'text-red-600' : 'text-earth-800'" x-text="formatNumber(gorengan) + ' kg'"></p>
-                </div>
-                <div class="bg-white/60 rounded-xl p-3">
                     <p class="text-sm text-earth-500 mb-1">Buah</p>
                     <p class="text-xl font-bold text-earth-800" x-text="formatNumber(buah) + ' kg'"></p>
+                </div>
+                <div class="bg-white/60 rounded-xl p-3">
+                    <p class="text-sm text-earth-500 mb-1">Gorengan</p>
+                    <p class="text-xl font-bold" :class="isGorenganOverLimit ? 'text-red-600' : 'text-earth-800'" x-text="formatNumber(gorengan) + ' kg'"></p>
                 </div>
             </div>
             <div class="mt-4 pt-4 border-t border-leaf-200 text-center">
@@ -218,7 +219,7 @@
         </div>
 
         
-        <div class="grid sm:grid-cols-2 gap-5 mb-8">
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-5 mb-8">
 
             
             <div class="card card-body text-center border-leaf-200 bg-gradient-to-br from-leaf-50 to-white">
@@ -237,6 +238,16 @@
                 </div>
                 <p class="text-sm text-earth-500 mb-1">Air</p>
                 <p class="text-3xl font-extrabold text-blue-700" x-text="formatNumber(air)"></p>
+                <p class="text-base text-earth-400">liter</p>
+            </div>
+
+            
+            <div class="card card-body text-center border-slate-200 bg-gradient-to-br from-slate-50 to-white">
+                <div class="w-14 h-14 mx-auto mb-3 bg-slate-100 rounded-2xl flex items-center justify-center">
+                    <span class="text-3xl">🍚</span>
+                </div>
+                <p class="text-sm text-earth-500 mb-1">Air Cucian Beras</p>
+                <p class="text-3xl font-extrabold text-slate-700" x-text="formatNumber(airCucianBeras)"></p>
                 <p class="text-base text-earth-400">liter</p>
             </div>
 
@@ -269,7 +280,8 @@
                     <p class="font-semibold text-earth-800 text-base mb-2">Cara Menghitung:</p>
                     <ul class="text-earth-600 text-sm space-y-1">
                         <li>• <strong>Air</strong> = 2 × Total Limbah = 2 × <span x-text="formatNumber(totalLimbah)"></span> = <strong x-text="formatNumber(air)"></strong> liter</li>
-                        <li>• <strong>Total Campuran</strong> = Limbah + Air = <span x-text="formatNumber(totalLimbah)"></span> + <span x-text="formatNumber(air)"></span> = <strong x-text="formatNumber(totalCampuran)"></strong> kg</li>
+                        <li>• <strong>Air Cucian Beras</strong> = <strong x-text="formatNumber(airCucianBeras)"></strong> liter <span class="text-earth-500" x-text="(parseFloat(gorengan) || 0) > 0 ? '(ditambah menjadi 2L karena ada bahan berminyak)' : '(1L karena tanpa bahan berminyak)'"></span></li>
+                        <li>• <strong>Total Campuran</strong> = Limbah + Air + Air Cucian Beras = <span x-text="formatNumber(totalLimbah)"></span> + <span x-text="formatNumber(air)"></span> + <span x-text="formatNumber(airCucianBeras)"></span> = <strong x-text="formatNumber(totalCampuran)"></strong> kg/liter</li>
                         <li>• <strong>EM4</strong> = 30 ml × <span x-text="formatNumber(totalCampuran)"></span> = <strong x-text="formatNumber(em4)"></strong> ml</li>
                         <li>• <strong>Molase</strong> = 30 ml × <span x-text="formatNumber(totalCampuran)"></span> = <strong x-text="formatNumber(molase)"></strong> ml</li>
                     </ul>
@@ -345,8 +357,19 @@
             </div>
 
             
+            <div class="card card-body flex items-start gap-4 hover:border-slate-300 transition-all">
+                <div class="w-10 h-10 bg-slate-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">5</div>
+                <div>
+                    <h3 class="text-lg font-bold text-earth-800 mb-1">Tambahkan Air Cucian Beras</h3>
+                    <p class="text-earth-500 text-base">
+                        Tuang <strong x-text="formatNumber(airCucianBeras) + ' liter'"></strong> air cucian beras ke dalam galon. Air cucian beras kaya akan karbohidrat yang membantu proses fermentasi.
+                    </p>
+                </div>
+            </div>
+
+            
             <div class="card card-body flex items-start gap-4 hover:border-amber-300 transition-all">
-                <div class="w-10 h-10 bg-amber-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">5</div>
+                <div class="w-10 h-10 bg-amber-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">6</div>
                 <div>
                     <h3 class="text-lg font-bold text-earth-800 mb-1">Tambahkan EM4</h3>
                     <p class="text-earth-500 text-base">
@@ -357,7 +380,7 @@
 
             
             <div class="card card-body flex items-start gap-4 hover:border-yellow-300 transition-all">
-                <div class="w-10 h-10 bg-yellow-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">6</div>
+                <div class="w-10 h-10 bg-yellow-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">7</div>
                 <div>
                     <h3 class="text-lg font-bold text-earth-800 mb-1">Tambahkan Molase / Tetes Tebu</h3>
                     <p class="text-earth-500 text-base">
@@ -368,7 +391,7 @@
 
             
             <div class="card card-body flex items-start gap-4 hover:border-leaf-300 transition-all">
-                <div class="w-10 h-10 bg-leaf-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">7</div>
+                <div class="w-10 h-10 bg-leaf-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">8</div>
                 <div>
                     <h3 class="text-lg font-bold text-earth-800 mb-1">Aduk Rata & Tutup Galon</h3>
                     <p class="text-earth-500 text-base">Aduk seluruh campuran hingga merata. Tutup galon rapat (jangan sampai kedap udara, berikan sedikit celah) lalu simpan di tempat teduh.</p>
@@ -399,16 +422,27 @@
                     Pupuk Sudah Jadi? 🎉
                 </h2>
                 <p class="text-lg text-leaf-100 mb-6 max-w-lg mx-auto">
-                    Setelah mencampurkan semua bahan, lakukan scan galon pertama Anda untuk mulai memantau proses fermentasi.
+                    Setelah mencampurkan semua bahan, beri nama galon ini dan mulai proses fermentasi Anda.
                 </p>
                 <?php if(auth()->guard()->check()): ?>
-                    <a href="<?php echo e(route('scan.create', ['from_tutorial' => 1])); ?>" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-10 py-5">
-                        📷 Scan Galon Pertama Anda
-                    </a>
+                    <form action="<?php echo e(route('tutorial.startBatch')); ?>" method="POST" class="max-w-md mx-auto">
+                        <?php echo csrf_field(); ?>
+                        <div class="mb-4 text-left">
+                            <label for="batch_name" class="block text-white font-medium mb-2">Beri nama untuk galon pupuk ini</label>
+                            <input type="text" name="name" id="batch_name" class="w-full px-4 py-3 rounded-xl text-earth-800 border-none focus:ring-2 focus:ring-leaf-300" placeholder="Contoh: Galon 1, Galon Dapur" required>
+                        </div>
+                        <button type="submit" class="w-full btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-lg px-6 py-4">
+                            🌱 Mulai Fermentasi & Scan Galon Pertama
+                        </button>
+                    </form>
                 <?php else: ?>
-                    <a href="<?php echo e(route('register')); ?>" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-10 py-5">
+                    <a href="<?php echo e(route('register', ['redirect_to' => route('tutorial.index', ['step' => 3])])); ?>" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-10 py-5">
                         📝 Daftar untuk Mulai Scan
                     </a>
+                    <p class="text-leaf-100 mt-4 text-base">
+                        Sudah punya akun?
+                        <a href="<?php echo e(route('login', ['redirect_to' => route('tutorial.index', ['step' => 3])])); ?>" class="text-white font-semibold underline hover:text-leaf-200 transition-colors">Masuk di sini</a>
+                    </p>
                 <?php endif; ?>
             </div>
         </div>
@@ -425,14 +459,27 @@
 
 <script>
 function tutorialWizard() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialStep = parseInt(urlParams.get('step')) || 1;
+
     return {
-        step: 1,
-        sayuran: 0,
-        gorengan: 0,
-        buah: 0,
+        step: initialStep,
+        sayuran: parseFloat(localStorage.getItem('pocycle_sayuran')) || 0,
+        buah: parseFloat(localStorage.getItem('pocycle_buah')) || 0,
+        gorengan: parseFloat(localStorage.getItem('pocycle_gorengan')) || 0,
+
+        init() {
+            this.$watch('sayuran', value => localStorage.setItem('pocycle_sayuran', value));
+            this.$watch('buah', value => localStorage.setItem('pocycle_buah', value));
+            this.$watch('gorengan', value => localStorage.setItem('pocycle_gorengan', value));
+        },
+
+        get totalSayuranBuah() {
+            return (parseFloat(this.sayuran) || 0) + (parseFloat(this.buah) || 0);
+        },
 
         get totalLimbah() {
-            return (parseFloat(this.sayuran) || 0) + (parseFloat(this.gorengan) || 0) + (parseFloat(this.buah) || 0);
+            return this.totalSayuranBuah + (parseFloat(this.gorengan) || 0);
         },
 
         get gorenganPercentage() {
@@ -441,15 +488,19 @@ function tutorialWizard() {
         },
 
         get isGorenganOverLimit() {
-            return this.totalLimbah > 0 && this.gorenganPercentage > 20;
+            return (parseFloat(this.gorengan) || 0) > (this.totalSayuranBuah * 0.3);
         },
 
         get air() {
             return this.totalLimbah * 2;
         },
 
+        get airCucianBeras() {
+            return (parseFloat(this.gorengan) || 0) > 0 ? 2 : 1;
+        },
+
         get totalCampuran() {
-            return this.totalLimbah + this.air;
+            return this.totalLimbah + this.air + this.airCucianBeras;
         },
 
         get em4() {

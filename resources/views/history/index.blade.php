@@ -10,44 +10,89 @@
             <h1 class="mb-2">📊 Dashboard POC</h1>
             <p class="text-earth-500 text-xl">Pantau perkembangan pupuk organik Anda</p>
         </div>
-        @if($fermentationDay > 0)
+        @if($activeBatches->isNotEmpty())
             <a href="{{ route('scan.create') }}" class="btn-primary">
                 📷 Scan Baru
             </a>
         @endif
     </div>
 
-    {{-- Dashboard Card --}}
-    <div class="card card-body bg-gradient-to-br from-leaf-50 to-sage-50 mb-8 border-leaf-200">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-                <h3 class="text-leaf-800 text-lg font-bold mb-1">Status Fermentasi</h3>
-                @if($fermentationDay === 0)
+    @if($activeBatches->isEmpty())
+        {{-- Dashboard Card - Empty --}}
+        <div class="card card-body bg-gradient-to-br from-leaf-50 to-sage-50 mb-8 border-leaf-200">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <h3 class="text-leaf-800 text-lg font-bold mb-1">Status Fermentasi</h3>
                     <p class="text-earth-600 text-base">Anda belum memulai siklus pembuatan POC.</p>
-                @else
-                    <p class="text-earth-600 text-base">Siklus POC Anda saat ini berada di <strong>Hari ke-{{ $fermentationDay }}</strong>.</p>
-                @endif
-            </div>
-
-            <div>
-                @if($fermentationDay === 0)
+                </div>
+                <div>
                     <a href="{{ route('tutorial.index') }}" class="btn-primary shadow-lg w-full md:w-auto">
                         🌱 Mulai Buat Pupuk Baru
                     </a>
-                @elseif($fermentationDay >= 21)
-                    <a href="{{ route('harvest.verify') }}" class="btn-primary bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 shadow-lg shadow-amber-500/30 border-none w-full md:w-auto text-lg py-3 animate-bounce">
-                        🌾 Panen POC Sekarang!
-                    </a>
-                @else
-                    <div class="w-full md:w-64 bg-earth-200 rounded-full h-4 overflow-hidden mb-2">
-                        <div class="bg-leaf-500 h-4 rounded-full transition-all duration-500" style="width: {{ min(($fermentationDay / 21) * 100, 100) }}%"></div>
-                    </div>
-                    <p class="text-xs text-earth-500 text-right font-medium">{{ 21 - min($fermentationDay, 21) }} hari lagi menuju panen</p>
-                @endif
+                </div>
             </div>
         </div>
-    </div>
+    @else
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold text-earth-800">Galon Aktif</h2>
+            <a href="{{ route('tutorial.index') }}" class="btn-secondary text-sm">
+                + Tambah Galon Baru
+            </a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            @foreach($activeBatches as $batch)
+                {{-- Dashboard Card --}}
+                <div class="card card-body bg-gradient-to-br from-leaf-50 to-sage-50 border-leaf-200">
+                    <div class="flex flex-col gap-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-leaf-800 text-lg font-bold mb-1">{{ $batch->name }}</h3>
+                                <p class="text-earth-600 text-base">Hari ke-{{ $batch->getFermentationDay() }}</p>
+                            </div>
+                        </div>
 
+                        <div>
+                            @if($batch->getFermentationDay() >= 21)
+                                <a href="{{ route('harvest.verify', ['batch_id' => $batch->id]) }}" class="btn-primary bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 shadow-lg shadow-amber-500/30 border-none w-full text-center py-3 animate-bounce">
+                                    🌾 Panen POC Sekarang!
+                                </a>
+                            @else
+                                <div class="w-full bg-earth-200 rounded-full h-4 overflow-hidden mb-2">
+                                    <div class="bg-leaf-500 h-4 rounded-full transition-all duration-500" style="width: {{ min(($batch->getFermentationDay() / 21) * 100, 100) }}%"></div>
+                                </div>
+                                <div class="flex justify-between items-center mt-3">
+                                    <p class="text-xs text-earth-500 font-medium">{{ 21 - min($batch->getFermentationDay(), 21) }} hari lagi menuju panen</p>
+                                    <a href="{{ route('scan.create') }}" class="btn-primary text-sm py-2 px-4">
+                                        📷 Scan
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
+
+
+    {{-- Filter Riwayat --}}
+    @if($allBatches->isNotEmpty())
+        <div id="history-section" class="flex flex-col sm:flex-row justify-between items-center mb-4 mt-12 gap-4 scroll-mt-6">
+            <h2 class="text-xl font-bold text-earth-800">Riwayat Scan</h2>
+            <form action="{{ route('history.index') }}#history-section" method="GET" class="w-full sm:w-auto">
+                <select name="batch_id" onchange="this.form.submit()" class="input-field py-2 px-4 text-sm bg-white border-earth-300">
+                    <option value="">Semua Galon</option>
+                    @foreach($allBatches as $b)
+                        <option value="{{ $b->id }}" {{ request('batch_id') == $b->id ? 'selected' : '' }}>
+                            {{ $b->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>
+        </div>
+    @else
+        <h2 class="text-xl font-bold text-earth-800 mb-4 mt-12">Riwayat Scan</h2>
+    @endif
 
     @if($histories->isEmpty())
         {{-- Empty State --}}
@@ -86,6 +131,7 @@
                                         {{ $scan->status_label }}
                                     </span>
                                 </div>
+                                <p class="text-earth-800 font-bold mb-1">{{ $scan->batch->name ?? '-' }}</p>
                                 <p class="text-earth-600 text-base">
                                     🌡️ {{ $scan->temperature }}°C &nbsp;•&nbsp;
                                     🎨 {{ Str::limit($scan->detected_color, 30) }}

@@ -6,7 +6,7 @@
 
     {{-- Header --}}
     <div class="text-center mb-8">
-        <h1 class="mb-3">Hasil Analisis Pupuk</h1>
+        <h1 class="mb-3">Hasil Analisis - {{ $scan->batch->name ?? 'Galon' }}</h1>
         <p class="text-earth-500 text-lg">Scan tanggal {{ $scan->created_at->translatedFormat('d F Y, H:i') }} WIB</p>
     </div>
 
@@ -112,6 +112,7 @@
         @if($scan->status === 'contaminated')
             <form action="{{ route('scan.restart') }}" method="POST" class="flex-1 flex">
                 @csrf
+                <input type="hidden" name="batch_id" value="{{ $scan->fermentation_batch_id }}">
                 <button type="submit" class="btn-primary flex-1 text-center text-xl py-5 bg-red-600 hover:bg-red-700 border-red-600 hover:border-red-700">
                     🔄 Buat Ulang Pupuk
                 </button>
@@ -123,6 +124,12 @@
         @endif
         <a href="{{ route('history.index') }}" class="btn-secondary flex-1 text-center text-xl py-5">
             📋 Lihat Riwayat
+        </a>
+    </div>
+    
+    <div class="mt-4 text-center">
+        <a href="{{ route('scan.create') }}" class="text-leaf-600 hover:text-leaf-800 font-semibold underline">
+            📷 Scan Galon Lainnya
         </a>
     </div>
 </div>

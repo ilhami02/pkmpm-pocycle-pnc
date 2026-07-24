@@ -40,6 +40,9 @@ Route::middleware(['auth'])->group(function () {
     // Panen POC
     Route::get('/harvest/verify', [App\Http\Controllers\HarvestController::class, 'create'])->name('harvest.verify');
     Route::post('/harvest/verify', [App\Http\Controllers\HarvestController::class, 'store'])->name('harvest.store');
+    
+    // Tutorial (Start Batch)
+    Route::post('/tutorial/start-batch', [TutorialController::class, 'startBatch'])->name('tutorial.startBatch');
 
     // Riwayat POC
     Route::get('/history', [HistoryController::class, 'index'])->name('history.index');

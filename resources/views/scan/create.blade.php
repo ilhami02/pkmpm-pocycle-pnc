@@ -39,13 +39,32 @@
                         <p class="text-xs text-earth-500">Lap bagian luar galon agar bening & tidak buram</p>
                     </div>
                 </div>
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 mt-4">
+                    <p class="text-amber-800 text-sm font-medium">⚠️ PENTING: Mohon foto galon SATU PER SATU. Jangan memfoto beberapa galon sekaligus agar hasil analisis lebih akurat.</p>
+                </div>
             </div>
         </div>
     </div>
 
     {{-- Form --}}
-    <form id="scan-form" method="POST" action="{{ route('scan.store') }}" enctype="multipart/form-data" class="space-y-8">
+    <form id="scan-form" method="POST" action="{{ route('scan.store') }}" enctype="multipart/form-data" class="space-y-8" x-data="{ selectedBatch: '' }">
         @csrf
+
+        {{-- Batch Selector --}}
+        <div>
+            <label class="input-label">🫙 Pilih Galon yang Akan Discan</label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                @foreach($activeBatches as $batch)
+                    <label class="cursor-pointer">
+                        <input type="radio" name="batch_id" value="{{ $batch->id }}" x-model="selectedBatch" class="peer sr-only" required>
+                        <div class="card card-body border-2 peer-checked:border-leaf-500 peer-checked:bg-leaf-50 hover:border-leaf-300 transition-all">
+                            <h3 class="font-bold text-earth-800 mb-1">{{ $batch->name }}</h3>
+                            <p class="text-earth-500 text-sm">Hari ke-{{ $batch->getFermentationDay() }}</p>
+                        </div>
+                    </label>
+                @endforeach
+            </div>
+        </div>
 
         {{-- Upload Foto --}}
         <div>
@@ -239,6 +258,14 @@ document.addEventListener('DOMContentLoaded', function () {
         // Validasi native HTML5 (misal input suhu harus diisi)
         if (!form.checkValidity()) {
             return; // biarkan browser menampilkan error native
+        }
+
+        // Pastikan batch dipilih
+        const batchSelected = form.querySelector('input[name="batch_id"]:checked');
+        if (!batchSelected && form.querySelector('input[name="batch_id"]')) {
+            alert('Silakan pilih galon yang akan discan terlebih dahulu.');
+            e.preventDefault();
+            return;
         }
 
         // Pastikan salah satu file input memiliki file

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FermentationBatch;
 use App\Models\ScanHistory;
 use App\Services\FertilizerAnalysisService;
 use Illuminate\Http\Request;
@@ -19,13 +20,14 @@ class ScanController extends Controller
      */
     public function create(Request $request)
     {
-        // Jika sedang idle (hari ke-0) dan tidak datang dari halaman tutorial, arahkan ke tutorial
-        if (Auth::user()->getFermentationDay() === 0 && !$request->has('from_tutorial')) {
+        $activeBatches = Auth::user()->fermentationBatches()->active()->get();
+
+        if ($activeBatches->isEmpty() && !$request->has('from_tutorial')) {
             return redirect()->route('tutorial.index')
                 ->with('info', 'Silakan pelajari takaran bahan dan instruksi pembuatan POC terlebih dahulu sebelum mulai memantau galon baru Anda.');
         }
 
-        return view('scan.create');
+        return view('scan.create', compact('activeBatches'));
     }
 
     /**
@@ -34,9 +36,12 @@ class ScanController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'batch_id'    => ['required', 'exists:fermentation_batches,id'],
             'image'       => ['required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:7168'], // Max 7MB
             'temperature' => ['required', 'numeric', 'min:0', 'max:100'],
         ], [
+            'batch_id.required' => 'Batch fermentasi harus dipilih.',
+            'batch_id.exists'   => 'Batch fermentasi tidak ditemukan.',
             'image.required'    => 'Foto pupuk wajib diunggah.',
             'image.image'       => 'File harus berupa gambar.',
             'image.mimes'       => 'Format gambar harus JPEG, PNG, JPG, atau WebP.',
@@ -47,28 +52,27 @@ class ScanController extends Controller
             'temperature.max'      => 'Suhu tidak boleh di atas 100°C.',
         ]);
 
+        $batch = FermentationBatch::where('id', $validated['batch_id'])
+            ->where('user_id', Auth::id())
+            ->where('status', 'active')
+            ->firstOrFail();
+
         // Simpan foto
         $imagePath = $request->file('image')->store('scans', 'public');
 
         try {
-            $user = Auth::user();
-
-            // Jika user belum punya batch aktif, ini adalah scan pertama untuk batch baru
-            if (!$user->current_batch_started_at) {
-                $user->update(['current_batch_started_at' => now()]);
-            }
-
             // Hitung umur fermentasi (hari ke-)
-            $fermentationDay = $user->getFermentationDay();
+            $fermentationDay = $batch->getFermentationDay();
             
             // Format tanggal mulai (misal: "Jumat, 12 Juni 2026")
-            $startDate = $user->current_batch_started_at ? $user->current_batch_started_at->translatedFormat('l, d F Y') : null;
+            $startDate = $batch->started_at ? $batch->started_at->translatedFormat('l, d F Y') : null;
 
             // Analisis dengan API (multi-token fallback)
             $result = $this->analysisService->analyze($imagePath, (float) $validated['temperature'], $fermentationDay, $startDate);
 
             // Simpan ke riwayat
             $scan = Auth::user()->scanHistories()->create([
+                'fermentation_batch_id' => $batch->id,
                 'image_path'      => $imagePath,
                 'temperature'     => $validated['temperature'],
                 'detected_color'  => $result['color'],
@@ -105,9 +109,17 @@ class ScanController extends Controller
     /**
      * Ulangi proses pembuatan pupuk (reset batch) dan arahkan ke tutorial.
      */
-    public function restart()
+    public function restart(Request $request)
     {
-        Auth::user()->update(['current_batch_started_at' => null]);
+        $request->validate([
+            'batch_id' => 'required|exists:fermentation_batches,id'
+        ]);
+
+        $batch = FermentationBatch::where('id', $request->batch_id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+            
+        $batch->update(['status' => 'failed']);
         
         return redirect()->route('tutorial.index')
             ->with('info', 'Siklus pembuatan pupuk Anda sebelumnya telah dihentikan. Silakan pelajari takaran dan mulai dari awal.');

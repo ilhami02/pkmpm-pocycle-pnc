@@ -11,6 +11,7 @@ class ScanHistory extends Model
 
     protected $fillable = [
         'user_id',
+        'fermentation_batch_id',
         'image_path',
         'temperature',
         'detected_color',
@@ -34,6 +35,14 @@ class ScanHistory extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relasi ke batch fermentasi.
+     */
+    public function batch()
+    {
+        return $this->belongsTo(FermentationBatch::class, 'fermentation_batch_id');
     }
 
     /**

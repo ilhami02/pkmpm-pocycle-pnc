@@ -423,12 +423,19 @@
                     Pupuk Sudah Jadi? 🎉
                 </h2>
                 <p class="text-lg text-leaf-100 mb-6 max-w-lg mx-auto">
-                    Setelah mencampurkan semua bahan, lakukan scan galon pertama Anda untuk mulai memantau proses fermentasi.
+                    Setelah mencampurkan semua bahan, beri nama galon ini dan mulai proses fermentasi Anda.
                 </p>
                 @auth
-                    <a href="{{ route('scan.create', ['from_tutorial' => 1]) }}" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-10 py-5">
-                        📷 Scan Galon Pertama Anda
-                    </a>
+                    <form action="{{ route('tutorial.startBatch') }}" method="POST" class="max-w-md mx-auto">
+                        @csrf
+                        <div class="mb-4 text-left">
+                            <label for="batch_name" class="block text-white font-medium mb-2">Beri nama untuk galon pupuk ini</label>
+                            <input type="text" name="name" id="batch_name" class="w-full px-4 py-3 rounded-xl text-earth-800 border-none focus:ring-2 focus:ring-leaf-300" placeholder="Contoh: Galon 1, Galon Dapur" required>
+                        </div>
+                        <button type="submit" class="w-full btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-lg px-6 py-4">
+                            🌱 Mulai Fermentasi & Scan Galon Pertama
+                        </button>
+                    </form>
                 @else
                     <a href="{{ route('register', ['redirect_to' => route('tutorial.index', ['step' => 3])]) }}" class="btn-primary bg-white text-leaf-700 hover:bg-leaf-50 shadow-xl text-xl px-10 py-5">
                         📝 Daftar untuk Mulai Scan

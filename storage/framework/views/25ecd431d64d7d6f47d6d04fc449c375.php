@@ -19,7 +19,7 @@
             <div class="max-w-3xl">
                 <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6 animate-fade-in-up">
                     Ubah Limbah Makanan<br>
-                    Jadi <span class="text-leaf-200">Pupuk Organik</span> 🌿
+                    Jadi Pupuk Organik 🌿
                 </h1>
                 <p class="text-xl md:text-2xl text-leaf-100 leading-relaxed mb-10 animate-fade-in-up stagger-1">
                     POCYCLE membantu Anda memantau pembuatan Pupuk Organik Cair (POC) dari sisa makanan bergizi.

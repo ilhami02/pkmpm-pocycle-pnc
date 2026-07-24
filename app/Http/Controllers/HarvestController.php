@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FermentationBatch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,10 +11,15 @@ class HarvestController extends Controller
     /**
      * Tampilkan halaman kuesioner verifikasi panen.
      */
-    public function create()
+    public function create(Request $request)
     {
-        $fermentationDay = Auth::user()->getFermentationDay();
-        return view('harvest.verify', compact('fermentationDay'));
+        $batch_id = $request->query('batch_id');
+        $batch = FermentationBatch::where('id', $batch_id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        $fermentationDay = $batch->getFermentationDay();
+        return view('harvest.verify', compact('fermentationDay', 'batch'));
     }
 
     /**
@@ -22,22 +28,28 @@ class HarvestController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'batch_id' => 'required|exists:fermentation_batches,id',
             'q_smell' => 'required|in:yes,no',
             'q_color' => 'required|in:yes,no',
             'q_residue' => 'required|in:yes,no',
         ], [
+            'batch_id.required' => 'Batch fermentasi harus dipilih.',
+            'batch_id.exists' => 'Batch fermentasi tidak ditemukan.',
             'q_smell.required' => 'Anda harus menjawab pertanyaan tentang aroma.',
             'q_color.required' => 'Anda harus menjawab pertanyaan tentang warna.',
             'q_residue.required' => 'Anda harus menjawab pertanyaan tentang ampas.',
         ]);
 
         if ($request->q_smell === 'yes' && $request->q_color === 'yes' && $request->q_residue === 'yes') {
-            // Berhasil panen! Reset siklus POC menjadi idle
-            Auth::user()->update([
-                'current_batch_started_at' => null,
+            $batch = FermentationBatch::where('id', $request->batch_id)
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
+
+            $batch->update([
+                'status' => 'harvested',
             ]);
 
-            return redirect()->route('tutorial.index')->with('success', 'Selamat! Pupuk POC Anda berhasil dipanen. Silakan ikuti tutorial ini untuk membuat batch pupuk yang baru.');
+            return redirect()->route('tutorial.index')->with('success', "Selamat! Pupuk POC (Batch: {$batch->name}) Anda berhasil dipanen. Silakan ikuti tutorial ini untuk membuat batch pupuk yang baru.");
         }
 
         // Jika ada jawaban 'no'

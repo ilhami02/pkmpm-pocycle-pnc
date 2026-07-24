@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\FermentationBatch;
 use App\Models\User;
 use App\Notifications\FertilizerCheckReminder;
 use Illuminate\Console\Command;
@@ -40,22 +41,28 @@ class SendFertilizerReminders extends Command
             $this->warn('   ⚠️  Mode DRY-RUN: tidak ada notifikasi yang benar-benar dikirim.');
         }
 
-        $users = User::where('reminder_enabled', true)->get();
+        $batches = FermentationBatch::where('status', 'active')
+            ->whereHas('user', function ($query) {
+                $query->where('reminder_enabled', true);
+            })
+            ->with('user')
+            ->get();
 
-        if ($users->isEmpty()) {
-            $this->warn('Tidak ada pengguna dengan reminder aktif.');
+        if ($batches->isEmpty()) {
+            $this->warn('Tidak ada batch aktif untuk pengguna dengan reminder aktif.');
             return Command::SUCCESS;
         }
 
-        $this->info("   Ditemukan {$users->count()} pengguna dengan reminder aktif.");
+        $this->info("   Ditemukan {$batches->count()} batch aktif yang perlu dicek.");
         $this->newLine();
 
         $sent = 0;
         $skipped = 0;
         $alreadyNotified = 0;
 
-        foreach ($users as $user) {
-            $lastScan = $user->scanHistories()->latest()->first();
+        foreach ($batches as $batch) {
+            $user = $batch->user;
+            $lastScan = $batch->scanHistories()->latest()->first();
 
             // Cek apakah perlu diingatkan berdasarkan interval
             $shouldRemind = !$lastScan || $lastScan->created_at->diffInDays(now()) >= $interval;
@@ -78,19 +85,19 @@ class SendFertilizerReminders extends Command
             }
 
             if ($dryRun) {
-                $message = $this->buildMessage($user, $lastScan, $interval);
-                $this->line("  🔍 [DRY-RUN] Akan dikirim ke: {$user->name} ({$user->phone})");
+                $message = $this->buildMessage($batch, $lastScan, $interval);
+                $this->line("  🔍 [DRY-RUN] Akan dikirim ke: {$user->name} ({$user->phone}) untuk Batch: {$batch->name}");
                 $this->line("     Pesan: {$message}");
                 $sent++;
                 continue;
             }
 
             // Kirim notifikasi
-            $message = $this->buildMessage($user, $lastScan, $interval);
+            $message = $this->buildMessage($batch, $lastScan, $interval);
             $user->notify(new FertilizerCheckReminder($message));
             $sent++;
 
-            $this->line("  ✅ Reminder terkirim ke: {$user->name} ({$user->phone})");
+            $this->line("  ✅ Reminder terkirim ke: {$user->name} ({$user->phone}) untuk Batch: {$batch->name}");
         }
 
         $this->newLine();
@@ -110,24 +117,24 @@ class SendFertilizerReminders extends Command
     /**
      * Buat pesan reminder yang kontekstual berdasarkan kondisi terakhir dan umur fermentasi.
      */
-    protected function buildMessage(User $user, ?object $lastScan, int $interval): string
+    protected function buildMessage(FermentationBatch $batch, ?object $lastScan, int $interval): string
     {
         if (!$lastScan) {
-            return 'Anda belum pernah melakukan scan pupuk. Yuk, mulai pantau galon POC Anda sekarang! 🌱';
+            return "Anda belum pernah melakukan scan pupuk untuk batch {$batch->name}. Yuk, mulai pantau galon POC Anda sekarang! 🌱";
         }
 
-        $fermentationDay = $user->getFermentationDay();
+        $fermentationDay = $batch->getFermentationDay();
 
         if ($fermentationDay >= 21) {
-            return "Pupuk POC Anda sudah berusia {$fermentationDay} hari (Minggu ke-3/4)! Yuk cek apakah sudah siap dipanen dan lakukan verifikasi. 🌾";
+            return "Pupuk POC Anda (Batch: {$batch->name}) sudah berusia {$fermentationDay} hari (Minggu ke-3/4)! Yuk cek apakah sudah siap dipanen dan lakukan verifikasi. 🌾";
         }
 
         $daysSinceLastScan = $lastScan->created_at->diffInDays(now());
 
         return match ($lastScan->status) {
-            'needs_stirring' => "Sudah {$daysSinceLastScan} hari sejak scan terakhir. Pupuk Anda sebelumnya perlu diaduk — yuk cek apakah kondisinya sudah membaik! 🔄",
-            'contaminated'   => "Sudah {$daysSinceLastScan} hari sejak scan terakhir. Pupuk Anda sebelumnya terdeteksi terkontaminasi — segera cek kondisinya! ⚠️",
-            default          => "Sudah {$daysSinceLastScan} hari sejak scan terakhir. Saatnya mengecek galon POC Anda untuk memastikan fermentasi tetap berjalan baik! 🌿",
+            'needs_stirring' => "Sudah {$daysSinceLastScan} hari sejak scan terakhir. Pupuk Anda (Batch: {$batch->name}) sebelumnya perlu diaduk — yuk cek apakah kondisinya sudah membaik! 🔄",
+            'contaminated'   => "Sudah {$daysSinceLastScan} hari sejak scan terakhir. Pupuk Anda (Batch: {$batch->name}) sebelumnya terdeteksi terkontaminasi — segera cek kondisinya! ⚠️",
+            default          => "Sudah {$daysSinceLastScan} hari sejak scan terakhir. Saatnya mengecek galon POC Anda (Batch: {$batch->name}) untuk memastikan fermentasi tetap berjalan baik! 🌿",
         };
     }
 }

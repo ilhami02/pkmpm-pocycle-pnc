@@ -68,4 +68,20 @@ class User extends Authenticatable
 
         return $this->current_batch_started_at->diffInDays(now()) + 1;
     }
+
+    /**
+     * Relasi ke batch fermentasi yang dimiliki user.
+     */
+    public function fermentationBatches()
+    {
+        return $this->hasMany(FermentationBatch::class);
+    }
+
+    /**
+     * Relasi ke batch fermentasi yang statusnya aktif.
+     */
+    public function activeBatches()
+    {
+        return $this->fermentationBatches()->active();
+    }
 }

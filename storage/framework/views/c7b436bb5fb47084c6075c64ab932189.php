@@ -291,6 +291,73 @@
         </div>
     </footer>
 
+    <?php if(auth()->guard()->check()): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+            
+            const vapidPublicKey = "<?php echo e(config('webpush.vapid.public_key')); ?>";
+            if (!vapidPublicKey) return;
+
+            const isReminderEnabled = <?php echo e(auth()->user()->reminder_enabled ? 'true' : 'false'); ?>;
+
+            // Auto-ask permission on first visit if not asked yet
+            if (Notification.permission === 'default' && !sessionStorage.getItem('pushPrompted')) {
+                sessionStorage.setItem('pushPrompted', 'true');
+                try {
+                    const permission = await Notification.requestPermission();
+                    if (permission === 'granted') {
+                        subscribeUserToPush();
+                    }
+                } catch (e) {
+                    console.error('Failed to request push permission', e);
+                }
+            } else if (Notification.permission === 'granted' && isReminderEnabled) {
+                // Pastikan subscription tetap aktif jika user memang mengaktifkan reminder
+                subscribeUserToPush();
+            }
+
+            async function subscribeUserToPush() {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js');
+                    const readyRegistration = await navigator.serviceWorker.ready;
+                    
+                    let subscription = await readyRegistration.pushManager.getSubscription();
+                    if (!subscription) {
+                        subscription = await readyRegistration.pushManager.subscribe({
+                            userVisibleOnly: true,
+                            applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+                        });
+                        
+                        await fetch('/push-subscriptions', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify(subscription)
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error auto-subscribing:', error);
+                }
+            }
+
+            function urlBase64ToUint8Array(base64String) {
+                const padding = '='.repeat((4 - base64String.length % 4) % 4);
+                const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+                const rawData = window.atob(base64);
+                const outputArray = new Uint8Array(rawData.length);
+                for (let i = 0; i < rawData.length; ++i) {
+                    outputArray[i] = rawData.charCodeAt(i);
+                }
+                return outputArray;
+            }
+        });
+    </script>
+    <?php endif; ?>
+
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
 <?php /**PATH E:\Kuliah\pkm\web-edu-pocycle\pkmpm-pocycle-pnc\resources\views/layouts/app.blade.php ENDPATH**/ ?>
