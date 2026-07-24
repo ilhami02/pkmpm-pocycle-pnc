@@ -21,7 +21,12 @@
                 </div>
                 <div>
                     <h2 class="text-lg font-bold text-earth-900">{{ $scan->user->name ?? 'User Terhapus' }}</h2>
-                    <p class="text-sm text-earth-500">{{ $scan->user->phone ?? '-' }}</p>
+                    <p class="text-sm text-earth-500">
+                        {{ $scan->user->phone ?? '-' }}
+                        @if($scan->batch)
+                            • <span class="font-medium text-leaf-600">{{ $scan->batch->name }}</span>
+                        @endif
+                    </p>
                 </div>
             </div>
             <div class="text-right">

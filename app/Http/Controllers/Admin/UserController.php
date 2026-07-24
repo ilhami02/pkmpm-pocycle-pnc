@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::withCount('scanHistories')->latest();
+        $query = User::withCount(['scanHistories', 'fermentationBatches'])->latest();
 
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
@@ -58,6 +58,7 @@ class UserController extends Controller
 
         // Hapus scan histories dan data terkait
         $user->scanHistories()->delete();
+        $user->fermentationBatches()->delete();
         $user->notifications()->delete();
         $user->delete();
 

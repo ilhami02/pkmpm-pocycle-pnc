@@ -111,7 +111,12 @@
                                 </div>
                                 <div class="min-w-0">
                                     <div class="font-semibold text-earth-900 truncate">{{ $scan->user->name ?? 'User Terhapus' }}</div>
-                                    <div class="text-xs text-earth-500 truncate">{{ $scan->user->phone ?? '-' }}</div>
+                                    <div class="text-xs text-earth-500 truncate">
+                                        {{ $scan->user->phone ?? '-' }}
+                                        @if($scan->batch)
+                                            • <span class="font-medium text-leaf-600">{{ $scan->batch->name }}</span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </td>

@@ -129,9 +129,14 @@
                         <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-3">
                             <div class="flex gap-2">
                                 <span class="text-lg flex-shrink-0">⚠️</span>
-                                <p class="text-amber-800 text-sm font-medium leading-relaxed">
-                                    <strong>Penting:</strong> Pastikan gorengan telah dicuci terlebih dahulu untuk mengurangi kadar lemak dan minyak.
-                                </p>
+                                <div>
+                                    <p class="text-amber-800 text-sm font-medium leading-relaxed mb-2">
+                                        <strong>Penting:</strong> Pastikan gorengan telah dicuci terlebih dahulu untuk mengurangi kadar lemak dan minyak.
+                                    </p>
+                                    <button type="button" @click.prevent="showGorenganModal = true" class="text-amber-700 bg-amber-100 hover:bg-amber-200 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors">
+                                        💡 Cara Membersihkan Gorengan
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -448,13 +453,78 @@
             </div>
         </div>
 
-        {{-- Back button --}}
-        <div class="mt-6">
-            <button @click="step = 2" class="btn-secondary w-full text-lg py-4">
-                ← Kembali ke Hasil Hitung
-            </button>
         </div>
     </section>
+
+    {{-- Modal Cara Membersihkan Gorengan --}}
+    <div x-show="showGorenganModal" 
+         style="display: none;" 
+         class="fixed inset-0 z-50 overflow-y-auto" 
+         aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        
+        <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            {{-- Background overlay --}}
+            <div x-show="showGorenganModal" 
+                 x-transition:enter="ease-out duration-300" 
+                 x-transition:enter-start="opacity-0" 
+                 x-transition:enter-end="opacity-100" 
+                 x-transition:leave="ease-in duration-200" 
+                 x-transition:leave-start="opacity-100" 
+                 x-transition:leave-end="opacity-0" 
+                 class="fixed inset-0 transition-opacity bg-earth-900/60 backdrop-blur-sm" 
+                 @click="showGorenganModal = false" aria-hidden="true"></div>
+
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            {{-- Modal panel --}}
+            <div x-show="showGorenganModal" 
+                 x-transition:enter="ease-out duration-300" 
+                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
+                 x-transition:leave="ease-in duration-200" 
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                 class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-2xl rounded-2xl sm:align-middle border border-earth-100">
+                
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-xl font-bold text-earth-800" id="modal-title">
+                        🧼 Cara Membersihkan Gorengan
+                    </h3>
+                    <button type="button" @click.prevent="showGorenganModal = false" class="text-earth-400 hover:text-earth-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
+                <div class="space-y-4 mb-6">
+                    <div class="flex gap-3 items-start">
+                        <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 font-bold flex items-center justify-center flex-shrink-0">1</div>
+                        <div>
+                            <p class="font-semibold text-earth-800">Aliri Air Bersih</p>
+                            <p class="text-sm text-earth-600">Aliri limbah gorengan dengan air bersih yang mengalir selama beberapa menit untuk melunturkan lapisan minyak terluar.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 items-start">
+                        <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 font-bold flex items-center justify-center flex-shrink-0">2</div>
+                        <div>
+                            <p class="font-semibold text-earth-800">Rendam</p>
+                            <p class="text-sm text-earth-600">Rendam limbah tersebut di dalam wadah berisi air biasa selama kurang lebih 10-15 menit agar minyak yang tersisa terangkat ke permukaan air.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 items-start">
+                        <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 font-bold flex items-center justify-center flex-shrink-0">3</div>
+                        <div>
+                            <p class="font-semibold text-earth-800">Buang Air Limbah Minyak</p>
+                            <p class="text-sm text-earth-600">Buang air rendaman yang sudah bercampur minyak tersebut. Limbah gorengan Anda kini siap dipotong-potong dan dicampurkan.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" @click.prevent="showGorenganModal = false" class="btn-primary w-full py-3">
+                    Baik, Saya Mengerti
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 {{-- Alpine.js Component --}}
@@ -465,6 +535,7 @@ function tutorialWizard() {
 
     return {
         step: initialStep,
+        showGorenganModal: false,
         sayuran: parseFloat(localStorage.getItem('pocycle_sayuran')) || 0,
         buah: parseFloat(localStorage.getItem('pocycle_buah')) || 0,
         gorengan: parseFloat(localStorage.getItem('pocycle_gorengan')) || 0,

@@ -14,7 +14,7 @@ class AdminScanController extends Controller
      */
     public function index(Request $request)
     {
-        $query = ScanHistory::with('user')->latest();
+        $query = ScanHistory::with(['user', 'batch'])->latest();
 
         // Filter berdasarkan status fermentasi
         if ($status = $request->input('status')) {
@@ -52,7 +52,7 @@ class AdminScanController extends Controller
      */
     public function show(ScanHistory $scanHistory)
     {
-        $scanHistory->load('user');
+        $scanHistory->load(['user', 'batch']);
 
         return view('admin.scans.show', ['scan' => $scanHistory]);
     }

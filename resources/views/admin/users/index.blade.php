@@ -21,6 +21,7 @@
                     <th class="px-6 py-3 font-medium">Nama & No. HP</th>
                     <th class="px-6 py-3 font-medium">Role</th>
                     <th class="px-6 py-3 font-medium">Total Scan</th>
+                    <th class="px-6 py-3 font-medium">Total Galon</th>
                     <th class="px-6 py-3 font-medium">Bergabung</th>
                     <th class="px-6 py-3 font-medium text-right">Aksi</th>
                 </tr>
@@ -48,6 +49,9 @@
                         </td>
                         <td class="px-6 py-4 text-earth-500">
                             {{ $user->scan_histories_count }}
+                        </td>
+                        <td class="px-6 py-4 text-earth-500">
+                            {{ $user->fermentation_batches_count }}
                         </td>
                         <td class="px-6 py-4 text-earth-500">
                             {{ $user->created_at->format('d M Y') }}

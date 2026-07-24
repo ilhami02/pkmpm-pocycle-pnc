@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\ScanHistory;
 use App\Models\User;
+use App\Models\FermentationBatch;
 
 class DashboardController extends Controller
 {
@@ -15,6 +16,7 @@ class DashboardController extends Controller
             'totalUsers'    => User::count(),
             'totalArticles' => Article::count(),
             'totalScans'    => ScanHistory::count(),
+            'activeBatches' => FermentationBatch::active()->count(),
             'draftArticles' => Article::where('is_published', false)->count(),
         ];
 

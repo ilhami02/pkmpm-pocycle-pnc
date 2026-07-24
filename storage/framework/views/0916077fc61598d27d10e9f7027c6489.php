@@ -25,10 +25,16 @@ unset($__errorArgs, $__bag); ?>
         </div>
 
         
-        <div>
+        <div x-data="{ show: false }">
             <label for="password" class="input-label">🔒 Password</label>
-            <input id="password" type="password" name="password" required autocomplete="current-password"
-                   class="input-field" placeholder="Masukkan password">
+            <div class="relative">
+                <input id="password" :type="show ? 'text' : 'password'" name="password" required autocomplete="current-password"
+                       class="input-field pr-12" placeholder="Masukkan password">
+                <button type="button" @click="show = !show" class="absolute right-4 top-1/2 -translate-y-1/2 text-xl focus:outline-none text-earth-500 hover:text-earth-700">
+                    <span x-show="!show">👁️</span>
+                    <span x-show="show" style="display: none;">🙈</span>
+                </button>
+            </div>
             <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -41,10 +47,17 @@ endif;
 unset($__errorArgs, $__bag); ?>
         </div>
 
-        
-        <div class="flex items-center">
-            <input id="remember" type="checkbox" name="remember" class="w-5 h-5 text-leaf-600 border-earth-300 rounded focus:ring-leaf-500">
-            <label for="remember" class="ml-3 text-earth-600 text-lg">Ingat saya</label>
+        <div class="flex items-center justify-between mt-4 mb-2">
+            
+            <div class="flex items-center">
+                <input id="remember" type="checkbox" name="remember" class="w-5 h-5 text-leaf-600 border-earth-300 rounded focus:ring-leaf-500">
+                <label for="remember" class="ml-3 text-earth-600 text-lg">Ingat saya</label>
+            </div>
+
+            
+            <div>
+                <a href="<?php echo e(route('password.request')); ?>" class="text-leaf-600 hover:text-leaf-700 font-semibold text-lg">Lupa password?</a>
+            </div>
         </div>
 
         

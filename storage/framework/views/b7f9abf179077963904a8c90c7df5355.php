@@ -20,7 +20,7 @@
                 </div>
                 <div>
                     <h2 class="text-lg font-bold text-earth-900"><?php echo e($scan->user->name ?? 'User Terhapus'); ?></h2>
-                    <p class="text-sm text-earth-500"><?php echo e($scan->user->email ?? '-'); ?></p>
+                    <p class="text-sm text-earth-500"><?php echo e($scan->user->phone ?? '-'); ?></p>
                 </div>
             </div>
             <div class="text-right">
