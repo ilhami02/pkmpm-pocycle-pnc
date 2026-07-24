@@ -54,11 +54,18 @@
             <label class="input-label">🫙 Pilih Galon yang Akan Discan</label>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <?php $__currentLoopData = $activeBatches; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $batch): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <label class="cursor-pointer">
+                    <label class="cursor-pointer block h-full relative">
                         <input type="radio" name="batch_id" value="<?php echo e($batch->id); ?>" x-model="selectedBatch" class="peer sr-only" required>
-                        <div class="card card-body border-2 peer-checked:border-leaf-500 peer-checked:bg-leaf-50 hover:border-leaf-300 transition-all">
-                            <h3 class="font-bold text-earth-800 mb-1"><?php echo e($batch->name); ?></h3>
-                            <p class="text-earth-500 text-sm">Hari ke-<?php echo e($batch->getFermentationDay()); ?></p>
+                        <div class="card card-body border-2 peer-checked:border-leaf-500 peer-checked:bg-leaf-100 peer-checked:shadow-md hover:border-leaf-300 transition-all h-full">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h3 class="font-bold text-earth-800 mb-1"><?php echo e($batch->name); ?></h3>
+                                    <p class="text-earth-500 text-sm">Hari ke-<?php echo e($batch->getFermentationDay()); ?></p>
+                                </div>
+                                <div x-show="selectedBatch == '<?php echo e($batch->id); ?>'" style="display: none;" class="w-7 h-7 bg-leaf-500 rounded-full flex items-center justify-center text-white flex-shrink-0 animate-bounce-short">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                </div>
+                            </div>
                         </div>
                     </label>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
