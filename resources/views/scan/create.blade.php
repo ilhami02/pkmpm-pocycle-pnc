@@ -51,9 +51,9 @@
         @csrf
 
         {{-- Batch Selector --}}
-        <div>
+        <div id="batch-section">
             <label class="input-label">🫙 Pilih Galon yang Akan Discan</label>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div id="batch-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-xl transition-all">
                 @foreach($activeBatches as $batch)
                     <label class="cursor-pointer block h-full relative">
                         <input type="radio" name="batch_id" value="{{ $batch->id }}" x-model="selectedBatch" class="peer sr-only" required>
@@ -71,6 +71,9 @@
                     </label>
                 @endforeach
             </div>
+            <p id="batch-error-msg" class="text-red-500 text-sm mt-3 font-medium hidden">
+                ⚠️ Mohon pilih galon terlebih dahulu.
+            </p>
         </div>
 
         {{-- Upload Foto --}}
@@ -270,7 +273,20 @@ document.addEventListener('DOMContentLoaded', function () {
         // Pastikan batch dipilih
         const batchSelected = form.querySelector('input[name="batch_id"]:checked');
         if (!batchSelected && form.querySelector('input[name="batch_id"]')) {
-            alert('Silakan pilih galon yang akan discan terlebih dahulu.');
+            const batchGrid = document.getElementById('batch-grid');
+            const batchError = document.getElementById('batch-error-msg');
+            const batchSection = document.getElementById('batch-section');
+            
+            batchGrid.classList.add('ring-2', 'ring-red-500', 'ring-offset-4', 'animate-pulse', 'p-1', 'rounded-xl');
+            batchError.classList.remove('hidden');
+            
+            setTimeout(() => {
+                batchGrid.classList.remove('ring-2', 'ring-red-500', 'ring-offset-4', 'animate-pulse', 'p-1', 'rounded-xl');
+                batchError.classList.add('hidden');
+            }, 3000);
+            
+            batchSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
             e.preventDefault();
             return;
         }

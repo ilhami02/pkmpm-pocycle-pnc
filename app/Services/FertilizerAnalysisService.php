@@ -144,6 +144,7 @@ class FertilizerAnalysisService
                     ],
                     'generationConfig' => [
                         'temperature' => 0.3,
+                        'maxOutputTokens' => 8192,
                         'responseMimeType' => 'application/json',
                     ],
                 ]
@@ -204,7 +205,7 @@ Jika status "contaminated":
 Pastikan recommendation dengan tegas menyuruh pengguna untuk MENGHENTIKAN proses, membuang cairan tersebut dengan aman, mencuci bersih galon, dan memulai dari awal dengan takaran limbah berminyak yang lebih sedikit.
 
 Penting: Abaikan label/tulisan pada galon Le Minerale. Fokus hanya pada warna dan kondisi cairan di dalamnya.
-Berikan rekomendasi yang spesifik, praktis, dan menggunakan bahasa sederhana yang mudah dipahami ibu-ibu.
+Berikan rekomendasi yang spesifik, praktis, MAKSIMAL 3 KALIMAT SINGKAT, dan menggunakan bahasa sederhana yang mudah dipahami ibu-ibu.
 PROMPT;
     }
 

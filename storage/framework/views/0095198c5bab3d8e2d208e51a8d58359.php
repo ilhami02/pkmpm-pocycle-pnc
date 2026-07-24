@@ -110,7 +110,13 @@
                                 </div>
                                 <div class="min-w-0">
                                     <div class="font-semibold text-earth-900 truncate"><?php echo e($scan->user->name ?? 'User Terhapus'); ?></div>
-                                    <div class="text-xs text-earth-500 truncate"><?php echo e($scan->user->phone ?? '-'); ?></div>
+                                    <div class="text-xs text-earth-500 truncate">
+                                        <?php echo e($scan->user->phone ?? '-'); ?>
+
+                                        <?php if($scan->batch): ?>
+                                            • <span class="font-medium text-leaf-600"><?php echo e($scan->batch->name); ?></span>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </div>
                         </td>

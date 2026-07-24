@@ -3,7 +3,7 @@
 <?php $__env->startSection('title', 'Dashboard'); ?>
 
 <?php $__env->startSection('content'); ?>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
     
     <div class="bg-white rounded-2xl p-6 border border-earth-200 shadow-sm">
         <div class="flex items-center gap-4">
@@ -52,6 +52,19 @@
             <div>
                 <p class="text-sm font-medium text-earth-500">Total Scan</p>
                 <p class="text-2xl font-bold text-earth-900"><?php echo e(number_format($stats['totalScans'])); ?></p>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="bg-white rounded-2xl p-6 border border-earth-200 shadow-sm">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl">
+                🫙
+            </div>
+            <div>
+                <p class="text-sm font-medium text-earth-500">Galon Aktif</p>
+                <p class="text-2xl font-bold text-earth-900"><?php echo e(number_format($stats['activeBatches'])); ?></p>
             </div>
         </div>
     </div>

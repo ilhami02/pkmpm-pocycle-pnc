@@ -88,10 +88,15 @@
                     <div class="flex-1">
                         <label for="sayuran" class="input-label mb-0">Limbah Sayuran</label>
                         <p class="text-earth-400 text-base mb-3">Sisa sayur bayam, kangkung, sawi, wortel, dll.</p>
-                        <div class="relative">
-                            <input id="sayuran" type="number" x-model.number="sayuran" min="0" step="0.1"
-                                   class="input-field pr-20" placeholder="0">
-                            <span class="absolute right-5 top-1/2 -translate-y-1/2 text-earth-400 text-base font-medium">kg/liter</span>
+                        <div class="flex gap-2">
+                            <div class="relative flex-1">
+                                <input id="sayuran" type="number" x-model.number="sayuran" min="0" step="0.1"
+                                       class="input-field" placeholder="0">
+                            </div>
+                            <select x-model="unitSayuran" class="input-field w-24 px-3 py-3 rounded-xl border-earth-300 font-medium text-earth-700 bg-earth-50">
+                                <option value="kg">kg</option>
+                                <option value="gram">gram</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -106,10 +111,15 @@
                     <div class="flex-1">
                         <label for="buah" class="input-label mb-0">Limbah Buah-buahan</label>
                         <p class="text-earth-400 text-base mb-3">Kulit pisang, kulit jeruk, sisa buah, dll.</p>
-                        <div class="relative">
-                            <input id="buah" type="number" x-model.number="buah" min="0" step="0.1"
-                                   class="input-field pr-20" placeholder="0">
-                            <span class="absolute right-5 top-1/2 -translate-y-1/2 text-earth-400 text-base font-medium">kg/liter</span>
+                        <div class="flex gap-2">
+                            <div class="relative flex-1">
+                                <input id="buah" type="number" x-model.number="buah" min="0" step="0.1"
+                                       class="input-field" placeholder="0">
+                            </div>
+                            <select x-model="unitBuah" class="input-field w-24 px-3 py-3 rounded-xl border-earth-300 font-medium text-earth-700 bg-earth-50">
+                                <option value="kg">kg</option>
+                                <option value="gram">gram</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -140,11 +150,16 @@
                             </div>
                         </div>
 
-                        <div class="relative">
-                            <input id="gorengan" type="number" x-model.number="gorengan" min="0" step="0.1"
-                                   class="input-field pr-20" placeholder="0"
-                                   :class="isGorenganOverLimit ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20' : ''">
-                            <span class="absolute right-5 top-1/2 -translate-y-1/2 text-earth-400 text-base font-medium">kg/liter</span>
+                        <div class="flex gap-2">
+                            <div class="relative flex-1">
+                                <input id="gorengan" type="number" x-model.number="gorengan" min="0" step="0.1"
+                                       class="input-field" placeholder="0"
+                                       :class="isGorenganOverLimit ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20' : ''">
+                            </div>
+                            <select x-model="unitGorengan" class="input-field w-24 px-3 py-3 rounded-xl border-earth-300 font-medium text-earth-700 bg-earth-50">
+                                <option value="kg">kg</option>
+                                <option value="gram">gram</option>
+                            </select>
                         </div>
 
                         {{-- Warning: gorengan > 20% --}}
@@ -177,15 +192,15 @@
             <div class="grid grid-cols-3 gap-4 text-center">
                 <div class="bg-white/60 rounded-xl p-3">
                     <p class="text-sm text-earth-500 mb-1">Sayuran</p>
-                    <p class="text-xl font-bold text-earth-800" x-text="formatNumber(sayuran) + ' kg'"></p>
+                    <p class="text-xl font-bold text-earth-800" x-text="formatNumber(trueSayuran) + ' kg'"></p>
                 </div>
                 <div class="bg-white/60 rounded-xl p-3">
                     <p class="text-sm text-earth-500 mb-1">Buah</p>
-                    <p class="text-xl font-bold text-earth-800" x-text="formatNumber(buah) + ' kg'"></p>
+                    <p class="text-xl font-bold text-earth-800" x-text="formatNumber(trueBuah) + ' kg'"></p>
                 </div>
                 <div class="bg-white/60 rounded-xl p-3">
                     <p class="text-sm text-earth-500 mb-1">Gorengan</p>
-                    <p class="text-xl font-bold" :class="isGorenganOverLimit ? 'text-red-600' : 'text-earth-800'" x-text="formatNumber(gorengan) + ' kg'"></p>
+                    <p class="text-xl font-bold" :class="isGorenganOverLimit ? 'text-red-600' : 'text-earth-800'" x-text="formatNumber(trueGorengan) + ' kg'"></p>
                 </div>
             </div>
             <div class="mt-4 pt-4 border-t border-leaf-200 text-center">
@@ -247,14 +262,14 @@
                 <p class="text-base text-earth-400">liter</p>
             </div>
 
-            {{-- Air Cucian Beras --}}
+            {{-- Nasi Bekas --}}
             <div class="card card-body text-center border-slate-200 bg-gradient-to-br from-slate-50 to-white">
                 <div class="w-14 h-14 mx-auto mb-3 bg-slate-100 rounded-2xl flex items-center justify-center">
                     <span class="text-3xl">🍚</span>
                 </div>
-                <p class="text-sm text-earth-500 mb-1">Air Cucian Beras</p>
-                <p class="text-3xl font-extrabold text-slate-700" x-text="formatNumber(airCucianBeras)"></p>
-                <p class="text-base text-earth-400">liter</p>
+                <p class="text-sm text-earth-500 mb-1">Nasi Bekas</p>
+                <p class="text-3xl font-extrabold text-slate-700" x-text="formatNumber(nasiBekas)"></p>
+                <p class="text-base text-earth-400">kg</p>
             </div>
 
             {{-- EM4 --}}
@@ -286,8 +301,8 @@
                     <p class="font-semibold text-earth-800 text-base mb-2">Cara Menghitung:</p>
                     <ul class="text-earth-600 text-sm space-y-1">
                         <li>• <strong>Air</strong> = 2 × Total Limbah = 2 × <span x-text="formatNumber(totalLimbah)"></span> = <strong x-text="formatNumber(air)"></strong> liter</li>
-                        <li>• <strong>Air Cucian Beras</strong> = <strong x-text="formatNumber(airCucianBeras)"></strong> liter <span class="text-earth-500" x-text="(parseFloat(gorengan) || 0) > 0 ? '(ditambah menjadi 2L karena ada bahan berminyak)' : '(1L karena tanpa bahan berminyak)'"></span></li>
-                        <li>• <strong>Total Campuran</strong> = Limbah + Air + Air Cucian Beras = <span x-text="formatNumber(totalLimbah)"></span> + <span x-text="formatNumber(air)"></span> + <span x-text="formatNumber(airCucianBeras)"></span> = <strong x-text="formatNumber(totalCampuran)"></strong> kg/liter</li>
+                        <li>• <strong>Nasi Bekas</strong> = <strong x-text="formatNumber(nasiBekas)"></strong> kg <span class="text-earth-500" x-text="trueGorengan > 0 ? '(ditambah menjadi 2kg karena ada bahan berminyak)' : '(1kg karena tanpa bahan berminyak)'"></span></li>
+                        <li>• <strong>Total Campuran</strong> = Limbah + Air + Nasi Bekas = <span x-text="formatNumber(totalLimbah)"></span> + <span x-text="formatNumber(air)"></span> + <span x-text="formatNumber(nasiBekas)"></span> = <strong x-text="formatNumber(totalCampuran)"></strong> kg/liter</li>
                         <li>• <strong>EM4</strong> = 30 ml × <span x-text="formatNumber(totalCampuran)"></span> = <strong x-text="formatNumber(em4)"></strong> ml</li>
                         <li>• <strong>Molase</strong> = 30 ml × <span x-text="formatNumber(totalCampuran)"></span> = <strong x-text="formatNumber(molase)"></strong> ml</li>
                     </ul>
@@ -366,9 +381,9 @@
             <div class="card card-body flex items-start gap-4 hover:border-slate-300 transition-all">
                 <div class="w-10 h-10 bg-slate-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">5</div>
                 <div>
-                    <h3 class="text-lg font-bold text-earth-800 mb-1">Tambahkan Air Cucian Beras</h3>
+                    <h3 class="text-lg font-bold text-earth-800 mb-1">Tambahkan Nasi Bekas</h3>
                     <p class="text-earth-500 text-base">
-                        Tuang <strong x-text="formatNumber(airCucianBeras) + ' liter'"></strong> air cucian beras ke dalam galon. Air cucian beras kaya akan karbohidrat yang membantu proses fermentasi.
+                        Masukkan <strong x-text="formatNumber(nasiBekas) + ' kg'"></strong> nasi bekas ke dalam galon. Nasi bekas kaya akan karbohidrat yang membantu proses fermentasi.
                     </p>
                 </div>
             </div>
@@ -539,40 +554,58 @@ function tutorialWizard() {
         sayuran: parseFloat(localStorage.getItem('pocycle_sayuran')) || 0,
         buah: parseFloat(localStorage.getItem('pocycle_buah')) || 0,
         gorengan: parseFloat(localStorage.getItem('pocycle_gorengan')) || 0,
+        unitSayuran: localStorage.getItem('pocycle_unitSayuran') || 'kg',
+        unitBuah: localStorage.getItem('pocycle_unitBuah') || 'kg',
+        unitGorengan: localStorage.getItem('pocycle_unitGorengan') || 'kg',
 
         init() {
             this.$watch('sayuran', value => localStorage.setItem('pocycle_sayuran', value));
             this.$watch('buah', value => localStorage.setItem('pocycle_buah', value));
             this.$watch('gorengan', value => localStorage.setItem('pocycle_gorengan', value));
+            this.$watch('unitSayuran', value => localStorage.setItem('pocycle_unitSayuran', value));
+            this.$watch('unitBuah', value => localStorage.setItem('pocycle_unitBuah', value));
+            this.$watch('unitGorengan', value => localStorage.setItem('pocycle_unitGorengan', value));
+        },
+
+        get trueSayuran() {
+            return (parseFloat(this.sayuran) || 0) / (this.unitSayuran === 'gram' ? 1000 : 1);
+        },
+        
+        get trueBuah() {
+            return (parseFloat(this.buah) || 0) / (this.unitBuah === 'gram' ? 1000 : 1);
+        },
+        
+        get trueGorengan() {
+            return (parseFloat(this.gorengan) || 0) / (this.unitGorengan === 'gram' ? 1000 : 1);
         },
 
         get totalSayuranBuah() {
-            return (parseFloat(this.sayuran) || 0) + (parseFloat(this.buah) || 0);
+            return this.trueSayuran + this.trueBuah;
         },
 
         get totalLimbah() {
-            return this.totalSayuranBuah + (parseFloat(this.gorengan) || 0);
+            return this.totalSayuranBuah + this.trueGorengan;
         },
 
         get gorenganPercentage() {
             if (this.totalLimbah <= 0) return 0;
-            return Math.round(((parseFloat(this.gorengan) || 0) / this.totalLimbah) * 100);
+            return Math.round((this.trueGorengan / this.totalLimbah) * 100);
         },
 
         get isGorenganOverLimit() {
-            return (parseFloat(this.gorengan) || 0) > (this.totalSayuranBuah * 0.3);
+            return this.trueGorengan > (this.totalSayuranBuah * 0.3);
         },
 
         get air() {
             return this.totalLimbah * 2;
         },
 
-        get airCucianBeras() {
-            return (parseFloat(this.gorengan) || 0) > 0 ? 2 : 1;
+        get nasiBekas() {
+            return this.trueGorengan > 0 ? 2 : 1;
         },
 
         get totalCampuran() {
-            return this.totalLimbah + this.air + this.airCucianBeras;
+            return this.totalLimbah + this.air + this.nasiBekas;
         },
 
         get em4() {
