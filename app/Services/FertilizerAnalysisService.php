@@ -190,13 +190,13 @@ PASTIKAN JSON tersebut 100% valid. JANGAN ada enter (newline) asli di dalam teks
 
 Kriteria penentuan status:
 - "invalid_image": Jika gambar sama sekali tidak berhubungan dengan galon cairan atau pupuk.
-- "normal": Warna coklat kehijauan/kecoklatan jernih, wajar untuk usianya. Suhu diukur berdasarkan fase:
+- "normal": Warna bisa sangat bervariasi mulai dari coklat muda, kehijauan, kecoklatan, hingga coklat sangat pekat atau kehitaman tergantung bahan limbah yang digunakan. Selama tidak ada ciri kontaminasi fisik yang parah, warna gelap adalah wajar. Suhu diukur berdasarkan fase:
    - Jika Umur Fermentasi antara 1-4 hari (Fase Awal): Suhu 35-40°C adalah NORMAL (bakteri sangat aktif memecah karbohidrat).
    - Jika Umur Fermentasi >= 5 hari (Fase Stabil): Suhu 25-32°C adalah NORMAL.
 - "needs_stirring": 
    - Ada endapan normal di dasar galon, atau suhu tidak sesuai dengan fase usianya.
    - PENTING: Jika cairan memisah dan ada lapisan tebal (lemak/minyak/busa kotor) di bagian atas, itu BUKAN needs_stirring, melainkan contaminated.
-- "contaminated": Warna kehitaman/keruh pekat tidak wajar, ada jamur/bercak putih/biru/hijau mengambang di permukaan. ATAU terdapat lapisan tebal berlemak/berminyak/busa/sludge yang mengambang dan memisah dengan jelas di bagian ATAS cairan (indikasi pembuatan gagal akibat limbah minyak/hewani berlebih).
+- "contaminated": JANGAN HANYA berpatokan pada warna cairan yang gelap atau kehitaman, karena warna POC sangat tergantung pada bahan. POC hanya dianggap terkontaminasi (gagal) jika ADA jamur/bercak putih/biru/hijau tebal mengambang di permukaan. ATAU jika terdapat lapisan tebal berlemak/berminyak/busa/sludge yang mengambang dan memisah dengan sangat jelas di bagian ATAS cairan (indikasi pembuatan gagal akibat limbah minyak berlebih).
 
 Jika Umur Fermentasi sudah >= 21 hari (memasuki minggu ke-3 atau ke-4) dan status BUKAN invalid_image atau contaminated: 
 Berikan saran/rekomendasi agar pengguna segera mengecek apakah pupuk sudah siap panen (mengingatkan untuk memverifikasi wangi seperti tape, warna seperti teh pekat, dan ampas mengendap).
