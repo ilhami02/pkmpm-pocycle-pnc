@@ -12,6 +12,14 @@
         </a>
     </div>
 
+    {{-- Flash Message --}}
+    @if(session('success'))
+        <div class="bg-green-50 border border-green-200 rounded-2xl p-4 mb-6 flex items-center gap-3">
+            <span class="text-xl">✅</span>
+            <p class="text-green-800 font-medium">{{ session('success') }}</p>
+        </div>
+    @endif
+
     {{-- Header Info --}}
     <div class="bg-white rounded-2xl border border-earth-200 shadow-sm p-6 mb-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -40,7 +48,7 @@
     <div class="bg-white rounded-2xl border-2 shadow-sm p-8 mb-6 {{ $scan->status_color }}">
         <div class="text-center">
             <div class="text-5xl mb-3">
-                @switch($scan->status)
+                @switch($scan->effective_status)
                     @case('normal') ✅ @break
                     @case('needs_stirring') ⚠️ @break
                     @case('contaminated') 🚫 @break
@@ -48,19 +56,15 @@
                 @endswitch
             </div>
             <h3 class="text-2xl font-bold mb-2">{{ $scan->status_label }}</h3>
-            <p class="text-lg">
-                @switch($scan->status)
-                    @case('normal')
-                        <span class="text-green-700">Proses fermentasi pupuk berjalan dengan baik.</span>
-                        @break
-                    @case('needs_stirring')
-                        <span class="text-amber-700">Pupuk memerlukan penanganan segera.</span>
-                        @break
-                    @case('contaminated')
-                        <span class="text-red-700">Pupuk terdeteksi bermasalah atau terkontaminasi!</span>
-                        @break
-                @endswitch
-            </p>
+            @if($scan->is_verified)
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-700 border border-blue-200 mt-1">
+                    🛡️ Diverifikasi Admin
+                </span>
+            @else
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600 border border-gray-200 mt-1">
+                    🤖 Hasil AI (Belum Diverifikasi)
+                </span>
+            @endif
         </div>
     </div>
 
@@ -116,18 +120,40 @@
                 </div>
             </div>
 
-            {{-- Provider AI --}}
-            <div class="bg-white rounded-2xl border border-earth-200 shadow-sm p-5">
-                <div class="flex items-start gap-3">
-                    <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <span class="text-xl">🤖</span>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-medium text-earth-500 mb-1">Provider AI</h4>
-                        <p class="text-lg font-semibold text-earth-800">{{ $scan->api_provider ?? 'N/A' }}</p>
+            {{-- Status AI Asli (jika admin sudah override) --}}
+            @if($scan->is_verified && $scan->admin_status !== $scan->status)
+                <div class="bg-white rounded-2xl border border-earth-200 shadow-sm p-5">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="text-xl">🤖</span>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-earth-500 mb-1">Status AI Asli</h4>
+                            <p class="text-base font-semibold text-gray-600">
+                                @switch($scan->status)
+                                    @case('normal') ✅ Proses Normal @break
+                                    @case('needs_stirring') ⚠️ Perlu Diaduk @break
+                                    @case('contaminated') 🚫 Terkontaminasi @break
+                                @endswitch
+                                <span class="text-xs text-gray-400 ml-1">(di-override oleh admin)</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @else
+                {{-- Provider AI --}}
+                <div class="bg-white rounded-2xl border border-earth-200 shadow-sm p-5">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <span class="text-xl">🤖</span>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-earth-500 mb-1">Provider AI</h4>
+                            <p class="text-lg font-semibold text-earth-800">{{ $scan->api_provider ?? 'N/A' }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 
@@ -141,6 +167,110 @@
                 <h3 class="text-lg font-semibold text-leaf-800 mb-2">Rekomendasi Penanganan dari AI</h3>
                 <p class="text-leaf-900 leading-relaxed">{{ $scan->recommendation }}</p>
             </div>
+        </div>
+    </div>
+
+    {{-- ============================================================ --}}
+    {{-- VERIFIKASI ADMIN --}}
+    {{-- ============================================================ --}}
+    <div class="bg-white rounded-2xl border-2 border-blue-200 shadow-sm overflow-hidden mb-6" x-data="{ editing: {{ $scan->is_verified ? 'false' : 'true' }} }">
+        <div class="px-6 py-4 border-b border-blue-200 bg-blue-50">
+            <div class="flex items-center justify-between">
+                <h3 class="font-bold text-blue-800 flex items-center gap-2">
+                    🛡️ Verifikasi Admin
+                </h3>
+                @if($scan->is_verified)
+                    <button @click="editing = !editing" type="button"
+                            class="text-xs font-medium px-3 py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors">
+                        <span x-text="editing ? '✕ Batal' : '✏️ Ubah Verifikasi'"></span>
+                    </button>
+                @endif
+            </div>
+        </div>
+
+        {{-- Info verifikasi yang sudah ada --}}
+        @if($scan->is_verified)
+            <div x-show="!editing" class="p-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <p class="text-sm text-earth-500 mb-1">Status Verifikasi</p>
+                        <span class="inline-flex items-center px-3 py-1.5 text-sm font-semibold rounded-lg border {{ $scan->status_color }}">
+                            {{ $scan->status_label }}
+                        </span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-earth-500 mb-1">Diverifikasi Oleh</p>
+                        <p class="font-semibold text-earth-800">{{ $scan->verifiedBy->name ?? 'Admin' }}</p>
+                        <p class="text-xs text-earth-400">{{ $scan->verified_at->translatedFormat('d F Y, H:i') }} WIB</p>
+                    </div>
+                </div>
+                @if($scan->admin_note)
+                    <div class="bg-blue-50 rounded-xl p-4 border border-blue-100">
+                        <p class="text-sm text-earth-500 mb-1">Catatan Admin</p>
+                        <p class="text-earth-800">{{ $scan->admin_note }}</p>
+                    </div>
+                @endif
+            </div>
+        @endif
+
+        {{-- Form verifikasi --}}
+        <div x-show="editing" x-transition class="p-6">
+            <form action="{{ route('admin.scans.verify', $scan) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="space-y-5">
+                    {{-- Pilih Status --}}
+                    <div>
+                        <label class="block text-sm font-semibold text-earth-700 mb-3">Status Verifikasi</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            @php
+                                $currentStatus = $scan->admin_status ?? $scan->status;
+                            @endphp
+                            <label class="cursor-pointer">
+                                <input type="radio" name="admin_status" value="normal" class="peer sr-only" {{ $currentStatus === 'normal' ? 'checked' : '' }} required>
+                                <div class="border-2 rounded-xl p-4 text-center peer-checked:border-green-500 peer-checked:bg-green-50 hover:border-green-300 transition-all">
+                                    <div class="text-2xl mb-1">✅</div>
+                                    <p class="font-semibold text-sm text-earth-800">Normal</p>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="admin_status" value="needs_stirring" class="peer sr-only" {{ $currentStatus === 'needs_stirring' ? 'checked' : '' }}>
+                                <div class="border-2 rounded-xl p-4 text-center peer-checked:border-amber-500 peer-checked:bg-amber-50 hover:border-amber-300 transition-all">
+                                    <div class="text-2xl mb-1">⚠️</div>
+                                    <p class="font-semibold text-sm text-earth-800">Perlu Diaduk</p>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="admin_status" value="contaminated" class="peer sr-only" {{ $currentStatus === 'contaminated' ? 'checked' : '' }}>
+                                <div class="border-2 rounded-xl p-4 text-center peer-checked:border-red-500 peer-checked:bg-red-50 hover:border-red-300 transition-all">
+                                    <div class="text-2xl mb-1">🚫</div>
+                                    <p class="font-semibold text-sm text-earth-800">Terkontaminasi</p>
+                                </div>
+                            </label>
+                        </div>
+                        @error('admin_status')
+                            <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Catatan --}}
+                    <div>
+                        <label for="admin_note" class="block text-sm font-semibold text-earth-700 mb-2">Catatan Admin (opsional)</label>
+                        <textarea id="admin_note" name="admin_note" rows="3"
+                                  class="w-full border border-earth-300 rounded-xl px-4 py-3 text-sm focus:ring-blue-500 focus:border-blue-500"
+                                  placeholder="Contoh: Warna gelap karena bahan dasar kulit pisang, kondisi sebenarnya normal.">{{ old('admin_note', $scan->admin_note) }}</textarea>
+                        @error('admin_note')
+                            <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Submit --}}
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors text-sm">
+                        ✅ Verifikasi Scan Ini
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 

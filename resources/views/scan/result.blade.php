@@ -14,7 +14,7 @@
     <div class="card mb-8 border-2 {{ $scan->status_color }}">
         <div class="card-body text-center py-10">
             <div class="text-6xl mb-4">
-                @switch($scan->status)
+                @switch($scan->effective_status)
                     @case('normal') ✅ @break
                     @case('needs_stirring') ⚠️ @break
                     @case('contaminated') 🚫 @break
@@ -25,7 +25,7 @@
                 {{ $scan->status_label }}
             </h2>
             <p class="text-lg">
-                @switch($scan->status)
+                @switch($scan->effective_status)
                     @case('normal')
                         <span class="text-green-700">Pupuk Anda dalam kondisi baik!</span>
                         @break
@@ -37,8 +37,30 @@
                         @break
                 @endswitch
             </p>
+            @if($scan->is_verified)
+                <div class="mt-3">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-700 border border-blue-200">
+                        🛡️ Diverifikasi Admin
+                    </span>
+                </div>
+            @endif
         </div>
     </div>
+
+    {{-- Catatan Admin (jika sudah diverifikasi) --}}
+    @if($scan->is_verified && $scan->admin_note)
+        <div class="card card-body mb-8 bg-blue-50 border-blue-200">
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-blue-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span class="text-2xl">🛡️</span>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-blue-800 mb-2">Catatan dari Admin</h3>
+                    <p class="text-blue-900 leading-relaxed">{{ $scan->admin_note }}</p>
+                </div>
+            </div>
+        </div>
+    @endif
 
     {{-- Detail Cards --}}
     <div class="space-y-6">
@@ -109,7 +131,7 @@
 
     {{-- Action Buttons --}}
     <div class="flex flex-col sm:flex-row gap-4 mt-10">
-        @if($scan->status === 'contaminated')
+        @if($scan->effective_status === 'contaminated')
             <form action="{{ route('scan.restart') }}" method="POST" class="flex-1 flex">
                 @csrf
                 <input type="hidden" name="batch_id" value="{{ $scan->fermentation_batch_id }}">

@@ -4,7 +4,7 @@
 
 @section('content')
 {{-- Statistik Ringkas --}}
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+<div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
     <div class="bg-white rounded-2xl border border-earth-200 p-5 shadow-sm">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-earth-100 rounded-xl flex items-center justify-center">
@@ -49,6 +49,17 @@
             </div>
         </div>
     </div>
+    <div class="bg-white rounded-2xl border border-blue-200 p-5 shadow-sm">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
+                <span class="text-xl">⏳</span>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-blue-700">{{ $stats['unverified'] }}</p>
+                <p class="text-xs text-blue-600">Belum Diverifikasi</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 {{-- Tabel Data Scan --}}
@@ -86,6 +97,23 @@
                 🚫 Terkontaminasi
             </a>
         </div>
+
+        {{-- Filter Verifikasi --}}
+        <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-xs text-earth-400 font-medium">Verifikasi:</span>
+            <a href="{{ route('admin.scans.index', array_merge(request()->except('verification', 'page'))) }}"
+               class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors {{ !request('verification') ? 'bg-earth-800 text-white' : 'bg-earth-100 text-earth-600 hover:bg-earth-200' }}">
+                Semua
+            </a>
+            <a href="{{ route('admin.scans.index', array_merge(request()->except('page'), ['verification' => 'unverified'])) }}"
+               class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors {{ request('verification') === 'unverified' ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}">
+                ⏳ Belum
+            </a>
+            <a href="{{ route('admin.scans.index', array_merge(request()->except('page'), ['verification' => 'verified'])) }}"
+               class="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors {{ request('verification') === 'verified' ? 'bg-green-600 text-white' : 'bg-green-50 text-green-700 hover:bg-green-100' }}">
+                ✅ Sudah
+            </a>
+        </div>
     </div>
 
     <div class="overflow-x-auto">
@@ -95,6 +123,7 @@
                     <th class="px-6 py-3 font-medium">Pengguna</th>
                     <th class="px-6 py-3 font-medium">Tanggal Scan</th>
                     <th class="px-6 py-3 font-medium">Status</th>
+                    <th class="px-6 py-3 font-medium">Verifikasi</th>
                     <th class="px-6 py-3 font-medium">Warna</th>
                     <th class="px-6 py-3 font-medium">Suhu</th>
                     <th class="px-6 py-3 font-medium text-right">Aksi</th>
@@ -134,6 +163,19 @@
                             </span>
                         </td>
 
+                        {{-- Verifikasi --}}
+                        <td class="px-6 py-4">
+                            @if($scan->is_verified)
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md bg-blue-50 text-blue-700 border border-blue-200">
+                                    🛡️ Terverifikasi
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md bg-gray-50 text-gray-500 border border-gray-200">
+                                    ⏳ Belum
+                                </span>
+                            @endif
+                        </td>
+
                         {{-- Warna --}}
                         <td class="px-6 py-4 text-earth-600 max-w-[150px] truncate" title="{{ $scan->detected_color }}">
                             {{ $scan->detected_color }}
@@ -159,7 +201,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-6 py-12 text-center text-earth-500">
+                        <td colspan="7" class="px-6 py-12 text-center text-earth-500">
                             <div class="text-4xl mb-2">🧪</div>
                             <p class="font-medium">Belum ada data scan pupuk.</p>
                             <p class="text-xs mt-1">Data akan muncul setelah pengguna melakukan scan pertama.</p>

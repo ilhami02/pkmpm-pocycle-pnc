@@ -80,6 +80,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Data Pupuk (Scan Monitoring)
     Route::get('/scans', [AdminScanController::class, 'index'])->name('scans.index');
     Route::get('/scans/{scanHistory}', [AdminScanController::class, 'show'])->name('scans.show');
+    Route::put('/scans/{scanHistory}/verify', [AdminScanController::class, 'verify'])->name('scans.verify');
 
     // User Management
     Route::get('/users', [UserController::class, 'index'])->name('users.index');

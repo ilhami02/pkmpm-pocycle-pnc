@@ -122,7 +122,7 @@
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-3 mb-2">
                                     {{-- Status Badge --}}
-                                    <span class="{{ match($scan->status) {
+                                    <span class="{{ match($scan->effective_status) {
                                         'normal' => 'badge-normal',
                                         'needs_stirring' => 'badge-warning',
                                         'contaminated' => 'badge-danger',

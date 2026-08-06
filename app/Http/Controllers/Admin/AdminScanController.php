@@ -21,6 +21,13 @@ class AdminScanController extends Controller
             $query->where('status', $status);
         }
 
+        // Filter berdasarkan verifikasi admin
+        if ($request->input('verification') === 'verified') {
+            $query->whereNotNull('verified_at');
+        } elseif ($request->input('verification') === 'unverified') {
+            $query->whereNull('verified_at');
+        }
+
         // Pencarian berdasarkan nama user atau warna terdeteksi
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
@@ -41,6 +48,7 @@ class AdminScanController extends Controller
             'normal'         => ScanHistory::where('status', 'normal')->count(),
             'needs_stirring' => ScanHistory::where('status', 'needs_stirring')->count(),
             'contaminated'   => ScanHistory::where('status', 'contaminated')->count(),
+            'unverified'     => ScanHistory::whereNull('verified_at')->count(),
         ];
 
         return view('admin.scans.index', compact('scans', 'stats'));
@@ -52,8 +60,33 @@ class AdminScanController extends Controller
      */
     public function show(ScanHistory $scanHistory)
     {
-        $scanHistory->load(['user', 'batch']);
+        $scanHistory->load(['user', 'batch', 'verifiedBy']);
 
         return view('admin.scans.show', ['scan' => $scanHistory]);
+    }
+
+    /**
+     * Verifikasi/override status scan oleh admin.
+     */
+    public function verify(Request $request, ScanHistory $scanHistory)
+    {
+        $validated = $request->validate([
+            'admin_status' => 'required|in:normal,needs_stirring,contaminated',
+            'admin_note'   => 'nullable|string|max:500',
+        ], [
+            'admin_status.required' => 'Status verifikasi wajib dipilih.',
+            'admin_status.in'      => 'Status verifikasi tidak valid.',
+            'admin_note.max'       => 'Catatan admin maksimal 500 karakter.',
+        ]);
+
+        $scanHistory->update([
+            'admin_status' => $validated['admin_status'],
+            'admin_note'   => $validated['admin_note'],
+            'verified_at'  => now(),
+            'verified_by'  => auth()->id(),
+        ]);
+
+        return redirect()->route('admin.scans.show', $scanHistory)
+            ->with('success', 'Scan berhasil diverifikasi! Status telah diperbarui.');
     }
 }

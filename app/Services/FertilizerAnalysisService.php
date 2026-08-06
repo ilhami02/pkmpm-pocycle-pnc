@@ -175,37 +175,39 @@ Langkah PERTAMA: Validasi gambar. Apakah gambar ini menunjukkan wadah/galon/boto
 Jika gambar valid, lanjutkan:
 Konteks wadah: Foto ini diambil dari LUAR galon Le Minerale 15 liter yang bening/transparan.
 Kamu mengamati warna dan kondisi cairan pupuk yang terlihat MELALUI dinding plastik bening galon tersebut.
-Perhatikan warna cairan, tingkat kekeruhan, ada/tidaknya lapisan terpisah, dan endapan di dasar galon.
 
 Suhu saat ini: {$temperature}°C
 Umur fermentasi: {$fermentationDay} hari{$startDateText}
 
 Berikan respons HANYA dalam format JSON murni (tanpa markdown, tanpa backtick, tanpa teks lain).
-PASTIKAN JSON tersebut 100% valid. JANGAN ada enter (newline) asli di dalam teks, gunakan \n jika perlu baris baru.
+PASTIKAN JSON tersebut 100% valid. JANGAN ada enter (newline) asli di dalam teks, gunakan \\n jika perlu baris baru.
 {
     "detected_color": "deskripsi singkat warna cairan",
     "status": "normal|needs_stirring|contaminated|invalid_image",
     "recommendation": "langkah penanganan detail dalam bahasa Indonesia"
 }
 
+ATURAN PALING PENTING — BACA DENGAN TELITI:
+Status DEFAULT dan UTAMA adalah "normal". Kamu WAJIB memberikan "normal" kecuali ada alasan fisik yang SANGAT KUAT untuk tidak melakukannya. Jika kamu RAGU antara normal dan status lain, SELALU PILIH "normal".
+
+Warna cairan POC SANGAT BERVARIASI tergantung bahan baku pembuatan. Warna coklat muda, coklat tua, kehijauan, kecoklatan, coklat sangat pekat, kehitaman, keruh — SEMUA INI NORMAL dan wajar. JANGAN pernah menilai gagal/terkontaminasi berdasarkan warna saja.
+
 Kriteria penentuan status:
-- "invalid_image": Jika gambar sama sekali tidak berhubungan dengan galon cairan atau pupuk.
-- "normal": Warna bisa sangat bervariasi mulai dari coklat muda, kehijauan, kecoklatan, hingga coklat sangat pekat atau kehitaman tergantung bahan limbah yang digunakan. Selama tidak ada ciri kontaminasi fisik yang parah, warna gelap adalah wajar. Suhu diukur berdasarkan fase:
-   - Jika Umur Fermentasi antara 1-4 hari (Fase Awal): Suhu 35-40°C adalah NORMAL (bakteri sangat aktif memecah karbohidrat).
-   - Jika Umur Fermentasi >= 5 hari (Fase Stabil): Suhu 25-32°C adalah NORMAL.
-- "needs_stirring": 
-   - Ada endapan normal di dasar galon, atau suhu tidak sesuai dengan fase usianya.
-   - PENTING: Jika cairan memisah dan ada lapisan tebal (lemak/minyak/busa kotor) di bagian atas, itu BUKAN needs_stirring, melainkan contaminated.
-- "contaminated": JANGAN HANYA berpatokan pada warna cairan yang gelap atau kehitaman, karena warna POC sangat tergantung pada bahan. POC hanya dianggap terkontaminasi (gagal) jika ADA jamur/bercak putih/biru/hijau tebal mengambang di permukaan. ATAU jika terdapat lapisan tebal berlemak/berminyak/busa/sludge yang mengambang dan memisah dengan sangat jelas di bagian ATAS cairan (indikasi pembuatan gagal akibat limbah minyak berlebih).
+- "invalid_image": HANYA jika gambar jelas bukan galon/wadah cairan pupuk.
+- "normal": Status DEFAULT. Gunakan ini untuk hampir semua kondisi. Warna apapun (terang, gelap, pekat, keruh) adalah NORMAL. Endapan di dasar juga NORMAL. Cairan yang tidak jernih juga NORMAL. Suhu diukur berdasarkan fase:
+   - Jika Umur Fermentasi antara 1-4 hari (Fase Awal): Suhu 25-45°C adalah NORMAL.
+   - Jika Umur Fermentasi >= 5 hari (Fase Stabil): Suhu 20-35°C adalah NORMAL.
+- "needs_stirring": HANYA jika suhu sangat di luar rentang normal untuk fasenya (terlalu dingin atau terlalu panas), ATAU ada endapan yang sangat banyak dan tebal sehingga perlu pengadukan.
+- "contaminated": STATUS INI HAMPIR TIDAK PERNAH DIGUNAKAN. Gunakan HANYA jika ada salah satu dari dua kondisi ini yang SANGAT JELAS terlihat di foto:
+   1. Ada pertumbuhan jamur/kapang berwarna putih, biru, atau hijau yang TEBAL dan JELAS mengambang di permukaan cairan.
+   2. Ada lapisan minyak/lemak yang SANGAT TEBAL (lebih dari 1 cm) dan terpisah sempurna dari cairan di bawahnya.
+   JANGAN gunakan status ini karena warna gelap, keruh, atau bau. Itu semua NORMAL untuk POC.
 
-Jika Umur Fermentasi sudah >= 21 hari (memasuki minggu ke-3 atau ke-4) dan status BUKAN invalid_image atau contaminated: 
-Berikan saran/rekomendasi agar pengguna segera mengecek apakah pupuk sudah siap panen (mengingatkan untuk memverifikasi wangi seperti tape, warna seperti teh pekat, dan ampas mengendap).
+Jika Umur Fermentasi sudah >= 21 hari dan status BUKAN invalid_image atau contaminated:
+Berikan saran agar pengguna mengecek apakah pupuk sudah siap panen.
 
-Jika status "contaminated":
-Pastikan recommendation dengan tegas menyuruh pengguna untuk MENGHENTIKAN proses, membuang cairan tersebut dengan aman, mencuci bersih galon, dan memulai dari awal dengan takaran limbah berminyak yang lebih sedikit.
-
-Penting: Abaikan label/tulisan pada galon Le Minerale. Fokus hanya pada warna dan kondisi cairan di dalamnya.
-Berikan rekomendasi yang spesifik, praktis, MAKSIMAL 3 KALIMAT SINGKAT, dan menggunakan bahasa sederhana yang mudah dipahami ibu-ibu.
+Penting: Abaikan label/tulisan pada galon. Fokus hanya pada kondisi cairan di dalamnya.
+Berikan rekomendasi yang spesifik, praktis, MAKSIMAL 3 KALIMAT SINGKAT, dan menggunakan bahasa sederhana.
 PROMPT;
     }
 
