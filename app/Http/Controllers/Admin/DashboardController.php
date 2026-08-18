@@ -57,6 +57,11 @@ class DashboardController extends Controller
             }
         }
 
-        return view('admin.dashboard', compact('stats', 'recentArticles', 'recentUsers', 'chartBatchStatus', 'chartBatchAge'));
+        // Top 5 Galon Aktif (Update Terbaru)
+        $recentActiveBatches = FermentationBatch::with(['user', 'scanHistories' => function ($q) {
+            $q->latest()->limit(1);
+        }])->active()->latest('updated_at')->take(5)->get();
+
+        return view('admin.dashboard', compact('stats', 'recentArticles', 'recentUsers', 'chartBatchStatus', 'chartBatchAge', 'recentActiveBatches'));
     }
 }

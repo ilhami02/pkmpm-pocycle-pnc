@@ -78,6 +78,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/articles/{article}', [AdminArticleController::class, 'destroy'])->name('articles.destroy');
 
     // Data Pupuk (Scan Monitoring)
+    Route::get('/batches/active', [\App\Http\Controllers\Admin\BatchController::class, 'active'])->name('batches.active');
     Route::get('/scans', [AdminScanController::class, 'index'])->name('scans.index');
     Route::get('/scans/{scanHistory}', [AdminScanController::class, 'show'])->name('scans.show');
     Route::put('/scans/{scanHistory}/verify', [AdminScanController::class, 'verify'])->name('scans.verify');

@@ -89,6 +89,70 @@
     </div>
 </div>
 
+
+<div class="bg-white rounded-2xl border border-earth-200 shadow-sm overflow-hidden mb-8">
+    <div class="px-6 py-4 border-b border-earth-200 flex justify-between items-center">
+        <div>
+            <h2 class="text-lg font-bold text-earth-800">5 Galon Aktif (Update Terbaru)</h2>
+            <p class="text-xs text-earth-500 mt-1">Daftar galon yang sedang difermentasi berdasarkan aktivitas terakhir.</p>
+        </div>
+        <a href="<?php echo e(route('admin.batches.active')); ?>" class="text-sm text-leaf-600 font-medium hover:underline">Lihat Semua</a>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-earth-50 text-earth-600 text-xs border-b border-earth-200">
+                    <th class="px-6 py-2 font-medium">User & Galon</th>
+                    <th class="px-6 py-2 font-medium">Umur</th>
+                    <th class="px-6 py-2 font-medium">Update Terakhir</th>
+                    <th class="px-6 py-2 font-medium">Status Scan Terakhir</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-earth-100 text-sm text-earth-800">
+                <?php $__empty_1 = true; $__currentLoopData = $recentActiveBatches; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $batch): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <?php
+                        $day = $batch->getFermentationDay();
+                        $latestScan = $batch->scanHistories->first();
+                    ?>
+                    <tr class="hover:bg-earth-50 transition-colors">
+                        <td class="px-6 py-3">
+                            <div class="font-semibold text-earth-900"><?php echo e($batch->user->name ?? 'User Terhapus'); ?></div>
+                            <div class="text-xs font-medium text-leaf-600 mt-0.5">🫙 <?php echo e($batch->name); ?></div>
+                        </td>
+                        <td class="px-6 py-3">
+                            Hari ke-<?php echo e($day); ?>
+
+                        </td>
+                        <td class="px-6 py-3">
+                            <div class="text-earth-800"><?php echo e($batch->updated_at->format('d M Y')); ?></div>
+                            <div class="text-xs text-earth-500"><?php echo e($batch->updated_at->diffForHumans()); ?></div>
+                        </td>
+                        <td class="px-6 py-3">
+                            <?php if($latestScan): ?>
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md border <?php echo e($latestScan->status_color); ?>">
+                                    <?php echo e($latestScan->status_label); ?>
+
+                                </span>
+                            <?php else: ?>
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md bg-gray-100 text-gray-500 border border-gray-200">
+                                    ⚪ Belum ada scan
+                                </span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                    <tr>
+                        <td colspan="4" class="px-6 py-8 text-center text-earth-500">
+                            <div class="text-2xl mb-1">🫙</div>
+                            <p class="text-sm">Tidak ada galon aktif.</p>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
     
     <div class="bg-white rounded-2xl border border-earth-200 shadow-sm overflow-hidden">
