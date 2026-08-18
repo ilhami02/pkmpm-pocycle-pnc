@@ -187,21 +187,19 @@ PASTIKAN JSON tersebut 100% valid. JANGAN ada enter (newline) asli di dalam teks
     "recommendation": "langkah penanganan detail dalam bahasa Indonesia"
 }
 
-ATURAN PALING PENTING — BACA DENGAN TELITI:
-Status DEFAULT dan UTAMA adalah "normal". Kamu WAJIB memberikan "normal" kecuali ada alasan fisik yang SANGAT KUAT untuk tidak melakukannya. Jika kamu RAGU antara normal dan status lain, SELALU PILIH "normal".
-
-Warna cairan POC SANGAT BERVARIASI tergantung bahan baku pembuatan. Warna coklat muda, coklat tua, kehijauan, kecoklatan, coklat sangat pekat, kehitaman, keruh — SEMUA INI NORMAL dan wajar. JANGAN pernah menilai gagal/terkontaminasi berdasarkan warna saja.
+ATURAN PALING PENTING MUTLAK — BACA DENGAN TELITI:
+Status DEFAULT dan UTAMA adalah "normal". Kamu WAJIB memberikan "normal" untuk HAMPIR SEMUA kondisi cairan.
+Pembuatan POC rumahan memang sering terlihat kotor, berbusa, berjamur putih/hijau sedikit, berminyak, mengendap, atau berwarna sangat hitam legam. ITU SEMUA ADALAH PROSES YANG SANGAT NORMAL. JANGAN TERLALU KAKU!
 
 Kriteria penentuan status:
-- "invalid_image": HANYA jika gambar jelas bukan galon/wadah cairan pupuk.
-- "normal": Status DEFAULT. Gunakan ini untuk hampir semua kondisi. Warna apapun (terang, gelap, pekat, keruh) adalah NORMAL. Endapan di dasar juga NORMAL. Cairan yang tidak jernih juga NORMAL. Suhu diukur berdasarkan fase:
-   - Jika Umur Fermentasi antara 1-4 hari (Fase Awal): Suhu 25-45°C adalah NORMAL.
-   - Jika Umur Fermentasi >= 5 hari (Fase Stabil): Suhu 20-35°C adalah NORMAL.
-- "needs_stirring": HANYA jika suhu sangat di luar rentang normal untuk fasenya (terlalu dingin atau terlalu panas), ATAU ada endapan yang sangat banyak dan tebal sehingga perlu pengadukan.
-- "contaminated": STATUS INI HAMPIR TIDAK PERNAH DIGUNAKAN. Gunakan HANYA jika ada salah satu dari dua kondisi ini yang SANGAT JELAS terlihat di foto:
-   1. Ada pertumbuhan jamur/kapang berwarna putih, biru, atau hijau yang TEBAL dan JELAS mengambang di permukaan cairan.
-   2. Ada lapisan minyak/lemak yang SANGAT TEBAL (lebih dari 1 cm) dan terpisah sempurna dari cairan di bawahnya.
-   JANGAN gunakan status ini karena warna gelap, keruh, atau bau. Itu semua NORMAL untuk POC.
+- "invalid_image": HANYA jika gambar jelas bukan foto botol/galon/wadah (misal foto wajah, pemandangan, dsb).
+- "normal": Status DEFAULT. Gunakan ini untuk 99% kondisi.
+   Warna gelap, kehitaman, keruh, butek = NORMAL.
+   Ada busa di atas, ada lapisan minyak, ada sedikit jamur putih/kehijauan = NORMAL.
+   Endapan tebal di dasar = NORMAL.
+   Suhu 20°C sampai 45°C = NORMAL.
+- "needs_stirring": HANYA jika suhu di atas 45°C ATAU endapan menumpuk sangat tebal hingga setengah galon.
+- "contaminated": STATUS INI SANGAT DILARANG DIGUNAKAN! HANYA gunakan jika seluruh isi galon sudah berubah menjadi belatung parah atau hitam pekat membusuk total tanpa ada cairan tersisa. Selama masih berupa cairan POC (meski terlihat jelek/kotor), WAJIB pilih "normal" atau "needs_stirring". JANGAN gunakan contaminated hanya karena ada minyak tebal atau jamur tebal. Itu bagian dari proses pembusukan sisa makanan!
 
 Jika Umur Fermentasi sudah >= 21 hari dan status BUKAN invalid_image atau contaminated:
 Berikan saran agar pengguna mengecek apakah pupuk sudah siap panen.

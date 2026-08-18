@@ -1,10 +1,10 @@
-@extends('admin.layouts.admin')
 
-@section('title', 'Dashboard')
 
-@section('content')
+<?php $__env->startSection('title', 'Dashboard'); ?>
+
+<?php $__env->startSection('content'); ?>
 <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
-    {{-- Total Users --}}
+    
     <div class="bg-white rounded-2xl p-6 border border-earth-200 shadow-sm">
         <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-leaf-100 text-leaf-600 rounded-xl flex items-center justify-center text-2xl">
@@ -12,12 +12,12 @@
             </div>
             <div>
                 <p class="text-sm font-medium text-earth-500">Total Users</p>
-                <p class="text-2xl font-bold text-earth-900">{{ number_format($stats['totalUsers']) }}</p>
+                <p class="text-2xl font-bold text-earth-900"><?php echo e(number_format($stats['totalUsers'])); ?></p>
             </div>
         </div>
     </div>
     
-    {{-- Total Articles --}}
+    
     <div class="bg-white rounded-2xl p-6 border border-earth-200 shadow-sm">
         <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-leaf-100 text-leaf-600 rounded-xl flex items-center justify-center text-2xl">
@@ -25,12 +25,12 @@
             </div>
             <div>
                 <p class="text-sm font-medium text-earth-500">Total Artikel</p>
-                <p class="text-2xl font-bold text-earth-900">{{ number_format($stats['totalArticles']) }}</p>
+                <p class="text-2xl font-bold text-earth-900"><?php echo e(number_format($stats['totalArticles'])); ?></p>
             </div>
         </div>
     </div>
 
-    {{-- Draft Articles --}}
+    
     <div class="bg-white rounded-2xl p-6 border border-earth-200 shadow-sm">
         <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-2xl">
@@ -38,12 +38,12 @@
             </div>
             <div>
                 <p class="text-sm font-medium text-earth-500">Artikel Draft</p>
-                <p class="text-2xl font-bold text-earth-900">{{ number_format($stats['draftArticles']) }}</p>
+                <p class="text-2xl font-bold text-earth-900"><?php echo e(number_format($stats['draftArticles'])); ?></p>
             </div>
         </div>
     </div>
 
-    {{-- Total Scans --}}
+    
     <div class="bg-white rounded-2xl p-6 border border-earth-200 shadow-sm">
         <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-leaf-100 text-leaf-600 rounded-xl flex items-center justify-center text-2xl">
@@ -51,12 +51,12 @@
             </div>
             <div>
                 <p class="text-sm font-medium text-earth-500">Total Scan</p>
-                <p class="text-2xl font-bold text-earth-900">{{ number_format($stats['totalScans']) }}</p>
+                <p class="text-2xl font-bold text-earth-900"><?php echo e(number_format($stats['totalScans'])); ?></p>
             </div>
         </div>
     </div>
 
-    {{-- Total Galon Aktif --}}
+    
     <div class="bg-white rounded-2xl p-6 border border-earth-200 shadow-sm">
         <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl">
@@ -64,15 +64,15 @@
             </div>
             <div>
                 <p class="text-sm font-medium text-earth-500">Galon Aktif</p>
-                <p class="text-2xl font-bold text-earth-900">{{ number_format($stats['activeBatches']) }}</p>
+                <p class="text-2xl font-bold text-earth-900"><?php echo e(number_format($stats['activeBatches'])); ?></p>
             </div>
         </div>
     </div>
 </div>
 
-{{-- Charts --}}
+
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-    {{-- Status Galon Chart --}}
+    
     <div class="bg-white rounded-2xl border border-earth-200 shadow-sm p-6">
         <h2 class="text-lg font-bold text-earth-800 mb-4">Status Seluruh Galon</h2>
         <div class="relative h-64">
@@ -80,7 +80,7 @@
         </div>
     </div>
 
-    {{-- Umur Galon Aktif Chart --}}
+    
     <div class="bg-white rounded-2xl border border-earth-200 shadow-sm p-6">
         <h2 class="text-lg font-bold text-earth-800 mb-4">Umur Galon Aktif (Minggu)</h2>
         <div class="relative h-64">
@@ -90,64 +90,66 @@
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-    {{-- Recent Articles --}}
+    
     <div class="bg-white rounded-2xl border border-earth-200 shadow-sm overflow-hidden">
         <div class="px-6 py-4 border-b border-earth-200 flex justify-between items-center">
             <h2 class="text-lg font-bold text-earth-800">Artikel Terbaru</h2>
-            <a href="{{ route('admin.articles.index') }}" class="text-sm text-leaf-600 font-medium hover:underline">Lihat Semua</a>
+            <a href="<?php echo e(route('admin.articles.index')); ?>" class="text-sm text-leaf-600 font-medium hover:underline">Lihat Semua</a>
         </div>
         <div class="divide-y divide-earth-100">
-            @forelse($recentArticles as $article)
+            <?php $__empty_1 = true; $__currentLoopData = $recentArticles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $article): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <div class="px-6 py-4 flex justify-between items-center hover:bg-earth-50 transition">
                     <div>
-                        <h3 class="text-sm font-semibold text-earth-900 line-clamp-1">{{ $article->title }}</h3>
-                        <p class="text-xs text-earth-500 mt-1">{{ $article->created_at->format('d M Y') }}</p>
+                        <h3 class="text-sm font-semibold text-earth-900 line-clamp-1"><?php echo e($article->title); ?></h3>
+                        <p class="text-xs text-earth-500 mt-1"><?php echo e($article->created_at->format('d M Y')); ?></p>
                     </div>
                     <div>
-                        @if($article->is_published)
+                        <?php if($article->is_published): ?>
                             <span class="px-2 py-1 text-xs font-medium rounded-md bg-green-100 text-green-700">Published</span>
-                        @else
+                        <?php else: ?>
                             <span class="px-2 py-1 text-xs font-medium rounded-md bg-amber-100 text-amber-700">Draft</span>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
-            @empty
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <div class="px-6 py-8 text-center text-earth-500 text-sm">Belum ada artikel</div>
-            @endforelse
+            <?php endif; ?>
         </div>
     </div>
 
-    {{-- Recent Users --}}
+    
     <div class="bg-white rounded-2xl border border-earth-200 shadow-sm overflow-hidden">
         <div class="px-6 py-4 border-b border-earth-200 flex justify-between items-center">
             <h2 class="text-lg font-bold text-earth-800">User Terbaru</h2>
-            <a href="{{ route('admin.users.index') }}" class="text-sm text-leaf-600 font-medium hover:underline">Lihat Semua</a>
+            <a href="<?php echo e(route('admin.users.index')); ?>" class="text-sm text-leaf-600 font-medium hover:underline">Lihat Semua</a>
         </div>
         <div class="divide-y divide-earth-100">
-            @forelse($recentUsers as $user)
+            <?php $__empty_1 = true; $__currentLoopData = $recentUsers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <div class="px-6 py-4 flex justify-between items-center hover:bg-earth-50 transition">
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 rounded-full bg-earth-200 text-earth-600 flex items-center justify-center text-xs font-bold">
-                            {{ substr($user->name, 0, 1) }}
+                            <?php echo e(substr($user->name, 0, 1)); ?>
+
                         </div>
                         <div>
-                            <h3 class="text-sm font-semibold text-earth-900">{{ $user->name }}</h3>
-                            <p class="text-xs text-earth-500 mt-1">{{ $user->phone }}</p>
+                            <h3 class="text-sm font-semibold text-earth-900"><?php echo e($user->name); ?></h3>
+                            <p class="text-xs text-earth-500 mt-1"><?php echo e($user->phone); ?></p>
                         </div>
                     </div>
                     <div class="text-xs text-earth-400">
-                        {{ $user->created_at->diffForHumans() }}
+                        <?php echo e($user->created_at->diffForHumans()); ?>
+
                     </div>
                 </div>
-            @empty
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <div class="px-6 py-8 text-center text-earth-500 text-sm">Belum ada user</div>
-            @endforelse
+            <?php endif; ?>
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -160,9 +162,10 @@
                     labels: ['Aktif', 'Dipanen', 'Gagal'],
                     datasets: [{
                         data: [
-                            {{ $chartBatchStatus['active'] }}, 
-                            {{ $chartBatchStatus['harvested'] }}, 
-                            {{ $chartBatchStatus['failed'] }}
+                            <?php echo e($chartBatchStatus['active']); ?>, 
+                            <?php echo e($chartBatchStatus['harvested']); ?>, 
+                            <?php echo e($chartBatchStatus['failed']); ?>
+
                         ],
                         backgroundColor: ['#3b82f6', '#10b981', '#ef4444'],
                         borderWidth: 0
@@ -188,10 +191,11 @@
                     datasets: [{
                         label: 'Jumlah Galon Aktif',
                         data: [
-                            {{ $chartBatchAge['Minggu 1'] }},
-                            {{ $chartBatchAge['Minggu 2'] }},
-                            {{ $chartBatchAge['Minggu 3'] }},
-                            {{ $chartBatchAge['Minggu 4+'] }}
+                            <?php echo e($chartBatchAge['Minggu 1']); ?>,
+                            <?php echo e($chartBatchAge['Minggu 2']); ?>,
+                            <?php echo e($chartBatchAge['Minggu 3']); ?>,
+                            <?php echo e($chartBatchAge['Minggu 4+']); ?>
+
                         ],
                         backgroundColor: '#059669',
                         borderRadius: 6
@@ -211,4 +215,6 @@
         }
     });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('admin.layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH E:\Kuliah\pkm\web-edu-pocycle\pkmpm-pocycle-pnc\resources\views\admin\dashboard.blade.php ENDPATH**/ ?>
