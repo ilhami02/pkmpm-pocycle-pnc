@@ -18,11 +18,56 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-earth-50 text-earth-600 text-sm border-b border-earth-200">
-                    <th class="px-6 py-3 font-medium">Nama & No. HP</th>
-                    <th class="px-6 py-3 font-medium">Role</th>
-                    <th class="px-6 py-3 font-medium">Total Scan</th>
-                    <th class="px-6 py-3 font-medium">Total Galon</th>
-                    <th class="px-6 py-3 font-medium">Bergabung</th>
+                    <th class="px-6 py-3 font-medium">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'direction' => request('sort') === 'name' && request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center gap-1 hover:text-leaf-600 transition-colors">
+                            Nama & No. HP
+                            @if(request('sort') === 'name')
+                                <span>{{ request('direction') === 'asc' ? '↑' : '↓' }}</span>
+                            @else
+                                <span class="text-earth-300">↕</span>
+                            @endif
+                        </a>
+                    </th>
+                    <th class="px-6 py-3 font-medium">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'is_admin', 'direction' => request('sort') === 'is_admin' && request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center gap-1 hover:text-leaf-600 transition-colors">
+                            Role
+                            @if(request('sort') === 'is_admin')
+                                <span>{{ request('direction') === 'asc' ? '↑' : '↓' }}</span>
+                            @else
+                                <span class="text-earth-300">↕</span>
+                            @endif
+                        </a>
+                    </th>
+                    <th class="px-6 py-3 font-medium">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'scan_histories_count', 'direction' => request('sort') === 'scan_histories_count' && request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center gap-1 hover:text-leaf-600 transition-colors">
+                            Total Scan
+                            @if(request('sort') === 'scan_histories_count')
+                                <span>{{ request('direction') === 'asc' ? '↑' : '↓' }}</span>
+                            @else
+                                <span class="text-earth-300">↕</span>
+                            @endif
+                        </a>
+                    </th>
+                    <th class="px-6 py-3 font-medium">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'fermentation_batches_count', 'direction' => request('sort') === 'fermentation_batches_count' && request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center gap-1 hover:text-leaf-600 transition-colors">
+                            Total Galon
+                            @if(request('sort') === 'fermentation_batches_count')
+                                <span>{{ request('direction') === 'asc' ? '↑' : '↓' }}</span>
+                            @else
+                                <span class="text-earth-300">↕</span>
+                            @endif
+                        </a>
+                    </th>
+                    <th class="px-6 py-3 font-medium">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'created_at', 'direction' => request('sort', 'created_at') === 'created_at' && request('direction', 'desc') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center gap-1 hover:text-leaf-600 transition-colors">
+                            Bergabung
+                            @if(request('sort', 'created_at') === 'created_at')
+                                <span>{{ request('direction', 'desc') === 'asc' ? '↑' : '↓' }}</span>
+                            @else
+                                <span class="text-earth-300">↕</span>
+                            @endif
+                        </a>
+                    </th>
                     <th class="px-6 py-3 font-medium text-right">Aksi</th>
                 </tr>
             </thead>

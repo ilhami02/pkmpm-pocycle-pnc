@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::withCount(['scanHistories', 'fermentationBatches'])->latest();
+        $query = User::withCount(['scanHistories', 'fermentationBatches']);
 
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
@@ -21,6 +21,19 @@ class UserController extends Controller
                   ->orWhere('username', 'like', "%{$search}%")
                   ->orWhere('phone', 'like', "%{$search}%");
             });
+        }
+
+        // Sorting
+        $sort = $request->input('sort', 'created_at');
+        $direction = $request->input('direction', 'desc');
+
+        $allowedSorts = ['name', 'is_admin', 'scan_histories_count', 'fermentation_batches_count', 'created_at'];
+        $allowedDirections = ['asc', 'desc'];
+
+        if (in_array($sort, $allowedSorts) && in_array($direction, $allowedDirections)) {
+            $query->orderBy($sort, $direction);
+        } else {
+            $query->latest();
         }
 
         $users = $query->paginate(15)->withQueryString();
