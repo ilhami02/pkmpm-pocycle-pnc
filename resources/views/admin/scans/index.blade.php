@@ -63,10 +63,12 @@
 </div>
 
 {{-- Grafik Status --}}
-<div class="bg-white rounded-2xl border border-earth-200 shadow-sm p-6 mb-6">
-    <h3 class="text-lg font-bold text-earth-800 mb-4">Grafik Status Fermentasi</h3>
-    <div class="w-full h-64">
-        <canvas id="statusChart"></canvas>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div class="bg-white rounded-2xl border border-earth-200 shadow-sm p-6">
+        <h3 class="text-lg font-bold text-earth-800 mb-4">Grafik Status Fermentasi</h3>
+        <div class="w-full h-52">
+            <canvas id="statusChart"></canvas>
+        </div>
     </div>
 </div>
 
