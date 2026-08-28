@@ -70,6 +70,13 @@
             <canvas id="statusChart"></canvas>
         </div>
     </div>
+    
+    <div class="bg-white rounded-2xl border border-earth-200 shadow-sm p-6">
+        <h3 class="text-lg font-bold text-earth-800 mb-4">Grafik Status Verifikasi</h3>
+        <div class="w-full h-52 flex justify-center">
+            <canvas id="verificationChart"></canvas>
+        </div>
+    </div>
 </div>
 
 {{-- Tabel Data Scan --}}
@@ -233,8 +240,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const ctx = document.getElementById('statusChart').getContext('2d');
-        new Chart(ctx, {
+        // Bar Chart - Status Fermentasi
+        const ctxStatus = document.getElementById('statusChart').getContext('2d');
+        new Chart(ctxStatus, {
             type: 'bar',
             data: {
                 labels: ['Normal', 'Perlu Diaduk', 'Terkontaminasi'],
@@ -256,7 +264,8 @@
                         'rgb(220, 38, 38)'
                     ],
                     borderWidth: 1,
-                    borderRadius: 4
+                    borderRadius: 4,
+                    maxBarThickness: 60
                 }]
             },
             options: {
@@ -279,6 +288,41 @@
                             label: function(context) {
                                 return context.parsed.y + ' Scan';
                             }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Doughnut Chart - Status Verifikasi
+        const ctxVerification = document.getElementById('verificationChart').getContext('2d');
+        const verifiedCount = {{ $stats['total'] - $stats['unverified'] }};
+        const unverifiedCount = {{ $stats['unverified'] }};
+        
+        new Chart(ctxVerification, {
+            type: 'doughnut',
+            data: {
+                labels: ['Sudah Diverifikasi', 'Belum Diverifikasi'],
+                datasets: [{
+                    data: [verifiedCount, unverifiedCount],
+                    backgroundColor: [
+                        'rgba(37, 99, 235, 0.8)', // blue-600
+                        'rgba(156, 163, 175, 0.5)'  // gray-400
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20
                         }
                     }
                 }
