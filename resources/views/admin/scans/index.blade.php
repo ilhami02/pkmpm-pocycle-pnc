@@ -62,6 +62,14 @@
     </div>
 </div>
 
+{{-- Grafik Status --}}
+<div class="bg-white rounded-2xl border border-earth-200 shadow-sm p-6 mb-6">
+    <h3 class="text-lg font-bold text-earth-800 mb-4">Grafik Status Fermentasi</h3>
+    <div class="w-full h-64">
+        <canvas id="statusChart"></canvas>
+    </div>
+</div>
+
 {{-- Tabel Data Scan --}}
 <div class="bg-white rounded-2xl border border-earth-200 shadow-sm overflow-hidden">
 
@@ -218,4 +226,63 @@
         </div>
     @endif
 </div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('statusChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Normal', 'Perlu Diaduk', 'Terkontaminasi'],
+                datasets: [{
+                    label: 'Jumlah Scan',
+                    data: [
+                        {{ $stats['normal'] }},
+                        {{ $stats['needs_stirring'] }},
+                        {{ $stats['contaminated'] }}
+                    ],
+                    backgroundColor: [
+                        'rgba(22, 163, 74, 0.2)', // green-600
+                        'rgba(217, 119, 6, 0.2)', // amber-600
+                        'rgba(220, 38, 38, 0.2)'  // red-600
+                    ],
+                    borderColor: [
+                        'rgb(22, 163, 74)',
+                        'rgb(217, 119, 6)',
+                        'rgb(220, 38, 38)'
+                    ],
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + ' Scan';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+@endpush
 @endsection
