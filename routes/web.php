@@ -68,6 +68,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/cloudflare-visitors', [DashboardController::class, 'getCloudflareVisitors'])->name('cloudflare.visitors');
 
     // Artikel CRUD
     Route::get('/articles', [AdminArticleController::class, 'index'])->name('articles.index');

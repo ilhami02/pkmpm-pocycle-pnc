@@ -64,4 +64,59 @@ class DashboardController extends Controller
 
         return view('admin.dashboard', compact('stats', 'recentArticles', 'recentUsers', 'chartBatchStatus', 'chartBatchAge', 'recentActiveBatches'));
     }
+    public function getCloudflareVisitors(\Illuminate\Http\Request $request)
+    {
+        $period = $request->input('period', '7d'); // Support: 24h, 7d, 30d
+        if (!in_array($period, ['24h', '7d', '30d'])) {
+            $period = '7d';
+        }
+        
+        $cacheKey = "cloudflare_visitors_{$period}";
+        
+        $visitors = \Illuminate\Support\Facades\Cache::remember($cacheKey, now()->addMinutes(30), function () use ($period) {
+            $apiToken = env('CLOUDFLARE_API_TOKEN');
+            $zoneId = env('CLOUDFLARE_ZONE_ID');
+            
+            if ($period === '24h') {
+                $limit = 24;
+                // Cloudflare expects ISO8601 UTC for datetime
+                $datetimeGt = now()->subHours(24)->setTimezone('UTC')->format('Y-m-d\TH:i:s\Z');
+                $query = 'query { viewer { zones(filter: { zoneTag: "' . $zoneId . '" }) { httpRequests1hGroups(limit: ' . $limit . ', orderBy: [datetime_ASC], filter: { datetime_gt: "' . $datetimeGt . '" }) { dimensions { datetime } uniq { uniques } } } } }';
+            } else {
+                $limit = $period === '30d' ? 30 : 7;
+                $dateGt = now()->subDays($limit)->format('Y-m-d');
+                $query = 'query { viewer { zones(filter: { zoneTag: "' . $zoneId . '" }) { httpRequests1dGroups(limit: ' . $limit . ', orderBy: [date_ASC], filter: { date_gt: "' . $dateGt . '" }) { dimensions { date } uniq { uniques } } } } }';
+            }
+
+            $response = \Illuminate\Support\Facades\Http::withHeaders([
+                'Authorization' => 'Bearer ' . $apiToken,
+                'Content-Type'  => 'application/json',
+            ])->post('https://api.cloudflare.com/client/v4/graphql', [
+                'query' => $query
+            ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                
+                $groupName = $period === '24h' ? 'httpRequests1hGroups' : 'httpRequests1dGroups';
+                $dimensionName = $period === '24h' ? 'datetime' : 'date';
+                
+                $groups = $data['data']['viewer']['zones'][0][$groupName] ?? [];
+                
+                $formattedData = [];
+                foreach ($groups as $group) {
+                    $formattedData[] = [
+                        'waktu' => $group['dimensions'][$dimensionName],
+                        'jumlah_visitor' => $group['uniq']['uniques']
+                    ];
+                }
+                
+                return $formattedData;
+            }
+            
+            return [];
+        });
+        
+        return response()->json($visitors);
+    }
 }
