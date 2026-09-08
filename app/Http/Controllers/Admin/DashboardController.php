@@ -73,7 +73,7 @@ class DashboardController extends Controller
         
         $cacheKey = "cloudflare_visitors_{$period}";
         
-        $visitors = \Illuminate\Support\Facades\Cache::remember($cacheKey, now()->addMinutes(30), function () use ($period) {
+        $visitors = \Illuminate\Support\Facades\Cache::remember($cacheKey, now()->addMinutes(5), function () use ($period) {
             $apiToken = env('CLOUDFLARE_API_TOKEN');
             $zoneId = env('CLOUDFLARE_ZONE_ID');
             
