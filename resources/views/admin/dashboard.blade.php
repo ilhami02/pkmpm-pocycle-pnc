@@ -80,7 +80,7 @@
             <option value="30d">30 Hari Terakhir</option>
         </select>
     </div>
-    <div class="relative h-72">
+    <div class="relative h-72" id="visitorChartContainer">
         <canvas id="visitorChart"></canvas>
     </div>
 </div>
@@ -295,6 +295,31 @@
             fetch(`/admin/cloudflare-visitors?period=${period}`)
                 .then(res => res.json())
                 .then(data => {
+                    const container = document.getElementById('visitorChartContainer');
+                    const canvas = document.getElementById('visitorChart');
+                    
+                    if (data.error || data.length === 0) {
+                        if (visitorChartInstance) visitorChartInstance.destroy();
+                        
+                        let message = data.error ? `⚠️ Gagal memuat data: ${data.message}` : "Belum ada data pengunjung untuk periode ini.";
+                        let colorClass = data.error ? "text-red-500 bg-red-50" : "text-earth-500 bg-earth-50";
+                        
+                        let errorDiv = document.getElementById('visitorChartError');
+                        if (!errorDiv) {
+                            errorDiv = document.createElement('div');
+                            errorDiv.id = 'visitorChartError';
+                            container.appendChild(errorDiv);
+                        }
+                        errorDiv.className = `absolute inset-0 flex items-center justify-center text-sm rounded-lg ${colorClass}`;
+                        errorDiv.innerHTML = message;
+                        canvas.style.display = 'none';
+                        return;
+                    }
+                    
+                    canvas.style.display = 'block';
+                    const errorDiv = document.getElementById('visitorChartError');
+                    if (errorDiv) errorDiv.remove();
+
                     const labels = data.map(item => {
                         const date = new Date(item.waktu);
                         if (period === '24h') {

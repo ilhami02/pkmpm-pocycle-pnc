@@ -98,6 +98,11 @@ class DashboardController extends Controller
             if ($response->successful()) {
                 $data = $response->json();
                 
+                // Cek apakah ada error dari GraphQL (HTTP 200 tapi query error)
+                if (isset($data['errors'])) {
+                    return ['error' => true, 'message' => $data['errors'][0]['message'] ?? 'GraphQL Error', 'details' => $data['errors']];
+                }
+                
                 $groupName = $period === '24h' ? 'httpRequests1hGroups' : 'httpRequests1dGroups';
                 $dimensionName = $period === '24h' ? 'datetime' : 'date';
                 
@@ -114,8 +119,13 @@ class DashboardController extends Controller
                 return $formattedData;
             }
             
-            return [];
+            return ['error' => true, 'message' => 'HTTP Request Failed', 'status' => $response->status(), 'body' => $response->body()];
         });
+        
+        // Jangan cache jika terjadi error
+        if (isset($visitors['error'])) {
+            \Illuminate\Support\Facades\Cache::forget($cacheKey);
+        }
         
         return response()->json($visitors);
     }
