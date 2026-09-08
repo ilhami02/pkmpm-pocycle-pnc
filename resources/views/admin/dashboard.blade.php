@@ -70,6 +70,21 @@
     </div>
 </div>
 
+{{-- Visitor Chart --}}
+<div class="bg-white rounded-2xl border border-earth-200 shadow-sm p-6 mb-8">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-bold text-earth-800">Statistik Pengunjung Website (Cloudflare)</h2>
+        <select id="visitorPeriod" class="border-earth-300 rounded-lg text-sm shadow-sm focus:ring-leaf-500 focus:border-leaf-500">
+            <option value="24h">24 Jam Terakhir</option>
+            <option value="7d" selected>7 Hari Terakhir</option>
+            <option value="30d">30 Hari Terakhir</option>
+        </select>
+    </div>
+    <div class="relative h-72">
+        <canvas id="visitorChart"></canvas>
+    </div>
+</div>
+
 {{-- Charts --}}
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
     {{-- Status Galon Chart --}}
