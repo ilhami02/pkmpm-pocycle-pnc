@@ -73,7 +73,7 @@
 {{-- Visitor Chart --}}
 <div class="bg-white rounded-2xl border border-earth-200 shadow-sm p-6 mb-8">
     <div class="flex justify-between items-center mb-4">
-        <h2 class="text-lg font-bold text-earth-800">Statistik Pengunjung Website (Cloudflare)</h2>
+        <h2 class="text-lg font-bold text-earth-800">Statistik Pengunjung Website</h2>
         <select id="visitorPeriod" class="border-earth-300 rounded-lg text-sm shadow-sm focus:ring-leaf-500 focus:border-leaf-500">
             <option value="24h">24 Jam Terakhir</option>
             <option value="7d" selected>7 Hari Terakhir</option>
@@ -284,6 +284,74 @@
                         legend: { display: false }
                     }
                 }
+            });
+        }
+
+        // Data Pengunjung Cloudflare
+        const visitorCtx = document.getElementById('visitorChart');
+        let visitorChartInstance = null;
+
+        const loadVisitorData = (period) => {
+            fetch(`/admin/cloudflare-visitors?period=${period}`)
+                .then(res => res.json())
+                .then(data => {
+                    const labels = data.map(item => {
+                        const date = new Date(item.waktu);
+                        if (period === '24h') {
+                            return date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                        }
+                        return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+                    });
+                    const values = data.map(item => item.jumlah_visitor);
+
+                    if (visitorChartInstance) {
+                        visitorChartInstance.destroy();
+                    }
+
+                    visitorChartInstance = new Chart(visitorCtx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Unique Visitors',
+                                data: values,
+                                borderColor: '#0ea5e9',
+                                backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } }
+                            },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    callbacks: {
+                                        title: function(tooltipItems) {
+                                            if (period === '24h') {
+                                                return 'Jam: ' + tooltipItems[0].label;
+                                            }
+                                            return tooltipItems[0].label;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(err => console.error('Error fetching visitor data:', err));
+        };
+
+        const visitorPeriodSelect = document.getElementById('visitorPeriod');
+        if (visitorPeriodSelect && visitorCtx) {
+            loadVisitorData(visitorPeriodSelect.value);
+            visitorPeriodSelect.addEventListener('change', function(e) {
+                loadVisitorData(e.target.value);
             });
         }
     });
