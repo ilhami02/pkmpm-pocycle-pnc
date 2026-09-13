@@ -24,5 +24,6 @@ yarn-error.log
 /key.bak
 /modify.md
 
+/storage/framework/views/*
 /storage/framework/sessions/*
 !/storage/framework/sessions/.gitignore
