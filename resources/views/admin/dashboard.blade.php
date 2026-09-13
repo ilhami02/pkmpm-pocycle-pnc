@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-8">
     {{-- Total Users --}}
     <div class="bg-white rounded-2xl p-6 border border-earth-200 shadow-sm">
         <div class="flex items-center gap-4">
@@ -65,6 +65,19 @@
             <div>
                 <p class="text-sm font-medium text-earth-500">Galon Aktif</p>
                 <p class="text-2xl font-bold text-earth-900">{{ number_format($stats['activeBatches']) }}</p>
+            </div>
+        </div>
+    </div>
+
+    {{-- Total Galon Dipanen --}}
+    <div class="bg-white rounded-2xl p-6 border border-earth-200 shadow-sm">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-2xl">
+                🌾
+            </div>
+            <div>
+                <p class="text-sm font-medium text-earth-500">Galon Dipanen</p>
+                <p class="text-2xl font-bold text-earth-900">{{ number_format($stats['harvestedBatches']) }}</p>
             </div>
         </div>
     </div>
@@ -158,6 +171,54 @@
                         <td colspan="4" class="px-6 py-8 text-center text-earth-500">
                             <div class="text-2xl mb-1">🫙</div>
                             <p class="text-sm">Tidak ada galon aktif.</p>
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{{-- Top 5 Galon Dipanen (Update Terbaru) --}}
+<div class="bg-white rounded-2xl border border-earth-200 shadow-sm overflow-hidden mb-8">
+    <div class="px-6 py-4 border-b border-earth-200 flex justify-between items-center">
+        <div>
+            <h2 class="text-lg font-bold text-earth-800">5 Galon Dipanen (Terbaru)</h2>
+            <p class="text-xs text-earth-500 mt-1">Daftar galon yang sudah selesai masa fermentasi (harvested).</p>
+        </div>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-earth-50 text-earth-600 text-xs border-b border-earth-200">
+                    <th class="px-6 py-2 font-medium">User & Galon</th>
+                    <th class="px-6 py-2 font-medium">Hari Saat Dipanen</th>
+                    <th class="px-6 py-2 font-medium">Waktu Panen</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-earth-100 text-sm text-earth-800">
+                @forelse($recentHarvestedBatches as $batch)
+                    @php
+                        $day = $batch->getFermentationDay();
+                    @endphp
+                    <tr class="hover:bg-earth-50 transition-colors">
+                        <td class="px-6 py-3">
+                            <div class="font-semibold text-earth-900">{{ $batch->user->name ?? 'User Terhapus' }}</div>
+                            <div class="text-xs font-medium text-amber-600 mt-0.5">🌾 {{ $batch->name }}</div>
+                        </td>
+                        <td class="px-6 py-3">
+                            Hari ke-{{ $day }}
+                        </td>
+                        <td class="px-6 py-3">
+                            <div class="text-earth-800">{{ $batch->updated_at->format('d M Y') }}</div>
+                            <div class="text-xs text-earth-500">{{ $batch->updated_at->diffForHumans() }}</div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="3" class="px-6 py-8 text-center text-earth-500">
+                            <div class="text-2xl mb-1">🌾</div>
+                            <p class="text-sm">Belum ada galon yang dipanen.</p>
                         </td>
                     </tr>
                 @endforelse

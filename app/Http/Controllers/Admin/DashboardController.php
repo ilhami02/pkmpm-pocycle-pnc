@@ -14,11 +14,12 @@ class DashboardController extends Controller
     public function index()
     {
         $stats = [
-            'totalUsers'    => User::count(),
-            'totalArticles' => Article::count(),
-            'totalScans'    => ScanHistory::count(),
-            'activeBatches' => FermentationBatch::active()->count(),
-            'draftArticles' => Article::where('is_published', false)->count(),
+            'totalUsers'       => User::count(),
+            'totalArticles'    => Article::count(),
+            'totalScans'       => ScanHistory::count(),
+            'activeBatches'    => FermentationBatch::active()->count(),
+            'harvestedBatches' => FermentationBatch::where('status', 'harvested')->count(),
+            'draftArticles'    => Article::where('is_published', false)->count(),
         ];
 
         $recentArticles = Article::latest()->take(5)->get();
@@ -62,7 +63,10 @@ class DashboardController extends Controller
             $q->latest()->limit(1);
         }])->active()->latest('updated_at')->take(5)->get();
 
-        return view('admin.dashboard', compact('stats', 'recentArticles', 'recentUsers', 'chartBatchStatus', 'chartBatchAge', 'recentActiveBatches'));
+        // Top 5 Galon Dipanen (Update Terbaru)
+        $recentHarvestedBatches = FermentationBatch::with(['user'])->where('status', 'harvested')->latest('updated_at')->take(5)->get();
+
+        return view('admin.dashboard', compact('stats', 'recentArticles', 'recentUsers', 'chartBatchStatus', 'chartBatchAge', 'recentActiveBatches', 'recentHarvestedBatches'));
     }
     public function getCloudflareVisitors(\Illuminate\Http\Request $request)
     {
