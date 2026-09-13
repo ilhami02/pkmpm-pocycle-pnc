@@ -48,6 +48,10 @@ class FermentationBatch extends Model
             return 0;
         }
 
+        if ($this->status !== 'active' && $this->updated_at) {
+            return $this->started_at->diffInDays($this->updated_at) + 1;
+        }
+
         return $this->started_at->diffInDays(now()) + 1;
     }
 
