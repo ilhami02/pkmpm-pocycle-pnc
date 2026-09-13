@@ -17,7 +17,7 @@
     <div class="card card-body mb-8 bg-gradient-to-br from-blue-50 to-leaf-50 border-blue-200">
         <div class="flex gap-4">
             <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                <span class="text-3xl">🫙</span>
+                <span class="text-3xl">💧</span>
             </div>
             <div>
                 <p class="font-bold text-earth-800 text-lg mb-2">Panduan Mengambil Foto Galon</p>
@@ -52,7 +52,7 @@
 
         {{-- Batch Selector --}}
         <div id="batch-section">
-            <label class="input-label">🫙 Pilih Galon yang Akan Discan</label>
+            <label class="input-label">💧 Pilih Galon yang Akan Discan</label>
             <div id="batch-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-xl transition-all">
                 @foreach($activeBatches as $batch)
                     <label class="cursor-pointer block h-full relative">

@@ -47,7 +47,7 @@
                                 <div class="min-w-0">
                                     <div class="font-semibold text-earth-900 truncate">{{ $batch->user->name ?? 'User Terhapus' }}</div>
                                     <div class="text-xs font-medium text-leaf-600 truncate mt-0.5">
-                                        🫙 {{ $batch->name }}
+                                        💧 {{ $batch->name }}
                                     </div>
                                 </div>
                             </div>
@@ -81,7 +81,7 @@
                 @empty
                     <tr>
                         <td colspan="4" class="px-6 py-12 text-center text-earth-500">
-                            <div class="text-4xl mb-2">🫙</div>
+                            <div class="text-4xl mb-2">💧</div>
                             <p class="font-medium">Tidak ada galon aktif saat ini.</p>
                         </td>
                     </tr>

@@ -61,7 +61,7 @@
     <div class="bg-white rounded-2xl p-6 border border-earth-200 shadow-sm">
         <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl">
-                🫙
+                💧
             </div>
             <div>
                 <p class="text-sm font-medium text-earth-500">Galon Aktif</p>
@@ -146,7 +146,7 @@
                         <tr class="hover:bg-earth-50 transition-colors">
                             <td class="px-6 py-3">
                                 <div class="font-semibold text-earth-900">{{ $batch->user->name ?? 'User Terhapus' }}</div>
-                                <div class="text-xs font-medium text-leaf-600 mt-0.5">🫙 {{ $batch->name }}</div>
+                                <div class="text-xs font-medium text-leaf-600 mt-0.5">💧 {{ $batch->name }}</div>
                             </td>
                             <td class="px-6 py-3">
                                 Hari ke-{{ $day }}
@@ -167,7 +167,7 @@
                     @empty
                         <tr>
                             <td colspan="3" class="px-6 py-8 text-center text-earth-500">
-                                <div class="text-2xl mb-1">🫙</div>
+                                <div class="text-2xl mb-1">💧</div>
                                 <p class="text-sm">Tidak ada galon aktif.</p>
                             </td>
                         </tr>
@@ -313,7 +313,7 @@
                         <tr class="hover:bg-earth-50 transition-colors" x-show="activeSearch === '' || '{{ $userName }}'.includes(activeSearch.toLowerCase())">
                             <td class="px-6 py-3">
                                 <div class="font-semibold text-earth-900">{{ $batch->user->name ?? 'User Terhapus' }}</div>
-                                <div class="text-xs font-medium text-leaf-600 mt-0.5">🫙 {{ $batch->name }}</div>
+                                <div class="text-xs font-medium text-leaf-600 mt-0.5">💧 {{ $batch->name }}</div>
                             </td>
                             <td class="px-6 py-3">Hari ke-{{ $day }}</td>
                             <td class="px-6 py-3">
