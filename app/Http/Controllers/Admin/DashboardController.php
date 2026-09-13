@@ -66,7 +66,14 @@ class DashboardController extends Controller
         // Top 5 Galon Dipanen (Update Terbaru)
         $recentHarvestedBatches = FermentationBatch::with(['user'])->where('status', 'harvested')->latest('updated_at')->take(5)->get();
 
-        return view('admin.dashboard', compact('stats', 'recentArticles', 'recentUsers', 'chartBatchStatus', 'chartBatchAge', 'recentActiveBatches', 'recentHarvestedBatches'));
+        // Semua Galon untuk Modal
+        $allActiveBatches = FermentationBatch::with(['user', 'scanHistories' => function ($q) {
+            $q->latest()->limit(1);
+        }])->active()->latest('updated_at')->get();
+
+        $allHarvestedBatches = FermentationBatch::with(['user'])->where('status', 'harvested')->latest('updated_at')->get();
+
+        return view('admin.dashboard', compact('stats', 'recentArticles', 'recentUsers', 'chartBatchStatus', 'chartBatchAge', 'recentActiveBatches', 'recentHarvestedBatches', 'allActiveBatches', 'allHarvestedBatches'));
     }
     public function getCloudflareVisitors(\Illuminate\Http\Request $request)
     {

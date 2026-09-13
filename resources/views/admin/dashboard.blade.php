@@ -3,7 +3,8 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-8">
+<div x-data="{ openActiveModal: false, openHarvestedModal: false, activeSearch: '', harvestedSearch: '' }">
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-8">
     {{-- Total Users --}}
     <div class="bg-white rounded-2xl p-6 border border-earth-200 shadow-sm">
         <div class="flex items-center gap-4">
@@ -125,7 +126,7 @@
                 <h2 class="text-lg font-bold text-earth-800">5 Galon Aktif (Terbaru)</h2>
                 <p class="text-xs text-earth-500 mt-1">Galon yang sedang difermentasi.</p>
             </div>
-            <a href="{{ route('admin.batches.active') }}" class="text-sm text-leaf-600 font-medium hover:underline">Lihat Semua</a>
+            <button @click="openActiveModal = true" class="text-sm text-leaf-600 font-medium hover:underline">Lihat Semua</button>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
@@ -183,6 +184,7 @@
                 <h2 class="text-lg font-bold text-earth-800">5 Galon Dipanen (Terbaru)</h2>
                 <p class="text-xs text-earth-500 mt-1">Galon yang selesai difermentasi.</p>
             </div>
+            <button @click="openHarvestedModal = true" class="text-sm text-leaf-600 font-medium hover:underline">Lihat Semua</button>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
@@ -280,6 +282,107 @@
             @endforelse
         </div>
     </div>
+</div>
+
+{{-- Modal Galon Aktif --}}
+<div x-show="openActiveModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-earth-900/50 backdrop-blur-sm" @click.self="openActiveModal = false">
+    <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl" x-transition>
+        <div class="p-6 border-b border-earth-200 flex justify-between items-center">
+            <h2 class="text-xl font-bold text-earth-800">Semua Galon Aktif</h2>
+            <button @click="openActiveModal = false" class="text-earth-400 hover:text-red-500 text-3xl leading-none">&times;</button>
+        </div>
+        <div class="p-4 border-b border-earth-200 bg-earth-50">
+            <input type="text" x-model="activeSearch" placeholder="Cari nama user..." class="w-full px-4 py-2 rounded-xl border border-earth-300 focus:ring-leaf-500 focus:border-leaf-500 text-sm">
+        </div>
+        <div class="p-0 overflow-y-auto flex-1 bg-white rounded-b-2xl">
+            <table class="w-full text-left border-collapse">
+                <thead class="sticky top-0 z-10">
+                    <tr class="bg-earth-100 text-earth-600 text-xs border-b border-earth-200">
+                        <th class="px-6 py-3 font-medium">User & Galon</th>
+                        <th class="px-6 py-3 font-medium">Umur</th>
+                        <th class="px-6 py-3 font-medium">Scan Terakhir</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-earth-100 text-sm text-earth-800">
+                    @forelse($allActiveBatches as $batch)
+                        @php
+                            $day = $batch->getFermentationDay();
+                            $latestScan = $batch->scanHistories->first();
+                            $userName = strtolower($batch->user->name ?? '');
+                        @endphp
+                        <tr class="hover:bg-earth-50 transition-colors" x-show="activeSearch === '' || '{{ $userName }}'.includes(activeSearch.toLowerCase())">
+                            <td class="px-6 py-3">
+                                <div class="font-semibold text-earth-900">{{ $batch->user->name ?? 'User Terhapus' }}</div>
+                                <div class="text-xs font-medium text-leaf-600 mt-0.5">🫙 {{ $batch->name }}</div>
+                            </td>
+                            <td class="px-6 py-3">Hari ke-{{ $day }}</td>
+                            <td class="px-6 py-3">
+                                @if($latestScan)
+                                    <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md border {{ $latestScan->status_color }}">{{ $latestScan->status_label }}</span>
+                                @else
+                                    <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md bg-gray-100 text-gray-500 border border-gray-200">⚪ Belum ada scan</span>
+                                @endif
+                                <div class="text-xs text-earth-500 mt-1">{{ $batch->updated_at->diffForHumans() }}</div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="px-6 py-8 text-center text-earth-500">Tidak ada galon aktif.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Galon Dipanen --}}
+<div x-show="openHarvestedModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-earth-900/50 backdrop-blur-sm" @click.self="openHarvestedModal = false">
+    <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl" x-transition>
+        <div class="p-6 border-b border-earth-200 flex justify-between items-center">
+            <h2 class="text-xl font-bold text-earth-800">Semua Galon Dipanen</h2>
+            <button @click="openHarvestedModal = false" class="text-earth-400 hover:text-red-500 text-3xl leading-none">&times;</button>
+        </div>
+        <div class="p-4 border-b border-earth-200 bg-earth-50">
+            <input type="text" x-model="harvestedSearch" placeholder="Cari nama user..." class="w-full px-4 py-2 rounded-xl border border-earth-300 focus:ring-leaf-500 focus:border-leaf-500 text-sm">
+        </div>
+        <div class="p-0 overflow-y-auto flex-1 bg-white rounded-b-2xl">
+            <table class="w-full text-left border-collapse">
+                <thead class="sticky top-0 z-10">
+                    <tr class="bg-earth-100 text-earth-600 text-xs border-b border-earth-200">
+                        <th class="px-6 py-3 font-medium">User & Galon</th>
+                        <th class="px-6 py-3 font-medium">Hari Panen</th>
+                        <th class="px-6 py-3 font-medium">Waktu Panen</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-earth-100 text-sm text-earth-800">
+                    @forelse($allHarvestedBatches as $batch)
+                        @php
+                            $day = $batch->getFermentationDay();
+                            $userName = strtolower($batch->user->name ?? '');
+                        @endphp
+                        <tr class="hover:bg-earth-50 transition-colors" x-show="harvestedSearch === '' || '{{ $userName }}'.includes(harvestedSearch.toLowerCase())">
+                            <td class="px-6 py-3">
+                                <div class="font-semibold text-earth-900">{{ $batch->user->name ?? 'User Terhapus' }}</div>
+                                <div class="text-xs font-medium text-amber-600 mt-0.5">🌾 {{ $batch->name }}</div>
+                            </td>
+                            <td class="px-6 py-3">Hari ke-{{ $day }}</td>
+                            <td class="px-6 py-3">
+                                <div class="text-earth-800">{{ $batch->updated_at->format('d M Y') }}</div>
+                                <div class="text-xs text-earth-500">{{ $batch->updated_at->diffForHumans() }}</div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="px-6 py-8 text-center text-earth-500">Belum ada galon yang dipanen.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 </div>
 @endsection
 
