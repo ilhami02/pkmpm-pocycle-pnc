@@ -74,6 +74,45 @@
         </div>
     @endif
 
+    {{-- Riwayat Galon (Selesai) --}}
+    @if($completedBatches->isNotEmpty())
+        <div class="flex items-center justify-between mb-4 mt-8">
+            <h2 class="text-xl font-bold text-earth-800">Riwayat Galon (Selesai)</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            @foreach($completedBatches as $batch)
+                {{-- Completed Batch Card --}}
+                <div class="card card-body bg-white border-earth-200 shadow-sm">
+                    <div class="flex flex-col gap-3">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-earth-800 text-lg font-bold mb-1">{{ $batch->name }}</h3>
+                                <p class="text-earth-500 text-sm">
+                                    {{ $batch->started_at ? $batch->started_at->translatedFormat('d M Y') : '-' }} - 
+                                    {{ $batch->updated_at ? $batch->updated_at->translatedFormat('d M Y') : '-' }}
+                                </p>
+                            </div>
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full border {{ $batch->status_color }}">
+                                {{ $batch->status_label }}
+                            </span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center mt-2 pt-3 border-t border-earth-100">
+                            <p class="text-sm text-earth-600">
+                                Durasi: <strong>{{ $batch->getFermentationDay() }} hari</strong>
+                            </p>
+                            <a href="{{ route('history.index', ['batch_id' => $batch->id]) }}#history-section" class="text-leaf-600 hover:text-leaf-700 text-sm font-medium flex items-center gap-1 transition-colors">
+                                Lihat Foto 
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
 
     {{-- Filter Riwayat --}}
     @if($allBatches->isNotEmpty())

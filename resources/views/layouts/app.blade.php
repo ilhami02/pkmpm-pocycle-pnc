@@ -54,7 +54,7 @@
                             📷 Scan
                         </a>
                         <a href="{{ route('history.index') }}" class="nav-link {{ request()->routeIs('history.*') ? 'nav-link-active' : '' }}">
-                            📋 Riwayat
+                            📋 Dashboard
                         </a>
 
                     @endauth
@@ -191,7 +191,7 @@
                     <a href="{{ route('articles.index') }}" class="nav-link {{ request()->routeIs('articles.*') ? 'nav-link-active' : '' }}">📖 Edukasi</a>
                     @auth
                         <a href="{{ route('scan.create') }}" class="nav-link {{ request()->routeIs('scan.*') ? 'nav-link-active' : '' }}">📷 Scan Pupuk</a>
-                        <a href="{{ route('history.index') }}" class="nav-link {{ request()->routeIs('history.*') ? 'nav-link-active' : '' }}">📋 Riwayat</a>
+                        <a href="{{ route('history.index') }}" class="nav-link {{ request()->routeIs('history.*') ? 'nav-link-active' : '' }}">📋 Dashboard</a>
 
                         <a href="{{ route('notifications.index') }}" class="nav-link {{ request()->routeIs('notifications.*') ? 'nav-link-active' : '' }}">
                             🔔 Notifikasi
@@ -268,7 +268,7 @@
                         <li><a href="{{ route('articles.index') }}" class="hover:text-leaf-400 transition-colors">Artikel Edukasi</a></li>
                         @auth
                         <li><a href="{{ route('scan.create') }}" class="hover:text-leaf-400 transition-colors">Scan Pupuk</a></li>
-                        <li><a href="{{ route('history.index') }}" class="hover:text-leaf-400 transition-colors">Riwayat POC</a></li>
+                        <li><a href="{{ route('history.index') }}" class="hover:text-leaf-400 transition-colors">Dashboard POC</a></li>
                         @endauth
                     </ul>
                 </div>

@@ -25,6 +25,7 @@ yarn-error.log
 /modify.md
 
 /storage/logs/*
+/storage/logs/laravel.log
 /storage/framework/views/*
 /storage/framework/sessions/*
 !/storage/framework/sessions/.gitignore

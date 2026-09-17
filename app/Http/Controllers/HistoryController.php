@@ -15,6 +15,7 @@ class HistoryController extends Controller
         $user = Auth::user();
         
         $activeBatches = $user->fermentationBatches()->active()->get();
+        $completedBatches = $user->fermentationBatches()->whereIn('status', ['harvested', 'failed'])->latest('updated_at')->get();
         $allBatches = $user->fermentationBatches()->latest()->get();
         
         $historiesQuery = $user->scanHistories()->with('batch')->latest();
@@ -28,6 +29,6 @@ class HistoryController extends Controller
         // Keep query string for pagination links
         $histories->appends($request->all());
 
-        return view('history.index', compact('histories', 'activeBatches', 'allBatches'));
+        return view('history.index', compact('histories', 'activeBatches', 'completedBatches', 'allBatches'));
     }
 }
