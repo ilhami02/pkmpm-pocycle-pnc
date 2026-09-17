@@ -19,4 +19,13 @@ return [
         'reminder_interval_days' => env('FERTILIZER_REMINDER_INTERVAL', 3),
         'model' => env('FERTILIZER_API_MODEL', 'gemini-1.5-flash'),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Fonnte WhatsApp API
+    |--------------------------------------------------------------------------
+    */
+    'fonnte' => [
+        'token' => env('FONNTE_TOKEN'),
+    ],
 ];

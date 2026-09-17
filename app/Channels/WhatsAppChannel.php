@@ -24,33 +24,44 @@ class WhatsAppChannel
      */
     public function send(object $notifiable, Notification $notification): void
     {
-        // Ambil data dari notification
-        $data = $notification->toWhatsApp($notifiable);
-
-        $phone = $data['phone'] ?? null;
-        $message = $data['message'] ?? '';
-
-        if (empty($phone)) {
+        $phone = $notifiable->phone;
+        
+        if (!$phone) {
             return;
         }
 
-        // ==============================================
-        // TODO: Implementasikan dengan WhatsApp API
-        // ==============================================
-        //
-        // Contoh dengan Fonnte:
-        // Http::withToken(config('services.fonnte.token'))
-        //     ->post('https://api.fonnte.com/send', [
-        //         'target'  => $phone,
-        //         'message' => $message,
-        //     ]);
-        //
-        // Contoh dengan Twilio:
-        // $twilio = new \Twilio\Rest\Client($sid, $token);
-        // $twilio->messages->create("whatsapp:{$phone}", [
-        //     'from' => 'whatsapp:' . config('services.twilio.whatsapp_from'),
-        //     'body' => $message,
-        // ]);
-        // ==============================================
+        // Format phone number (change leading 0 to 62 if necessary)
+        if (substr($phone, 0, 1) === '0') {
+            $phone = '62' . substr($phone, 1);
+        }
+
+        if (!method_exists($notification, 'toWhatsApp')) {
+            \Illuminate\Support\Facades\Log::warning('Notification class ' . get_class($notification) . ' is missing toWhatsApp method.');
+            return;
+        }
+
+        $message = $notification->toWhatsApp($notifiable);
+        $token = config('services.fonnte.token');
+
+        if (!$token) {
+            \Illuminate\Support\Facades\Log::warning('Token Fonnte belum di-set di .env');
+            return;
+        }
+
+        try {
+            $response = \Illuminate\Support\Facades\Http::withoutVerifying()->withHeaders([
+                'Authorization' => $token,
+            ])->post('https://api.fonnte.com/send', [
+                'target' => $phone,
+                'message' => $message,
+                'delay' => '1',
+            ]);
+
+            if (!$response->successful()) {
+                \Illuminate\Support\Facades\Log::error('Gagal mengirim WhatsApp via Fonnte', ['response' => $response->body()]);
+            }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Error WhatsAppChannel: ' . $e->getMessage());
+        }
     }
 }

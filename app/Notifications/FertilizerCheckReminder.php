@@ -20,6 +20,7 @@ class FertilizerCheckReminder extends Notification implements ShouldQueue
 
     public function __construct(
         protected string $message = 'Sudah waktunya mengecek galon POC Anda! Lakukan scan untuk memastikan proses fermentasi berjalan dengan baik. 🌿',
+        protected ?int $batchId = null,
         protected string $type = 'routine_check'
     ) {}
 
@@ -28,7 +29,7 @@ class FertilizerCheckReminder extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        $channels = ['database', WebPushChannel::class];
+        $channels = ['database', \App\Channels\WhatsAppChannel::class];
 
         return $channels;
     }
@@ -38,11 +39,14 @@ class FertilizerCheckReminder extends Notification implements ShouldQueue
      */
     public function toDatabase(object $notifiable): array
     {
+        $url = $this->batchId ? '/scan?batch_id=' . $this->batchId : '/scan';
+        
         return [
             'title'      => '🌿 Waktunya Cek Pupuk!',
             'message'    => $this->message,
             'type'       => $this->type,
-            'action_url' => '/scan',
+            'batch_id'   => $this->batchId,
+            'action_url' => $url,
             'action_text' => 'Scan Sekarang',
         ];
     }
@@ -52,11 +56,26 @@ class FertilizerCheckReminder extends Notification implements ShouldQueue
      */
     public function toWebPush($notifiable, $notification)
     {
+        $url = $this->batchId ? url('/scan?batch_id=' . $this->batchId) : url('/scan');
+        
         return (new WebPushMessage)
             ->title('🌿 Waktunya Cek Pupuk!')
             ->icon(asset('assets/Logo PKM.png'))
             ->body($this->message)
             ->action('Scan Sekarang', 'scan_action')
-            ->data(['url' => url('/scan')]);
+            ->data(['url' => $url]);
+    }
+
+    /**
+     * Data untuk notifikasi WhatsApp.
+     */
+    public function toWhatsApp(object $notifiable): string
+    {
+        $url = $this->batchId ? url('/scan?batch_id=' . $this->batchId) : url('/scan');
+        
+        return "*🌿 Waktunya Cek Pupuk!*\n\n"
+             . $this->message . "\n\n"
+             . "Yuk, lakukan scan sekarang:\n"
+             . $url;
     }
 }

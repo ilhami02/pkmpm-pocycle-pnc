@@ -72,15 +72,16 @@ class SendFertilizerReminders extends Command
                 continue;
             }
 
-            // Anti-duplikasi: cek apakah sudah ada notifikasi reminder hari ini
+            // Anti-duplikasi: cek apakah sudah ada notifikasi reminder hari ini untuk batch ini
             $alreadySentToday = $user->notifications()
                 ->where('type', FertilizerCheckReminder::class)
                 ->whereDate('created_at', today())
+                ->whereJsonContains('data->batch_id', $batch->id)
                 ->exists();
 
             if ($alreadySentToday) {
                 $alreadyNotified++;
-                $this->line("  ⏭️  Sudah dikirimi hari ini: {$user->name}");
+                $this->line("  ⏭️  Sudah dikirimi hari ini: {$user->name} untuk Batch: {$batch->name}");
                 continue;
             }
 
@@ -94,7 +95,7 @@ class SendFertilizerReminders extends Command
 
             // Kirim notifikasi
             $message = $this->buildMessage($batch, $lastScan, $interval);
-            $user->notify(new FertilizerCheckReminder($message));
+            $user->notify(new FertilizerCheckReminder($message, $batch->id));
             $sent++;
 
             $this->line("  ✅ Reminder terkirim ke: {$user->name} ({$user->phone}) untuk Batch: {$batch->name}");
